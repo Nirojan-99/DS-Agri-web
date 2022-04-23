@@ -6,7 +6,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import Header from "../../Component/Header";
+import Header from "../../Components/Header";
 import AgriCard from "../Utils/AgriCard";
 
 function Favorites(props) {

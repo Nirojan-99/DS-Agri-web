@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Header from "../../../Component/Header";
+import Header from "../../../Components/Header";
 import { Paper } from "@mui/material";
 import AgricultureIcon from "@mui/icons-material/Agriculture";
 

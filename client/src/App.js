@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 //pages
 import Pages from "./Pages/Pages";
-import Footer from "./Component/Footer";
+import Footer from "./Components/Footer";
 
 //mui
 import {
