@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import Header from "../../Component/Header";
+import Header from "../../Components/Header";
 import AgriCard from "../Utils/AgriCard";
 import LocationSearchingOutlinedIcon from "@mui/icons-material/LocationSearchingOutlined";
 

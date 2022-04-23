@@ -7,7 +7,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import Header from "../../Component/Header";
+import Header from "../../Components/Header";
 import AgriCart from "../Utils/AgriCart";
 import ShoppingCartCheckoutOutlinedIcon from "@mui/icons-material/ShoppingCartCheckoutOutlined";
 
