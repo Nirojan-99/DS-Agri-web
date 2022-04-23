@@ -2,21 +2,34 @@ import { Route, Routes } from "react-router";
 import { Navigate } from "react-router-dom";
 import Signin from "./Auth/Signin/Signin";
 import SignUp from "./Auth/Signup/Signup";
+import Cart from "./Cart/Cart";
 import Dashboard from "./Dashboard/Dashboard";
+import Favorites from "./Favorites/Favorites";
+import Profile from "./Profile/Profile";
 
 function Pages(props) {
   return (
     <>
       <Routes>
-        {/* <Route
-          exact
-          path="/"
-          element={<Navigate replace to="/auth/sign-in" />}
-        /> */}
         <Route
           eaxct
-          path="/"
+          path="/dashboard"
           element={<Dashboard mode={props.mode} handler={props.modeHandler} />}
+        />
+        <Route
+          eaxct
+          path="/favorites"
+          element={<Favorites mode={props.mode} handler={props.modeHandler} />}
+        />
+        <Route
+          eaxct
+          path="/profile"
+          element={<Profile mode={props.mode} handler={props.modeHandler} />}
+        />
+        <Route
+          eaxct
+          path="/cart"
+          element={<Cart mode={props.mode} handler={props.modeHandler} />}
         />
         <Route
           eaxct
@@ -28,6 +41,7 @@ function Pages(props) {
           path="/login"
           element={<Signin mode={props.mode} handler={props.modeHandler} />}
         />
+        <Route exact path="*" element={<Navigate replace to="/dashboard" />} />
       </Routes>
     </>
   );

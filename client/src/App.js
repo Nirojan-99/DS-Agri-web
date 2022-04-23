@@ -5,7 +5,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 //pages
 import Pages from "./Pages/Pages";
 import Footer from "./Component/Footer";
-import Header from "./Component/Header";
 
 //mui
 import {
@@ -16,7 +15,7 @@ import {
 import { grey } from "@mui/material/colors";
 
 function App() {
-  const [mode, setMode] = useState("light");
+  const [mode, setMode] = useState("dark");
 
   let theme1 = createTheme({
     typography: {
@@ -54,10 +53,10 @@ function App() {
             info: {
               main: "#1597BB",
             },
-            text: {
-              primary: "#333",
-              secondary: grey[400],
-            },
+            // text: {
+            //   primary: "#333",
+            //   secondary: grey[400],
+            // },
           }
         : {
             primary: {

@@ -30,7 +30,7 @@ export default function AgriCard() {
             component="div"
             textAlign={"left"}
           >
-            Grocery
+            Grocery Name
           </Typography>
           <Typography
             gutterBottom
