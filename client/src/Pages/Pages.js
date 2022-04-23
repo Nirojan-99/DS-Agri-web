@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router";
 import { Navigate } from "react-router-dom";
 import Signin from "./Auth/Signin/Signin";
 import SignUp from "./Auth/Signup/Signup";
+import Dashboard from "./Dashboard/Dashboard";
 
 function Pages(props) {
   return (
@@ -12,6 +13,11 @@ function Pages(props) {
           path="/"
           element={<Navigate replace to="/auth/sign-in" />}
         /> */}
+        <Route
+          eaxct
+          path="/"
+          element={<Dashboard mode={props.mode} handler={props.modeHandler} />}
+        />
         <Route
           eaxct
           path="/signup"

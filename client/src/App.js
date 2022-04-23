@@ -62,8 +62,7 @@ function App() {
         : {
             primary: {
               main: "#62BB46",
-              button: "#bbb",
-              dark: "#073050", //change
+              dark: "#073050", 
             },
             secondary: {
               main: "#62BB46",
@@ -72,7 +71,6 @@ function App() {
             background: {
               default: "#073050",
               paper: "#273443",
-              button: "#aaa",
             },
             components: {
               MuiButton: {
@@ -109,7 +107,7 @@ function App() {
       fontSize: "1.5rem",
     },
     [theme1.breakpoints.up("md")]: {
-      fontSize: "2.4rem",
+      fontSize: "2rem",
     },
   };
   theme1.typography.h4 = {
