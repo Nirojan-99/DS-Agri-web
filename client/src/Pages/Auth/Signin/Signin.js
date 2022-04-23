@@ -7,7 +7,6 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Header from "../../../Component/Header";
-import { Divider } from "@mui/material";
 import AgricultureIcon from "@mui/icons-material/Agriculture";
 
 export default function SignInSide(props) {

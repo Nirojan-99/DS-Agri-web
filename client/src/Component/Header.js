@@ -9,7 +9,6 @@ import {
   MenuItem,
   Tooltip,
   Button,
-  Link,
   Divider,
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -20,7 +19,6 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 
 import logo from "../Assets/logo.png";
 import { useNavigate } from "react-router-dom";
-import { red } from "@mui/material/colors";
 
 function Header(props) {
   const [auth, setAuth] = useState(true);
@@ -96,12 +94,8 @@ function Header(props) {
                     </Badge>
                   </IconButton>
                 </Tooltip>
-                <Tooltip title={"favoutites"}>
-                  <IconButton
-                    href="/favoutites"
-                    size="large"
-                    sx={{ color: red[700] }}
-                  >
+                <Tooltip title={"Favorites"}>
+                  <IconButton href="/favorites" size="large" color="inherit">
                     <FavoriteIcon fontSize="inherit" />
                   </IconButton>
                 </Tooltip>
