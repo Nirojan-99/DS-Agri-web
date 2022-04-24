@@ -29,15 +29,19 @@ function Profile(props) {
             <Box component={Paper} elevation={2}>
               <TabList onChange={handleChange}>
                 <Tab label="Account" value="1" />
+                <Tab label="Orders" value="4" />
+                <Tab label="Payment" value="3" />
                 <Tab label="Products" value="2" />
               </TabList>
             </Box>
-            <TabPanel value="1">
+            <TabPanel value="1" sx={{ m: 0, p: 0, mt: 2 }}>
               <Account />
             </TabPanel>
-            <TabPanel value="2">
+            <TabPanel value="2" sx={{ m: 0, p: 0, mt: 2 }}>
               <Products />
             </TabPanel>
+            <TabPanel value="3" sx={{ m: 0, p: 0, mt: 2 }}></TabPanel>
+            <TabPanel value="4" sx={{ m: 0, p: 0, mt: 2 }}></TabPanel>
           </Container>
         </TabContext>
       </Box>
