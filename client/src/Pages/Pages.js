@@ -6,6 +6,7 @@ import Cart from "./Cart/Cart";
 import Checkout from "./Checkout/Checkout";
 import Dashboard from "./Dashboard/Dashboard";
 import Favorites from "./Favorites/Favorites";
+import NewProduct from "./Products/NewProduct";
 import Profile from "./Profile/Profile";
 
 function Pages(props) {
@@ -16,6 +17,11 @@ function Pages(props) {
           eaxct
           path="/dashboard"
           element={<Dashboard mode={props.mode} handler={props.modeHandler} />}
+        />
+        <Route
+          eaxct
+          path="/product/add"
+          element={<NewProduct mode={props.mode} handler={props.modeHandler} />}
         />
         <Route
           eaxct
