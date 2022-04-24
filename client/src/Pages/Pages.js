@@ -25,6 +25,11 @@ function Pages(props) {
         />
         <Route
           eaxct
+          path="/product/edit/:id"
+          element={<NewProduct mode={props.mode} handler={props.modeHandler} />}
+        />
+        <Route
+          eaxct
           path="/checkout"
           element={<Checkout mode={props.mode} handler={props.modeHandler} />}
         />

@@ -15,7 +15,7 @@ import { red } from "@mui/material/colors";
 
 export default function AgriCard() {
   return (
-    <Grid item md={4} sm={6} xs={12} sx={{ mt: 2 }}>
+    <Grid item md={4} sm={6} xs={12} sx={{ mt: { xs: 1, sm: 2 } }}>
       <Card sx={{ minWidth: 270, border: "2px solid #62BB46" }}>
         <CardMedia
           component="img"
@@ -89,7 +89,7 @@ export default function AgriCard() {
                     backgroundColor: "#444",
                     color: "#62BB46",
                   },
-                  mr:1
+                  mr: 1,
                 }}
               >
                 Edit
