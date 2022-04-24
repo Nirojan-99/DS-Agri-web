@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 import Signin from "./Auth/Signin/Signin";
 import SignUp from "./Auth/Signup/Signup";
 import Cart from "./Cart/Cart";
+import Checkout from "./Checkout/Checkout";
 import Dashboard from "./Dashboard/Dashboard";
 import Favorites from "./Favorites/Favorites";
 import Profile from "./Profile/Profile";
@@ -15,6 +16,11 @@ function Pages(props) {
           eaxct
           path="/dashboard"
           element={<Dashboard mode={props.mode} handler={props.modeHandler} />}
+        />
+        <Route
+          eaxct
+          path="/checkout"
+          element={<Checkout mode={props.mode} handler={props.modeHandler} />}
         />
         <Route
           eaxct

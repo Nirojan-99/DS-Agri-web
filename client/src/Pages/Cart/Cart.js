@@ -59,11 +59,17 @@ function Cart(props) {
         <Container maxWidth="md" sx={{ py: 3 }}>
           <Grid container justifyContent={"space-between"} alignItems="center">
             <Grid item>
-              <Typography fontFamily={"open sans"} fontWeight="bold">Total : $1200.00</Typography>
+              <Typography fontFamily={"open sans"} fontWeight="bold">
+                Total : $1200.00
+              </Typography>
             </Grid>
             <Grid item>
               <Button
-                sx={{ textTransform: "none", "&:hover": { bgcolor: "#333", color: "#fff" } }}
+                href="/checkout"
+                sx={{
+                  textTransform: "none",
+                  "&:hover": { bgcolor: "#333", color: "#fff" },
+                }}
                 variant="contained"
                 startIcon={<ShoppingCartCheckoutOutlinedIcon />}
               >

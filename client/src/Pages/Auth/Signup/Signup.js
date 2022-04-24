@@ -24,7 +24,7 @@ export default function SignUp(props) {
     <>
       <Header mode={props.mode} handler={props.handler} />
       <Box height={"83vh"} component="div">
-        <Paper square elevation={0} >
+        <Paper square elevation={0}>
           <Container component="main" maxWidth="xs" color="primary">
             <Box
               component={"paper"}
@@ -77,6 +77,17 @@ export default function SignUp(props) {
                       label="Email Address"
                       name="email"
                       autoComplete="email"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="mobile-number"
+                      label="mobile number"
+                      name="mobile-number"
+                      type="number"
+                      autoComplete="mobile-number"
                     />
                   </Grid>
                   <Grid item xs={12}>
