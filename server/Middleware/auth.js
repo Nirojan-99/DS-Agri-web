@@ -1,9 +1,11 @@
 const jwt = require("jsonwebtoken");
-const mongodb = require("mongodb");
+const Users = require("../models/userModel");
 const db = require("../db");
+const mongoose = require("mongoose");
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
   const authHeader = req.get("Authorization");
+
   if (!authHeader) {
     res.status(400).json({ auth: "fail" });
     return;
@@ -30,22 +32,13 @@ module.exports = (req, res, next) => {
   req.userID = decodedToken.userID;
   userID = decodedToken.userID;
 
-  db.getDb()
-    .db()
-    .collection("User")
-    .findOne({ _id: new mongodb.ObjectId(userID) })
-    .then((resp) => {
-      if (resp) {
-        const type = resp.type;
-        req.type = type;
-      } else {
-        res.status(400).json({ auth: "fail" });
-        return;
-      }
-    })
-    .catch((er) => {
-      console.log(er);
-    });
+  const resp = await Users.findById(userID);
+  if (resp) {
+    req.role = resp.role;
+  } else {
+    res.status(400).json({ auth: "fail" });
+    return;
+  }
 
   req.auth = true;
   next();

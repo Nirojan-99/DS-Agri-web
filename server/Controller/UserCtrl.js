@@ -24,7 +24,80 @@ exports.Login = (req, res) => {
       );
       return res.status(200).json({ token, _id: data._id, type: data.role });
     } else {
-      return res.status(400).json({ auth: false });
+      return res.status(404).json({ auth: false });
     }
   });
+};
+
+exports.Register = async (req, res) => {
+  const { firstName, lastName, email, password, mobile_number } = req.body;
+  const data = await Users.findOne({ email });
+  if (data) {
+    return res.status(404).json({ msg: "email already exist" });
+  }
+  const newUser = new Users({
+    firstName,
+    lastName,
+    email,
+    password,
+    mobile_number,
+  });
+  await newUser.save().then((data) => {
+    if (data._id) {
+      const token = jwt.sign(
+        { userID: data._id, email: data.email },
+        "Agriuservalidation",
+        { expiresIn: "1h" }
+      );
+      return res.status(200).json({ token, _id: data._id, type: data.role });
+    } else {
+      return res.status(404).json({ created: false });
+    }
+  });
+};
+
+exports.GetUser = (req, res) => {
+  const _id = req.query.ID;
+  Users.findById(_id)
+    .then((data) => {
+      return res.status(200).json({ ...data._doc, password: "" });
+    })
+    .catch((er) => {
+      return res.status(404);
+    });
+};
+
+exports.UpdateUser = (req, res) => {
+  const {
+    firstName,
+    lastName,
+    address,
+    mobile_number,
+    _id,
+    password,
+    newPassword,
+  } = req.body;
+
+  if (password) {
+    Users.findById(_id).then((data) => {
+      if (data._doc.password === password) {
+        Users.findByIdAndUpdate({ _id }, { password: newPassword }).then(() => {
+          res.status(200).json({});
+        });
+      } else {
+        return res.status(404).json({});
+      }
+    });
+  } else {
+    Users.findByIdAndUpdate(
+      { _id },
+      { firstName, lastName, address, mobile_number }
+    )
+      .then((data) => {
+        return res.status(200).json({});
+      })
+      .catch((er) => {
+        return res.status(404).json({});
+      });
+  }
 };

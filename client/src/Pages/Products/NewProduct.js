@@ -2,8 +2,6 @@ import {
   Avatar,
   Box,
   Button,
-  Card,
-  CardMedia,
   Container,
   Grid,
   Paper,
@@ -14,7 +12,6 @@ import {
 } from "@mui/material";
 import Header from "../../Components/Header";
 import { useState } from "react";
-import { grey, red } from "@mui/material/colors";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 function NewProduct(props) {

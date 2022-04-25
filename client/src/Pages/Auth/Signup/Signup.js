@@ -9,27 +9,63 @@ import Container from "@mui/material/Container";
 import Header from "../../../Components/Header";
 import { Paper } from "@mui/material";
 import AgricultureIcon from "@mui/icons-material/Agriculture";
+import axios from "axios";
+import AgriSnakbar from "../../Utils/AgriSnackbar";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../../../Store/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp(props) {
+  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const closeHandler = () => {
+    setOpen(false);
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    axios
+      .post("http://localhost:5000/user/register", {
+        firstName: data.get("firstName"),
+        lastName: data.get("lastName"),
+        email: data.get("email"),
+        password: data.get("password"),
+        mobile_number: data.get("mobile-number"),
+      })
+      .then((res) => {
+        dispatch(
+          login({
+            type: res.data.type,
+            id: res.data._id,
+            token: res.data.token,
+          })
+        );
+        navigate("/dashboard", { replace: true });
+      })
+      .catch((er) => {
+        setOpen(true);
+      });
   };
 
   return (
     <>
+      <AgriSnakbar
+        msg={"Unable to create Account"}
+        open={open}
+        handler={closeHandler}
+      />
       <Header mode={props.mode} handler={props.handler} />
-      <Box height={"83vh"} component="div">
+      <Box minHeight={"83vh"} component="div">
         <Paper square elevation={0}>
           <Container component="main" maxWidth="xs" color="primary">
             <Box
+              pb={3}
               component={"paper"}
               sx={{
-                height: "83vh",
+                minHeight: "83vh",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",

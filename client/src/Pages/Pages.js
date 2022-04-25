@@ -12,7 +12,6 @@ import { useSelector } from "react-redux";
 import PageNotFound from "./404/PageNotFound";
 
 function Pages(props) {
-  const Tmode = useSelector((state) => state.mode.mode);
   const token = useSelector((state) => state.loging.token);
   return (
     <>

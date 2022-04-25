@@ -1,4 +1,4 @@
-import { IconButton, Slide, Snackbar } from "@mui/material";
+import { IconButton, Snackbar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 function AgriSnackbar(props) {
