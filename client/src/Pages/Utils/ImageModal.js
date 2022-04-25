@@ -3,7 +3,8 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { grey, red } from "@mui/material/colors";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UploadIcon from "@mui/icons-material/Upload";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const style = {
   textAlign: "center",
@@ -39,6 +40,37 @@ function ImageModal(props) {
     let imageFile = event.target.files[0];
     handleFile(imageFile);
   };
+
+  const uploadImage = () => {
+    const data = new FormData();
+    data.append("image", image);
+    data.append("id", props.userID);
+    
+  };
+
+  const removeImage = () => {
+    axios
+      .delete(`http://localhost:5000/user/dp/${props.userID}`, {
+        headers: { Authorization: "Agriuservalidation " + props.token },
+      })
+      .then((res) => {
+        setPreviewUrl("");
+      })
+      .catch((er) => {});
+  };
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/user/dp/${props.userID}`, {
+        headers: { Authorization: "Agriuservalidation " + props.token },
+      })
+      .then((res) => {
+        setPreviewUrl(res.data.images);
+      })
+      .catch((er) => {
+        console.log(er);
+      });
+  }, []);
   return (
     <>
       <Modal open={props.open} onClose={props.handleClose}>
@@ -91,7 +123,6 @@ function ImageModal(props) {
             >
               <Grid item>
                 <Button
-                  alignItems="center"
                   disableElevation
                   sx={{
                     bgcolor: "#333",
@@ -103,13 +134,14 @@ function ImageModal(props) {
                     },
                   }}
                   variant="contained"
-                  endIcon={<UploadIcon fontsize="small" />}
+                  endIcon={<UploadIcon fontSize="small" />}
                 >
                   Upload
                 </Button>
               </Grid>
               <Grid item>
                 <Button
+                  onClick={removeImage}
                   disableElevation
                   sx={{
                     color: "#fff",
@@ -120,7 +152,7 @@ function ImageModal(props) {
                     },
                   }}
                   color="error"
-                  endIcon={<DeleteIcon fontsize="small" />}
+                  endIcon={<DeleteIcon fontSize="small" />}
                   variant="contained"
                 >
                   Remove
