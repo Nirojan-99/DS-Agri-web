@@ -56,7 +56,7 @@ function Cart(props) {
           <AgriCart />
         </Container>
         <Divider />
-        <Container maxWidth="md" sx={{ py: 3 }}>
+        <Container maxWidth="md" sx={{ py: { xs: 1, sm: 3 } }}>
           <Grid container justifyContent={"space-between"} alignItems="center">
             <Grid item>
               <Typography fontFamily={"open sans"} fontWeight="bold">

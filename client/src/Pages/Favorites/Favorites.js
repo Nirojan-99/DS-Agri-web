@@ -28,7 +28,7 @@ function Favorites(props) {
             Favorites
           </Grid>
         </Container>
-        <Divider />
+        <Divider sx={{mb:1}}/>
         <Container maxWidth="lg">
           <Grid
             container

@@ -11,11 +11,11 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { red } from "@mui/material/colors";
+import { grey, red } from "@mui/material/colors";
 
 export default function AgriCard() {
   return (
-    <Grid item md={4} sm={6} xs={12} sx={{ mt: 2 }}>
+    <Grid item md={4} sm={6} xs={12} sx={{ mt: { xs: 1, sm: 2 } }}>
       <Card sx={{ minWidth: 270, border: "2px solid #62BB46" }}>
         <CardMedia
           component="img"
@@ -24,14 +24,22 @@ export default function AgriCard() {
           alt="green iguana"
         />
         <CardContent>
-          <Typography
-            gutterBottom
-            variant="h5"
-            component="div"
-            textAlign={"left"}
-          >
-            Grocery Name
-          </Typography>
+          <Grid container justifyContent={"space-between"} alignItems="center">
+            <Grid item >
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                textAlign={"left"}
+              >
+                Grocery Name
+              </Typography>
+            </Grid>
+            <Grid component={Typography} variant="subtitle1" item sx={{color:grey[400]}}>
+              19 Sold Out
+            </Grid>
+          </Grid>
+
           <Typography
             gutterBottom
             variant="body1"
@@ -89,7 +97,7 @@ export default function AgriCard() {
                     backgroundColor: "#444",
                     color: "#62BB46",
                   },
-                  mr:1
+                  mr: 1,
                 }}
               >
                 Edit

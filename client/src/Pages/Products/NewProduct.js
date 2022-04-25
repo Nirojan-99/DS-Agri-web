@@ -115,6 +115,17 @@ function NewProduct(props) {
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={12}>
                     <TextField
+                      autoComplete="given-id"
+                      name="Product id"
+                      required
+                      fullWidth
+                      id="id"
+                      label="Product ID"
+                      autoFocus
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={12}>
+                    <TextField
                       autoComplete="given-name"
                       name="Profuct name"
                       required
