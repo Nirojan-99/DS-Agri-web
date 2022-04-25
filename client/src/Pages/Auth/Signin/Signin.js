@@ -8,19 +8,49 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Header from "../../../Components/Header";
 import AgricultureIcon from "@mui/icons-material/Agriculture";
+import { useDispatch } from "react-redux";
+import { login } from "../../../Store/auth";
+
+import axios from "axios";
+import AgriSnackbar from "../../Utils/AgriSnackbar";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function SignInSide(props) {
+  const [snack, setSnack] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleClose = () => {
+    setSnack(false);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    axios
+      .post("http://localhost:5000/user/login", {
+        email: data.get("email"),
+        password: data.get("password"),
+      })
+      .then((res) => {
+        dispatch(
+          login({
+            type: res.data.type,
+            id: res.data._id,
+            token: res.data.token,
+          })
+        );
+        navigate("/profile", { replace: true });
+      })
+      .catch((er) => {
+        setSnack(true);
+      });
   };
 
   return (
     <>
+      <AgriSnackbar open={snack} msg={"Login Failure"} handler={handleClose} />
       <Header mode={props.mode} handler={props.handler} />
       <Grid container sx={{ height: "83vh" }}>
         <Grid

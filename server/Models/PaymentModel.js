@@ -1,16 +1,15 @@
-const { Int32 } = require("mongodb");
+const { Int32, ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 
 const paymentSchema = new mongoose.Schema(
   {
-    user_id: {
-      type: String,
-      required: true,
-    },
-    payment_id: {
+    // user_id: {
+    //   type: String,
+    //   required: true,
+    // },
+    _id: {
       unique: true,
-      type: String,
-      required: true,
+      type: ObjectId,
     },
     amount: {
       type: Number,

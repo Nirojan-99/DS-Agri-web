@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   AppBar,
@@ -16,14 +16,20 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { dark, light } from "../Store/theme";
 
 import logo from "../Assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../Store/auth";
 
 function Header(props) {
-  const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [mode, setMode] = useState(props.mode);
+  const Tmode = useSelector((state) => state.mode.mode);
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.loging.token);
+  const [mode, setMode] = useState(Tmode);
+  const [auth, setAuth] = useState(token);
 
   let history = useNavigate();
 
@@ -41,6 +47,10 @@ function Header(props) {
     history("/profile");
   };
 
+  useEffect(() => {
+    console.log(auth);
+  }, [token, auth]);
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -56,13 +66,16 @@ function Header(props) {
                 size="large"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
-                // onClick={handleMenu}
                 color="inherit"
                 onClick={() => {
                   setMode((prevMode) =>
                     prevMode === "light" ? "dark" : "light"
                   );
-                  props.handler(mode);
+                  if (Tmode === "light") {
+                    dispatch(dark());
+                  } else {
+                    dispatch(light());
+                  }
                 }}
               >
                 {mode === "light" ? (
@@ -124,7 +137,9 @@ function Header(props) {
                   <MenuItem onClick={profilehandler}>Profile</MenuItem>
                   <MenuItem
                     onClick={() => {
-                      setAuth(false);
+                      setAuth(null);
+                      dispatch(logout());
+                      history("/login", { replace: true });
                     }}
                   >
                     Log Out
