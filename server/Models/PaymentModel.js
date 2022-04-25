@@ -1,4 +1,4 @@
-const { Int32 } = require("mongodb");
+const { Int32, ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 
 const paymentSchema = new mongoose.Schema(
@@ -7,10 +7,9 @@ const paymentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    payment_id: {
+    _id: {
       unique: true,
-      type: String,
-      required: true,
+      type: ObjectId,
     },
     amount: {
       type: Number,

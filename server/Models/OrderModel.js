@@ -1,10 +1,11 @@
+const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
   {
-    order_id: {
-      type: String,
-      required: true,
+    _id: {
+      type: ObjectId,
+      unique: true,
     },
     user_id: {
       type: String,
@@ -21,6 +22,10 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: Boolean,
       default: false,
+    },
+    date_time: {
+      type: String,
+      required: true,
     },
   },
   {

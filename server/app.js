@@ -4,6 +4,8 @@ const db = require("./db");
 
 const app = express();
 const BodyParser = require("body-parser");
+const auth = require("./Middleware/auth");
+const authAdmin = require("./Middleware/authAdmin");
 
 app.use(BodyParser.urlencoded({ extended: false }));
 app.use(express.json());
@@ -20,9 +22,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req,res) => {
+app.get("/", auth, authAdmin, (req, res) => {
   console.log("called");
-  res.send("sdsd")
+  res.send("sdsd");
 });
 
 db.initDb((err, db) => {
