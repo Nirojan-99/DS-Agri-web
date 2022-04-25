@@ -7,6 +7,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import { useState } from "react";
 import Account from "./Components/Account";
 import Products from "./Components/Products";
+import { useSelector } from "react-redux";
 
 function Profile(props) {
   const [value, setValue] = useState("1");
@@ -14,6 +15,9 @@ function Profile(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const { type } = useSelector((state) => state.loging);
+
   return (
     <>
       <Header mode={props.mode} handler={props.handler} />
@@ -31,7 +35,7 @@ function Profile(props) {
                 <Tab label="Account" value="1" />
                 <Tab label="Orders" value="4" />
                 <Tab label="Payment" value="3" />
-                <Tab label="Products" value="2" />
+                {type === "farmer" && <Tab label="Products" value="2" />}
               </TabList>
             </Box>
             <TabPanel value="1" sx={{ m: 0, p: 0, mt: 2 }}>

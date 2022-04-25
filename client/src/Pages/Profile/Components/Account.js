@@ -1,3 +1,4 @@
+import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import {
   Avatar,
   Badge,
@@ -9,6 +10,7 @@ import {
   Paper,
   TextField,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import CollectionsOutlinedIcon from "@mui/icons-material/CollectionsOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -17,6 +19,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import AgriSnackbar from "../../Utils/AgriSnackbar";
+import LoadingButton from "@mui/lab/LoadingButton";
+import SaveIcon from "@mui/icons-material/Save";
+import { login } from "../../../Store/auth";
 
 function Account() {
   const [open, setOpen] = useState(false);
@@ -26,17 +31,45 @@ function Account() {
   const handleClose = () => setOpen(false);
   const handleSClose = () => setSOpen(false);
 
+  const [btnDisable, setDisable] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
   const [firstname, setFName] = useState("");
   const [lastName, setlName] = useState("");
   const [number, setNumber] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [role, setRole] = useState("");
 
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [ReNewPassword, setReNewPassword] = useState("");
 
   const { token, userID } = useSelector((state) => state.loging);
+
+  const sendRequest = (role) => {
+    setLoading(true);
+    axios
+      .put(
+        "http://localhost:5000/user/role",
+        { _id: userID ,role},
+        {
+          headers: { Authorization: "Agriuservalidation " + token },
+        }
+      )
+      .then((res) => {
+        setLoading(false);
+        setRole(role);
+        dispatch(login({ type: role, id: userID, token }));
+      })
+      .catch((er) => {
+        setLoading(false);
+        setMsg("Unable to become " + role);
+        setSOpen(true);
+      });
+  };
 
   useEffect(() => {
     axios
@@ -48,6 +81,7 @@ function Account() {
         setlName(res.data.lastName);
         setEmail(res.data.email);
         setNumber(res.data.mobile_number);
+        setRole(res.data.role);
         setAddress(res.data.address && res.data.address);
       })
       .catch((er) => {
@@ -60,6 +94,7 @@ function Account() {
     if (number.length !== 10 && number.length !== 9) {
       return;
     }
+    setDisable(true);
     axios
       .put(
         "http://localhost:5000/user",
@@ -76,10 +111,12 @@ function Account() {
       )
       .then((res) => {
         window.location.reload();
+        setDisable(false);
       })
       .catch((er) => {
         setMsg("Unable to Upadate");
         setSOpen(true);
+        setDisable(false);
       });
   };
 
@@ -90,6 +127,7 @@ function Account() {
       setSOpen(true);
       return;
     }
+    setDisable(true);
     axios
       .put(
         "http://localhost:5000/user",
@@ -104,17 +142,19 @@ function Account() {
         setPassword("");
         setNewPassword("");
         setReNewPassword("");
+        setDisable(false);
       })
       .catch(() => {
         setMsg("Unable to Upadate");
         setSOpen(true);
+        setDisable(false);
       });
   };
 
   return (
     <>
       <AgriSnackbar open={Sopen} handler={handleSClose} msg={msg} />
-      <ImageModal open={open} handleClose={handleClose} />
+      <ImageModal userID={userID} token={token} open={open} handleClose={handleClose} />
       <Box p={2} m={0} component={Paper} elevation={2} square>
         <Container maxWidth="sm">
           <Box
@@ -234,6 +274,7 @@ function Account() {
               </Grid>
             </Grid>
             <Button
+              disabled={btnDisable}
               type="submit"
               fullWidth
               variant="contained"
@@ -294,12 +335,13 @@ function Account() {
                   name="new-password"
                   label="re-type Password"
                   type="password"
-                  id="new-password"
+                  id="rnew-password"
                   autoComplete="new-password"
                 />
               </Grid>
             </Grid>
             <Button
+              disabled={btnDisable}
               type="submit"
               fullWidth
               variant="contained"
@@ -311,6 +353,35 @@ function Account() {
             >
               Change Password
             </Button>
+          </Box>
+          <Box my={{ xs: 1, md: 4 }} sx={{ textAlign: "right" }}>
+            {role === "client" ? (
+              <LoadingButton
+                onClick={() => {
+                  sendRequest("farmer");
+                }}
+                loading={loading}
+                loadingPosition="start"
+                startIcon={<ChangeCircleIcon />}
+                variant="outlined"
+              >
+                Become Farmer
+              </LoadingButton>
+            ) : (
+              <>
+                <LoadingButton
+                  onClick={() => {
+                    sendRequest("client");
+                  }}
+                  loading={loading}
+                  loadingPosition="start"
+                  startIcon={<ChangeCircleIcon />}
+                  variant="outlined"
+                >
+                  Become Customer
+                </LoadingButton>
+              </>
+            )}
           </Box>
         </Container>
       </Box>

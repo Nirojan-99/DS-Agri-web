@@ -101,3 +101,42 @@ exports.UpdateUser = (req, res) => {
       });
   }
 };
+
+exports.ChangeRole = (req, res) => {
+  const role = req.body.role;
+  const _id = req.body._id;
+  // delete products when change to client
+  Users.findByIdAndUpdate({ _id }, { role })
+    .then((data) => {
+      return res.status(200).json({});
+    })
+    .catch((er) => {
+      return res.status(404).json({});
+    });
+};
+
+exports.GetDP = (req, res) => {
+  const _id = req.params.id;
+  Users.findById(_id)
+    .then((data) => {
+      return res.status(200).json({ images: data._doc.images });
+    })
+    .catch((er) => {
+      console.log(er);
+    });
+};
+
+exports.DeleteDp = (req, res) => {
+  const _id = req.params.id;
+  Users.findByIdAndUpdate({ _id }, { images: "" })
+    .then((data) => {
+      return res.status(200).json({});
+    })
+    .catch((er) => {
+      return res.status(404).json({});
+    });
+};
+
+exports.UploadDp = (req, res) => {
+  const _id = req.params.id;
+};
