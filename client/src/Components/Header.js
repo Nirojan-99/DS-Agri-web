@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import {
   Box,
   AppBar,
@@ -46,10 +46,6 @@ function Header(props) {
   const profilehandler = () => {
     history("/profile");
   };
-
-  useEffect(() => {
-    console.log(auth);
-  }, [token, auth]);
 
   return (
     <>

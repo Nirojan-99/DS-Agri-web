@@ -41,7 +41,7 @@ export default function SignInSide(props) {
             token: res.data.token,
           })
         );
-        navigate("/profile", { replace: true });
+        navigate("/dashboard", { replace: true });
       })
       .catch((er) => {
         setSnack(true);

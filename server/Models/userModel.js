@@ -43,8 +43,8 @@ const userSchema = new mongoose.Schema(
       default: [],
     },
     address: {
-      type: Object,
-      default: {},
+      type: String,
+      default: "",
     },
     images: {
       type: String,
