@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
   let decodedToken;
 
   try {
-    decodedToken = jwt.verify(token, "lmsuservalidation");
+    decodedToken = jwt.verify(token, "Agriuservalidation");
   } catch (err) {
     res.status(400).json({ auth: "fail" });
     return;

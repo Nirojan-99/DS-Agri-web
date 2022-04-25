@@ -1,11 +1,13 @@
 const express = require("express");
 const cors = require("cors");
-const db = require("./db");
-
-const app = express();
 const BodyParser = require("body-parser");
+const app = express();
+
 const auth = require("./Middleware/auth");
 const authAdmin = require("./Middleware/authAdmin");
+const User = require("./Routes/User");
+
+const db = require("./db");
 
 app.use(BodyParser.urlencoded({ extended: false }));
 app.use(express.json());
@@ -22,10 +24,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", auth, authAdmin, (req, res) => {
-  console.log("called");
-  res.send("sdsd");
-});
+app.use("/user", User);
 
 db.initDb((err, db) => {
   if (err) {

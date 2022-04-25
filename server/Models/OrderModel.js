@@ -3,10 +3,10 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
   {
-    _id: {
-      type: ObjectId,
-      unique: true,
-    },
+    // _id: {
+    //   type: ObjectId,
+    //   unique: true,
+    // },
     user_id: {
       type: String,
       required: true,

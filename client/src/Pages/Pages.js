@@ -8,57 +8,91 @@ import Dashboard from "./Dashboard/Dashboard";
 import Favorites from "./Favorites/Favorites";
 import NewProduct from "./Products/NewProduct";
 import Profile from "./Profile/Profile";
+import { useSelector } from "react-redux";
+import PageNotFound from "./404/PageNotFound";
 
 function Pages(props) {
+  const Tmode = useSelector((state) => state.mode.mode);
+  const token = useSelector((state) => state.loging.token);
   return (
     <>
       <Routes>
-        <Route
-          eaxct
-          path="/dashboard"
-          element={<Dashboard mode={props.mode} handler={props.modeHandler} />}
-        />
-        <Route
-          eaxct
-          path="/product/add"
-          element={<NewProduct mode={props.mode} handler={props.modeHandler} />}
-        />
-        <Route
-          eaxct
-          path="/product/edit/:id"
-          element={<NewProduct mode={props.mode} handler={props.modeHandler} />}
-        />
-        <Route
-          eaxct
-          path="/checkout"
-          element={<Checkout mode={props.mode} handler={props.modeHandler} />}
-        />
-        <Route
-          eaxct
-          path="/favorites"
-          element={<Favorites mode={props.mode} handler={props.modeHandler} />}
-        />
-        <Route
-          eaxct
-          path="/profile"
-          element={<Profile mode={props.mode} handler={props.modeHandler} />}
-        />
-        <Route
-          eaxct
-          path="/cart"
-          element={<Cart mode={props.mode} handler={props.modeHandler} />}
-        />
-        <Route
-          eaxct
-          path="/signup"
-          element={<SignUp mode={props.mode} handler={props.modeHandler} />}
-        />
-        <Route
-          eaxct
-          path="/login"
-          element={<Signin mode={props.mode} handler={props.modeHandler} />}
-        />
-        <Route exact path="*" element={<Navigate replace to="/dashboard" />} />
+        {token && (
+          <>
+            <Route
+              eaxct
+              path="/dashboard"
+              element={<Dashboard handler={props.modeHandler} />}
+            />
+            <Route
+              eaxct
+              path="/product/add"
+              element={<NewProduct handler={props.modeHandler} />}
+            />
+            <Route
+              eaxct
+              path="/product/edit/:id"
+              element={<NewProduct handler={props.modeHandler} />}
+            />
+            <Route
+              eaxct
+              path="/checkout"
+              element={<Checkout handler={props.modeHandler} />}
+            />
+            <Route
+              eaxct
+              path="/favorites"
+              element={<Favorites handler={props.modeHandler} />}
+            />
+            <Route
+              eaxct
+              path="/profile"
+              element={<Profile handler={props.modeHandler} />}
+            />
+            <Route
+              eaxct
+              path="/cart"
+              element={<Cart handler={props.modeHandler} />}
+            />
+            <Route
+              eaxct
+              path="/signup"
+              element={<SignUp handler={props.modeHandler} />}
+            />
+            <Route
+              eaxct
+              path="/login"
+              element={<Signin handler={props.modeHandler} />}
+            />
+            <Route
+              eaxct
+              path="/404"
+              element={<PageNotFound handler={props.modeHandler} />}
+            />
+            <Route
+              exact
+              path="/"
+              element={<Navigate replace to="/dashboard" />}
+            />
+            <Route exact path="*" element={<Navigate replace to="/404" />} />
+          </>
+        )}
+        {!token && (
+          <>
+            {" "}
+            <Route
+              eaxct
+              path="/signup"
+              element={<SignUp handler={props.modeHandler} />}
+            />
+            <Route
+              eaxct
+              path="/login"
+              element={<Signin handler={props.modeHandler} />}
+            />
+            <Route exact path="*" element={<Navigate replace to="/login" />} />
+          </>
+        )}
       </Routes>
     </>
   );

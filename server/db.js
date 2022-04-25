@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 // const MongoClient = mongodb.MongoClient;
 const mongoDbUrl =
-  "mongodb+srv://nirojan:sliit2020@cluster0.8piet.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+  "mongodb+srv://nirojan:sliit2020@cluster0.8piet.mongodb.net/DS-Agri?retryWrites=true&w=majority";
 
 let _db;
 

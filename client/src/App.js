@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 //pages
 import Pages from "./Pages/Pages";
@@ -14,7 +15,8 @@ import {
 import { grey } from "@mui/material/colors";
 
 function App() {
-  const [mode, setMode] = useState("dark");
+  const Tmode = useSelector((state) => state.mode.mode);
+  const [mode, setMode] = useState(Tmode);
 
   let theme1 = createTheme({
     typography: {
@@ -60,7 +62,7 @@ function App() {
         : {
             primary: {
               main: "#62BB46",
-              dark: "#073050", 
+              dark: "#073050",
             },
             secondary: {
               main: "#62BB46",
@@ -135,7 +137,7 @@ function App() {
     <div className="App">
       <ThemeProvider theme={theme1}>
         <Router>
-          <Pages mode={mode} modeHandler={modeHandler} />
+          <Pages modeHandler={modeHandler} />
         </Router>
         <Footer />
       </ThemeProvider>
