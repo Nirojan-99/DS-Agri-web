@@ -3,9 +3,10 @@ const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema(
   {
-    _id: {
-      type: ObjectId,
+    id: {
+      type: String,
       unique: true,
+      required: true,
     },
     user_id: {
       type: String,
@@ -26,7 +27,7 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     images: {
-      type: Object,
+      type: String,
       required: true,
     },
     category: {

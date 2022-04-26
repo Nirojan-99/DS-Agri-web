@@ -42,6 +42,7 @@ function Account() {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [role, setRole] = useState("");
+  const [dp, setDp] = useState("");
 
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -54,7 +55,7 @@ function Account() {
     axios
       .put(
         "http://localhost:5000/user/role",
-        { _id: userID ,role},
+        { _id: userID, role },
         {
           headers: { Authorization: "Agriuservalidation " + token },
         }
@@ -82,6 +83,7 @@ function Account() {
         setEmail(res.data.email);
         setNumber(res.data.mobile_number);
         setRole(res.data.role);
+        setDp(res.data.images);
         setAddress(res.data.address && res.data.address);
       })
       .catch((er) => {
@@ -154,7 +156,12 @@ function Account() {
   return (
     <>
       <AgriSnackbar open={Sopen} handler={handleSClose} msg={msg} />
-      <ImageModal userID={userID} token={token} open={open} handleClose={handleClose} />
+      <ImageModal
+        userID={userID}
+        token={token}
+        open={open}
+        handleClose={handleClose}
+      />
       <Box p={2} m={0} component={Paper} elevation={2} square>
         <Container maxWidth="sm">
           <Box
@@ -183,7 +190,7 @@ function Account() {
               }
             >
               <Avatar
-                src=""
+                src={dp}
                 sx={{ height: 100, width: 100, border: "1px solid #333" }}
               >
                 <PersonOutlineOutlinedIcon />
