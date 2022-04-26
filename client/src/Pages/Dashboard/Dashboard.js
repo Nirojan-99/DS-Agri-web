@@ -6,6 +6,7 @@ import {
   IconButton,
   Pagination,
   Paper,
+  Skeleton,
   TextField,
   Typography,
 } from "@mui/material";
@@ -15,6 +16,7 @@ import LocationSearchingOutlinedIcon from "@mui/icons-material/LocationSearching
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import AgriSkelton from "../Utils/AgriSkelton";
 
 const handleSubmit = (event) => {
   event.preventDefault();
@@ -27,6 +29,7 @@ function Dashboard(props) {
   const [count, setCount] = useState(1);
   const [products, setProducts] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [isLoaded, setLoaded] = useState(false);
 
   const findfav = (array, id) => {
     let val = false;
@@ -49,6 +52,7 @@ function Dashboard(props) {
       .then((res) => {
         if (res.data) {
           setProducts(res.data.data);
+          setLoaded(true);
           const pcount = Math.ceil(+res.data.cdata / 6);
           setCount(pcount);
         }
@@ -130,11 +134,18 @@ function Dashboard(props) {
             alignItems={"center"}
             spacing={4}
           >
-            {products !== null &&
+            {isLoaded ? (
               products.map((row) => {
                 const val = findfav(favorites, row._id);
                 return <AgriCard key={row._id} fav={val} data={row} />;
-              })}
+              })
+            ) : (
+              <>
+                <AgriSkelton />
+                <AgriSkelton />
+                <AgriSkelton />
+              </>
+            )}
           </Grid>
           <Box mt={3} />
           <Box sx={{ display: "flex", alignItems: "center" }}>

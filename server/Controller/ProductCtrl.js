@@ -40,11 +40,22 @@ exports.NewProduct = (req, res) => {
 
 exports.GetProducts = (req, res) => {
   const pagination = req.query.pagination;
-
+  const title = req.query.title;
+  const favList = req.query.favList;
   const skip = (pagination - 1) * 6;
   const limit = 6;
 
-  Products.find({}, {}, { skip, limit })
+  const findFiler = {};
+
+  if (title) {
+    findFiler.title = title;
+  }
+  if (favList) {
+    favArray = favList.split(",");
+    findFiler._id = { $in: favArray };
+  }
+
+  Products.find({ ...findFiler }, {}, { skip, limit })
     .then((data) => {
       Products.countDocuments({}).then((cdata) => {
         return res.status(200).json({ data, cdata });
@@ -55,4 +66,4 @@ exports.GetProducts = (req, res) => {
     });
 };
 
-exports.GetProduct = (req, res) => {};
+exports.GetFilterProduct = (req, res) => {};
