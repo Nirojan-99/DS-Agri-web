@@ -45,7 +45,15 @@ function ImageModal(props) {
     const data = new FormData();
     data.append("image", image);
     data.append("id", props.userID);
-    
+
+    axios
+      .post(`http://localhost:5000/user/dp/${props.userID}`, data, {
+        headers: { Authorization: "Agriuservalidation " + props.token },
+      })
+      .then((res) => {
+        
+      })
+      .catch((er) => {});
   };
 
   const removeImage = () => {
@@ -123,6 +131,7 @@ function ImageModal(props) {
             >
               <Grid item>
                 <Button
+                  onClick={uploadImage}
                   disableElevation
                   sx={{
                     bgcolor: "#333",

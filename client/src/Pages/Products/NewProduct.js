@@ -13,10 +13,20 @@ import {
 import Header from "../../Components/Header";
 import { useState } from "react";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 function NewProduct(props) {
-  const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
+
+  const [image, setImage] = useState(null);
+  const [ID, setID] = useState();
+  const [title, setTitle] = useState();
+  const [price, setPrice] = useState();
+  const [description, setDescription] = useState();
+  const [category, setCategory] = useState();
+
+  const { token, userID } = useSelector((state) => state.loging);
 
   const handleFile = (file) => {
     setImage(file);
@@ -38,6 +48,26 @@ function NewProduct(props) {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log("ddd");
+    const data = new FormData();
+    data.append("title", title);
+    data.append("price", price);
+    data.append("description", description);
+    data.append("category", category);
+    data.append("id", ID);
+    data.append("user_id", userID);
+    data.append("image", image);
+
+    axios
+      .post(`http://localhost:5000/api/product`, data, {
+        headers: { Authorization: "Agriuservalidation " + token },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((er) => {
+        console.log(er);
+      });
   };
   return (
     <>
@@ -113,9 +143,14 @@ function NewProduct(props) {
                   <Grid item xs={12} sm={12}>
                     <TextField
                       autoComplete="given-id"
-                      name="Product id"
+                      name="id"
                       required
                       fullWidth
+                      inputProps={{ sx: { color: "#62BB46" } }}
+                      value={ID}
+                      onChange={(event) => {
+                        setID(event.target.value);
+                      }}
                       id="id"
                       label="Product ID"
                       autoFocus
@@ -127,6 +162,11 @@ function NewProduct(props) {
                       name="Profuct name"
                       required
                       fullWidth
+                      inputProps={{ sx: { color: "#62BB46" } }}
+                      value={title}
+                      onChange={(event) => {
+                        setTitle(event.target.value);
+                      }}
                       id="name"
                       label="Product Name"
                       autoFocus
@@ -136,6 +176,11 @@ function NewProduct(props) {
                     <TextField
                       required
                       fullWidth
+                      inputProps={{ sx: { color: "#62BB46" } }}
+                      value={price}
+                      onChange={(event) => {
+                        setPrice(event.target.value);
+                      }}
                       id="price"
                       label="Price"
                       name="price"
@@ -147,6 +192,11 @@ function NewProduct(props) {
                     <TextField
                       required
                       fullWidth
+                      inputProps={{ sx: { color: "#62BB46" } }}
+                      value={category}
+                      onChange={(event) => {
+                        setCategory(event.target.value);
+                      }}
                       id="category"
                       label="Category"
                       name="category"
@@ -159,6 +209,11 @@ function NewProduct(props) {
                       maxRows={4}
                       required
                       fullWidth
+                      inputProps={{ sx: { color: "#62BB46" } }}
+                      value={description}
+                      onChange={(event) => {
+                        setDescription(event.target.value);
+                      }}
                       id="description"
                       label="description"
                       name="description"

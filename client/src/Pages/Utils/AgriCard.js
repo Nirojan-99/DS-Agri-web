@@ -12,31 +12,61 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { grey, red } from "@mui/material/colors";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import axios from "axios";
 
-export default function AgriCard() {
+export default function AgriCard(props) {
+  const { token, type, userID } = useSelector((state) => state.loging);
+  const [fav, setFav] = useState(props.fav);
+
+  const handlefavorite = (val) => {
+    axios
+      .put(
+        `http://localhost:5000/user/favorites`,
+        {
+          _id: userID,
+          pid: props.data._id,
+          val: val,
+        },
+        {
+          headers: { Authorization: "Agriuservalidation " + token },
+        }
+      )
+      .then((res) => {
+        setFav((pre) => !pre);
+      })
+      .catch(() => {});
+  };
+
   return (
     <Grid item md={4} sm={6} xs={12} sx={{ mt: { xs: 1, sm: 2 } }}>
       <Card sx={{ minWidth: 270, border: "2px solid #62BB46" }}>
         <CardMedia
           component="img"
           height="160"
-          image="https://img1.exportersindia.com/product_images/bc-full/dir_94/2809460/cereals-and-pulses-958483.jpg"
+          image={props.data.images}
           alt="green iguana"
         />
         <CardContent>
           <Grid container justifyContent={"space-between"} alignItems="center">
-            <Grid item >
+            <Grid item>
               <Typography
                 gutterBottom
                 variant="h5"
                 component="div"
                 textAlign={"left"}
               >
-                Grocery Name
+                {props.data.title}
               </Typography>
             </Grid>
-            <Grid component={Typography} variant="subtitle1" item sx={{color:grey[400]}}>
-              19 Sold Out
+            <Grid
+              component={Typography}
+              variant="subtitle1"
+              item
+              sx={{ color: grey[400] }}
+            >
+              {`${props.data.sold} sold out`}
             </Grid>
           </Grid>
 
@@ -46,22 +76,26 @@ export default function AgriCard() {
             textAlign={"left"}
             color="primary"
           >
-            $199.90
+            {`$${props.data.price}`}
           </Typography>
           <Typography
             variant="body2"
             color="text.secondary"
             textAlign={"justify"}
           >
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
+            {props.data.description}
           </Typography>
         </CardContent>
         <CardActions>
-          {true ? (
+          {type === "client" ? (
             <>
-              <IconButton sx={{ color: red[800], mr: 2 }} onClick={() => {}}>
-                {false ? (
+              <IconButton
+                sx={{ color: red[800], mr: 2 }}
+                onClick={() => {
+                  handlefavorite(!fav);
+                }}
+              >
+                {fav ? (
                   <FavoriteOutlinedIcon />
                 ) : (
                   <FavoriteBorderOutlinedIcon />

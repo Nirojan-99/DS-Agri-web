@@ -1,17 +1,6 @@
-const mongodb = require("mongodb");
-const db = require("../db");
-
 const Users = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
-// const newuser = new Users({
-//     firstName: "niro",
-//     lastName: "yoga",
-//     email: "email@",
-//     password: "pass",
-//     mobile_number: "2222",
-//   });
 
 exports.Login = (req, res) => {
   const { email, password } = req.body;
@@ -138,5 +127,58 @@ exports.DeleteDp = (req, res) => {
 };
 
 exports.UploadDp = (req, res) => {
-  const _id = req.params.id;
+  const _id = req.body.id;
+  const date = Date.now();
+  if (req.files) {
+    let fileToUpload = req.files.image;
+    const fileName = _id + date + fileToUpload.name;
+
+    fileToUpload.mv("Uploads/" + fileName, (error) => {
+      if (error) {
+        console.log(error);
+        return res.status(404).json({});
+      } else {
+        const link = "http://localhost:5000/Uploads/" + fileName;
+        Users.findByIdAndUpdate({ _id }, { images: link })
+          .then((data) => {
+            return res.status(200).json({});
+          })
+          .catch((er) => {
+            return res.status(404).json({});
+          });
+      }
+    });
+  }
+};
+
+exports.GetFavorites = (req, res) => {
+  Users.findOne({ _id: req.query._id }, { favorites: 1 })
+    .then((data) => {
+      return res.status(200).json(data.favorites);
+    })
+    .catch((er) => {
+      return res.status(404).json({});
+    });
+};
+
+exports.SetFavorite = (req, res) => {
+  const { _id, pid, val } = req.body;
+  console.log(val, _id, pid);
+  if (val) {
+    Users.findByIdAndUpdate({ _id }, { $addToSet: { favorites: pid } })
+      .then((data) => {
+        res.status(200).json({});
+      })
+      .catch((er) => {
+        res.status(404).json({});
+      });
+  } else {
+    Users.findByIdAndUpdate({ _id }, { $pull: { favorites: pid } })
+      .then((data) => {
+        res.status(200).json({});
+      })
+      .catch((er) => {
+        res.status(404).json({});
+      });
+  }
 };
