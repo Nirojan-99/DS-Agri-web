@@ -51,7 +51,7 @@ function ImageModal(props) {
         headers: { Authorization: "Agriuservalidation " + props.token },
       })
       .then((res) => {
-        
+        window.location.reload()
       })
       .catch((er) => {});
   };
@@ -63,6 +63,7 @@ function ImageModal(props) {
       })
       .then((res) => {
         setPreviewUrl("");
+        window.location.reload()
       })
       .catch((er) => {});
   };

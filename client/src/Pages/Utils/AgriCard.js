@@ -15,10 +15,31 @@ import { grey, red } from "@mui/material/colors";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import axios from "axios";
+import AgriSnackbar from "../Utils/AgriSnackbar";
 
 export default function AgriCard(props) {
   const { token, type, userID } = useSelector((state) => state.loging);
   const [fav, setFav] = useState(props.fav);
+  const [open, setOpen] = useState(false);
+
+  const addTocart = () => {
+    axios
+      .put(
+        `http://localhost:5000/user/cart`,
+        {
+          pid: props.data._id,
+          _id: userID,
+          set: true,
+        },
+        {
+          headers: { Authorization: "Agriuservalidation " + token },
+        }
+      )
+      .then((res) => {
+        setOpen(true);
+      })
+      .catch((er) => {});
+  };
 
   const handlefavorite = (val) => {
     axios
@@ -35,12 +56,20 @@ export default function AgriCard(props) {
       )
       .then((res) => {
         setFav((pre) => !pre);
+        props.removeFav(props.index);
       })
       .catch(() => {});
   };
 
   return (
     <Grid item md={4} sm={6} xs={12} sx={{ mt: { xs: 1, sm: 2 } }}>
+      <AgriSnackbar
+        msg={"Added to cart"}
+        open={open}
+        handler={() => {
+          setOpen(false);
+        }}
+      />
       <Card sx={{ minWidth: 270, border: "2px solid #62BB46" }}>
         <CardMedia
           component="img"
@@ -102,6 +131,7 @@ export default function AgriCard(props) {
                 )}
               </IconButton>
               <Button
+                onClick={addTocart}
                 component={Typography}
                 variant="contained"
                 size="small"
@@ -120,6 +150,7 @@ export default function AgriCard(props) {
           ) : (
             <>
               <Button
+                disabled={userID !== props.data.user_id}
                 href="/product/edit/id"
                 component={Button}
                 variant="contained"
@@ -137,7 +168,10 @@ export default function AgriCard(props) {
                 Edit
               </Button>
               <Button
-                onClick={() => {}}
+                disabled={userID !== props.data.user_id}
+                onClick={() => {
+                  props.clickDelete(props.data._id, props.index);
+                }}
                 color="error"
                 component={Typography}
                 variant="contained"

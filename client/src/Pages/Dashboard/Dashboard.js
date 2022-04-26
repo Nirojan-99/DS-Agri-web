@@ -17,6 +17,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import AgriSkelton from "../Utils/AgriSkelton";
+import Ack from "../../Components/Ack";
 
 const handleSubmit = (event) => {
   event.preventDefault();
@@ -30,6 +31,37 @@ function Dashboard(props) {
   const [products, setProducts] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
+  const [search, setSearch] = useState();
+  const [isEmpty, setEmpty] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [id, setID] = useState();
+  const [index, setIndex] = useState();
+
+  const searchHandler = () => {
+    setPage(1);
+    setLoaded(false);
+    setEmpty(false);
+    axios
+      .get(
+        `http://localhost:5000/api/product?pagination=${page}&title=${search}`,
+        {
+          headers: { Authorization: "Agriuservalidation " + token },
+        }
+      )
+      .then((res) => {
+        if (res.data.data.length !== 0) {
+          setProducts(res.data.data);
+          setLoaded(true);
+        } else {
+          setEmpty(true);
+          setLoaded(true);
+        }
+      })
+      .catch((er) => {
+        setLoaded(true);
+        setEmpty(true);
+      });
+  };
 
   const findfav = (array, id) => {
     let val = false;
@@ -57,7 +89,10 @@ function Dashboard(props) {
           setCount(pcount);
         }
       })
-      .catch((er) => {});
+      .catch((er) => {
+        setLoaded(true);
+        setEmpty(true);
+      });
     axios
       .get(`http://localhost:5000/user/favorites?_id=${userID}`, {
         headers: { Authorization: "Agriuservalidation " + token },
@@ -69,9 +104,41 @@ function Dashboard(props) {
       })
       .catch(() => {});
   }, [page]);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleYes = () => {
+    setOpen(false);
+    console.log("ddd");
+    axios
+      .delete(`http://localhost:5000/api/product?_id=${id}`, {
+        headers: { Authorization: "Agriuservalidation " + token },
+      })
+      .then((res) => {
+        setProducts((pre) => {
+          const array = [...pre];
+          array.splice(index, 1);
+          return array;
+        });
+      })
+      .catch((er) => {});
+  };
+  const clickDelete = (id, index) => {
+    setOpen(true);
+    setID(id);
+    setIndex(index);
+  };
   return (
     <>
       <Header mode={props.mode} handler={props.handler} />
+      <Ack
+        title={"Alert"}
+        open={open}
+        handleClose={handleClose}
+        msg="Are you sure to delete"
+        handleYes={handleYes}
+      />
       <Box py={2} component={Paper} elevation={0} square minHeight={"83vh"}>
         <Container maxWidth="md">
           <Box component="form" noValidate onSubmit={handleSubmit}>
@@ -96,6 +163,11 @@ function Dashboard(props) {
               </Grid>
               <Grid item xs={10} sm={7}>
                 <TextField
+                  onKeyUp={searchHandler}
+                  value={search}
+                  onChange={(event) => {
+                    setSearch(event.target.value);
+                  }}
                   margin="none"
                   required
                   fullWidth
@@ -108,6 +180,7 @@ function Dashboard(props) {
               </Grid>
               <Grid item xs={2} sm={2}>
                 <IconButton
+                  onClick={searchHandler}
                   sx={{
                     bgcolor: "#62BB46",
                     borderRadius: 1,
@@ -133,13 +206,30 @@ function Dashboard(props) {
             justifyContent="center"
             alignItems={"center"}
             spacing={4}
+            minHeight="50vh"
           >
-            {isLoaded ? (
-              products.map((row) => {
+            {isEmpty && (
+              <>
+                <Box mt={7} component={Typography} sx={{ textAlign: "center" }}>
+                  No products to show
+                </Box>
+              </>
+            )}
+            {!isEmpty &&
+              isLoaded &&
+              products.map((row, index) => {
                 const val = findfav(favorites, row._id);
-                return <AgriCard key={row._id} fav={val} data={row} />;
-              })
-            ) : (
+                return (
+                  <AgriCard
+                    clickDelete={clickDelete}
+                    key={row._id}
+                    fav={val}
+                    data={row}
+                    index={index}
+                  />
+                );
+              })}
+            {!isLoaded && (
               <>
                 <AgriSkelton />
                 <AgriSkelton />

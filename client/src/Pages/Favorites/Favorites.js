@@ -25,6 +25,13 @@ function Favorites(props) {
   const handleChange = (event, value) => {
     setPage(value);
   };
+  const removeFav = (index) => {
+    setProducts((pre) => {
+      const array = [...pre];
+      array.splice(index, 1);
+      return array;
+    });
+  };
 
   useEffect(() => {
     //get fav id
@@ -37,7 +44,9 @@ function Favorites(props) {
           setFavorites(res.data);
           axios
             .get(
-              `http://localhost:5000/api/product?pagination=${page}&favList=${res.data}`,
+              `http://localhost:5000/api/product?pagination=${page}&favList=${
+                res.data.length != 0 ? res.data : ["1", "2"]
+              }`,
               {
                 headers: { Authorization: "Agriuservalidation " + token },
               }
@@ -50,7 +59,9 @@ function Favorites(props) {
                 setLoaded(true);
               }
             })
-            .catch((er) => {});
+            .catch((er) => {
+              setLoaded(true);
+            });
         }
       })
       .catch(() => {});
@@ -76,25 +87,35 @@ function Favorites(props) {
         </Container>
         <Divider sx={{ mb: 1 }} />
         <Container maxWidth="lg">
-          <Grid
-            container
-            direction={"row"}
-            justifyContent="center"
-            alignItems={"center"}
-            spacing={4}
-          >
-            {isLoaded ? (
-              products.map((row) => {
-                return <AgriCard key={row._id} data={row} fav={true} />;
-              })
-            ) : (
-              <>
-                <AgriSkelton />
-                <AgriSkelton />
-                <AgriSkelton />
-              </>
-            )}
-          </Grid>
+          <Box minHeight={"55vh"}>
+            <Grid
+              container
+              direction={"row"}
+              justifyContent="center"
+              alignItems={"center"}
+              spacing={4}
+            >
+              {isLoaded ? (
+                products.map((row, index) => {
+                  return (
+                    <AgriCard
+                      removeFav={removeFav}
+                      index={index}
+                      key={row._id}
+                      data={row}
+                      fav={true}
+                    />
+                  );
+                })
+              ) : (
+                <>
+                  <AgriSkelton />
+                  <AgriSkelton />
+                  <AgriSkelton />
+                </>
+              )}
+            </Grid>
+          </Box>
           <Box my={4} sx={{ display: "flex", alignItems: "center" }}>
             <Box sx={{ flexGrow: 1 }} />
             <Pagination count={count} color="primary" onChange={handleChange} />

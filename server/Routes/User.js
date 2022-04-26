@@ -18,6 +18,12 @@ router
   .put(auth, User.SetFavorite);
 
 router
+  .route("/cart")
+  .put(auth, User.AddCart)
+  .delete(auth,User.RemoveCartEle)
+  .get(auth, User.getCart);
+
+router
   .route("/dp/:id")
   .get(auth, User.GetDP)
   .delete(auth, User.DeleteDp)
