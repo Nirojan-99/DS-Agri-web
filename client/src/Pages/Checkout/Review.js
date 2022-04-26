@@ -4,7 +4,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
-import { Divider } from "@mui/material";
+import { Divider, Box, Button } from "@mui/material";
 
 const products = [
   {
@@ -38,7 +38,7 @@ const payments = [
   { name: "Expiry date", detail: "04/2024" },
 ];
 
-export default function Review() {
+export default function Review(props) {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -124,6 +124,22 @@ export default function Review() {
           </Grid>
         </Grid>
       </Grid>
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button onClick={props.handleBack} sx={{ mt: 3, ml: 1 }}>
+          Back
+        </Button>
+        <Button
+          variant="contained"
+          onClick={props.handleNext}
+          sx={{
+            mt: 3,
+            ml: 1,
+            "&:hover": { bgcolor: "#333", color: "#fff" },
+          }}
+        >
+          Place order
+        </Button>
+      </Box>
     </React.Fragment>
   );
 }

@@ -2,9 +2,15 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
-import { FormControlLabel, FormGroup, Radio, RadioGroup } from "@mui/material";
+import {
+  Button,
+  Box,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
 
-const CardPayment = () => {
+const CardPayment = (props) => {
   return (
     <>
       <Grid container spacing={3}>
@@ -63,7 +69,7 @@ const CardPayment = () => {
     </>
   );
 };
-const MobilePayment = () => {
+const MobilePayment = (props) => {
   return (
     <>
       <Grid container spacing={3}>
@@ -83,7 +89,7 @@ const MobilePayment = () => {
   );
 };
 
-export default function PaymentForm() {
+export default function PaymentForm(props) {
   const [method, setMethod] = useState("card");
 
   const methodHandler = (event) => {
@@ -108,6 +114,23 @@ export default function PaymentForm() {
         />
       </RadioGroup>
       {method === "card" ? <CardPayment /> : <MobilePayment />}
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button onClick={props.handleBack} sx={{ mt: 3, ml: 1 }}>
+          Back
+        </Button>
+
+        <Button
+          variant="contained"
+          onClick={props.handleNext}
+          sx={{
+            mt: 3,
+            ml: 1,
+            "&:hover": { bgcolor: "#333", color: "#fff" },
+          }}
+        >
+          Next
+        </Button>
+      </Box>
     </>
   );
 }

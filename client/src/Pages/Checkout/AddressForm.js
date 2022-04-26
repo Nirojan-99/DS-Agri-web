@@ -1,8 +1,9 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
+import { Button, Box } from "@mui/material";
 
-export default function AddressForm() {
+export default function AddressForm(props) {
   return (
     <>
       <Typography variant="h6" gutterBottom sx={{ color: "#62BB46", mb: 2 }}>
@@ -42,16 +43,6 @@ export default function AddressForm() {
             variant="outlined"
           />
         </Grid>
-        {/* <Grid item xs={12}>
-          <TextField
-            id="address2"
-            name="address2"
-            label="Address line 2"
-            fullWidth
-            autoComplete="shipping address-line2"
-            variant="outlined"
-          />
-        </Grid> */}
         <Grid item xs={12} sm={6}>
           <TextField
             required
@@ -94,12 +85,21 @@ export default function AddressForm() {
             variant="outlined"
           />
         </Grid>
-        {/* <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-            label="Use this address for payment details"
-          />
-        </Grid> */}
+        <Grid item xs={12}>
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button
+              variant="contained"
+              onClick={props.handleNext}
+              sx={{
+                mt: 3,
+                ml: 1,
+                "&:hover": { bgcolor: "#333", color: "#fff" },
+              }}
+            >
+              Next
+            </Button>
+          </Box>
+        </Grid>
       </Grid>
     </>
   );
