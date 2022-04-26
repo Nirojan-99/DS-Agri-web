@@ -13,16 +13,20 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function AgriCart(props) {
-  const [val, setVal] = useState(1);
+  const [val, setVal] = useState(0);
   const incVal = () => {
     setVal((pre) => ++pre);
+    props.quantityHandler("inc", +props.data.price);
   };
   const decVal = () => {
+    if (val >= 1) {
+      props.quantityHandler("dec", +props.data.price);
+    }
     setVal((pre) => {
       if (pre > 1) {
         return --pre;
       } else {
-        return 1;
+        return 0;
       }
     });
   };

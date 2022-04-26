@@ -10,7 +10,7 @@ import {
 import Header from "../../Components/Header";
 import AgriCart from "../Utils/AgriCart";
 import ShoppingCartCheckoutOutlinedIcon from "@mui/icons-material/ShoppingCartCheckoutOutlined";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import CartSkelton from "../Utils/CartSkelton";
@@ -19,6 +19,19 @@ function Cart(props) {
   const { userID, token } = useSelector((state) => state.loging);
   const [cart, setCart] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
+  const [total, setTotal] = useState(0);
+
+  const quantityHandler = (operation, price) => {
+    if (operation === "inc") {
+      setTotal((pre) => {
+        let val;
+        val = pre * 100 + price * 100;
+        return val / 100;
+      });
+    } else {
+      setTotal((pre) => (pre * 100 - price * 100) / 100);
+    }
+  };
 
   const calTotal = () => {
     let total = 0;
@@ -104,7 +117,7 @@ function Cart(props) {
               letterSpacing={1}
               sx={{ color: "#4d9537", my: 2, textAlign: "right" }}
             >
-              {`Total : $${calTotal()}`}
+              {`Total : $${total}`}
             </Grid>
           </Grid>
         </Container>
@@ -119,6 +132,7 @@ function Cart(props) {
                     removeCart={removeCart}
                     key={row._id}
                     data={row}
+                    quantityHandler={quantityHandler}
                   />
                 );
               })
@@ -135,7 +149,7 @@ function Cart(props) {
           <Grid container justifyContent={"space-between"} alignItems="center">
             <Grid item>
               <Typography fontFamily={"open sans"} fontWeight="bold">
-                Total : {`$${calTotal()}`}
+                Total : {`$${total}`}
               </Typography>
             </Grid>
             <Grid item>

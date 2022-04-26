@@ -11,22 +11,8 @@ import PaymentForm from "./PaymentForm";
 import Review from "./Review";
 import Header from "../../Components/Header";
 import { useState } from "react";
-import { Divider } from "@mui/material";
 
 const steps = ["Shipping address", "Payment details", "Review your order"];
-
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <AddressForm />;
-    case 1:
-      return <PaymentForm />;
-    case 2:
-      return <Review />;
-    default:
-      throw new Error("Unknown step");
-  }
-}
 
 export default function Checkout(props) {
   const [activeStep, setActiveStep] = useState(0);
@@ -38,6 +24,19 @@ export default function Checkout(props) {
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return <AddressForm handleNext={handleNext} />;
+      case 1:
+        return <PaymentForm handleNext={handleNext} handleBack={handleBack} />;
+      case 2:
+        return <Review handleNext={handleNext} handleBack={handleBack} />;
+      default:
+        throw new Error("Unknown step");
+    }
+  }
 
   return (
     <>
@@ -81,25 +80,9 @@ export default function Checkout(props) {
               ) : (
                 <>
                   {getStepContent(activeStep)}
-                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                    {activeStep !== 0 && (
-                      <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                        Back
-                      </Button>
-                    )}
-
-                    <Button
-                      variant="contained"
-                      onClick={handleNext}
-                      sx={{
-                        mt: 3,
-                        ml: 1,
-                        "&:hover": { bgcolor: "#333", color: "#fff" },
-                      }}
-                    >
-                      {activeStep === steps.length - 1 ? "Place order" : "Next"}
-                    </Button>
-                  </Box>
+                  <Box
+                    sx={{ display: "flex", justifyContent: "flex-end" }}
+                  ></Box>
                 </>
               )}
             </>
