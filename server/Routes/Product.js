@@ -10,6 +10,7 @@ router.use(fileUpload());
 router
   .route("/product")
   .post(auth, authAdmin, Product.NewProduct)
-  .get(auth, Product.GetProducts);
+  .get(auth, Product.GetProducts)
+  .delete(auth, authAdmin, Product.DeleteProduct);
 
 module.exports = router;

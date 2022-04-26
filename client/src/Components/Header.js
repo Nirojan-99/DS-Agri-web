@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import {
   Box,
   AppBar,
@@ -10,6 +10,7 @@ import {
   Tooltip,
   Button,
   Divider,
+  Typography,
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -22,14 +23,27 @@ import logo from "../Assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../Store/auth";
+import axios from "axios";
+import { useEffect } from "react";
 
 function Header(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const Tmode = useSelector((state) => state.mode.mode);
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.loging.token);
+  const { token, type, userID } = useSelector((state) => state.loging);
   const [mode, setMode] = useState(Tmode);
   const [auth, setAuth] = useState(token);
+  const [cart, setcart] = useState(1);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/user/cart?_id=${userID}`, {
+        headers: { Authorization: "Agriuservalidation " + token },
+      })
+      .then((res) => {
+        setcart(res.data.length);
+      });
+  }, []);
 
   let history = useNavigate();
 
@@ -54,6 +68,16 @@ function Header(props) {
           <Toolbar>
             <Button href="/">
               <img alt="Agri logo" src={logo} width="50px" />
+              <Typography
+                variant="h3"
+                sx={{
+                  textTransform: "none",
+                  ml: 2,
+                  fontSize: { xs: 14, sm: 25 },
+                }}
+              >
+                AgriGo
+              </Typography>
             </Button>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: "none", md: "flex" } }}></Box>
@@ -96,23 +120,29 @@ function Header(props) {
             {/*user profile*/}
             {auth && (
               <div>
-                <Tooltip title={"cart"}>
-                  <IconButton href="/cart" size="large" color="inherit">
-                    <Badge badgeContent={1} color="error">
-                      <ShoppingCartIcon fontSize="inherit" />
-                    </Badge>
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title={"Favorites"}>
-                  <IconButton href="/favorites" size="large" color="inherit">
-                    <FavoriteIcon fontSize="inherit" />
-                  </IconButton>
-                </Tooltip>
+                {type === "client" && (
+                  <Tooltip title={"cart"}>
+                    <IconButton href="/cart" size="large" color="inherit">
+                      <Badge badgeContent={cart} color="error">
+                        <ShoppingCartIcon fontSize="inherit" />
+                      </Badge>
+                    </IconButton>
+                  </Tooltip>
+                )}
+                {type === "client" && (
+                  <Tooltip title={"Favorites"}>
+                    <IconButton href="/favorites" size="large" color="inherit">
+                      <FavoriteIcon fontSize="inherit" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+
                 <Tooltip title="profile">
                   <IconButton size="large" onClick={handleMenu} color="inherit">
                     <AccountCircle fontSize="inherit" />
                   </IconButton>
                 </Tooltip>
+
                 <Menu
                   color="#e28743"
                   sx={{ mt: "45px" }}

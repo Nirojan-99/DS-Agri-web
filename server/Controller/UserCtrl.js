@@ -1,6 +1,7 @@
 const Users = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
 
 exports.Login = (req, res) => {
   const { email, password } = req.body;
@@ -119,6 +120,12 @@ exports.DeleteDp = (req, res) => {
   const _id = req.params.id;
   Users.findByIdAndUpdate({ _id }, { images: "" })
     .then((data) => {
+      const path = data.images.split("http://localhost:5000/")[1];
+      fs.unlink(path, (er) => {
+        if (er) {
+          console.log(er);
+        }
+      });
       return res.status(200).json({});
     })
     .catch((er) => {
@@ -163,22 +170,66 @@ exports.GetFavorites = (req, res) => {
 
 exports.SetFavorite = (req, res) => {
   const { _id, pid, val } = req.body;
-  console.log(val, _id, pid);
   if (val) {
     Users.findByIdAndUpdate({ _id }, { $addToSet: { favorites: pid } })
       .then((data) => {
-        res.status(200).json({});
+        return res.status(200).json({});
       })
       .catch((er) => {
-        res.status(404).json({});
+        return res.status(404).json({});
       });
   } else {
     Users.findByIdAndUpdate({ _id }, { $pull: { favorites: pid } })
       .then((data) => {
-        res.status(200).json({});
+        return res.status(200).json({});
       })
       .catch((er) => {
-        res.status(404).json({});
+        return res.status(404).json({});
       });
   }
+};
+
+exports.AddCart = (req, res) => {
+  const { pid, _id, set } = req.body;
+
+  if (set) {
+    Users.updateOne({ _id }, { $addToSet: { cart: pid } })
+      .then((data) => {
+        return res.status(200).json({});
+      })
+      .catch((er) => {
+        return res.status(404).json({});
+      });
+  } else {
+    Users.findByIdAndUpdate({ _id }, { $pull: { cart: pid } })
+      .then((data) => {
+        return res.status(200).json({});
+      })
+      .catch((er) => {
+        return res.status(404).json({});
+      });
+  }
+};
+
+exports.getCart = (req, res) => {
+  const { _id } = req.query;
+
+  Users.findOne({ _id }, { cart: 1 }, {})
+    .then((data) => {
+      return res.status(200).json(data.cart);
+    })
+    .catch((er) => {
+      return res.status(404).json({});
+    });
+};
+
+exports.RemoveCartEle = (req, res) => {
+  const { id, pid } = req.query;
+  Users.findByIdAndUpdate({ _id: id }, { $pull: { cart: pid } })
+    .then((data) => {
+      return res.status(200).json({});
+    })
+    .catch((er) => {
+      return res.status(404).json({});
+    });
 };

@@ -9,16 +9,30 @@ import Typography from "@mui/material/Typography";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import { useState } from "react";
+import axios from "axios";
 
-export default function AgriCart() {
-  // const theme = useTheme();
+export default function AgriCart(props) {
+  const [val, setVal] = useState(1);
+  const incVal = () => {
+    setVal((pre) => ++pre);
+  };
+  const decVal = () => {
+    setVal((pre) => {
+      if (pre > 1) {
+        return --pre;
+      } else {
+        return 1;
+      }
+    });
+  };
 
   return (
     <Card sx={{ display: "flex", my: 3, border: "2px solid #62BB46" }}>
       <CardMedia
         component="img"
         sx={{ width: "30%" }}
-        image="https://img1.exportersindia.com/product_images/bc-full/dir_94/2809460/cereals-and-pulses-958483.jpg"
+        image={props.data.images}
         alt="img"
       />
       <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -30,7 +44,7 @@ export default function AgriCart() {
             variant="h5"
             sx={{ color: "#62BB46" }}
           >
-            $199.99
+            {`$${props.data.price}`}
           </Typography>
           <Typography
             variant="h6"
@@ -39,7 +53,7 @@ export default function AgriCart() {
             fontFamily={"open sans"}
             fontWeight="bold"
           >
-            Grocery Name
+            {props.data.title}
           </Typography>
           <Typography
             variant="subtitle2"
@@ -48,12 +62,12 @@ export default function AgriCart() {
             fontFamily={"open sans"}
             fontWeight="bold"
           >
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
+            {props.data.description}
           </Typography>
         </CardContent>
         <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
           <IconButton
+            onClick={decVal}
             sx={{
               bgcolor: "#aaa",
               borderRadius: 1,
@@ -64,8 +78,9 @@ export default function AgriCart() {
           >
             <RemoveOutlinedIcon />
           </IconButton>
-          <Typography>1</Typography>
+          <Typography>{val}</Typography>
           <IconButton
+            onClick={incVal}
             sx={{
               bgcolor: "#aaa",
               borderRadius: 1,
@@ -79,7 +94,11 @@ export default function AgriCart() {
       </Box>
       <Box sx={{ flexGrow: 1 }} />
       <Box p={0.5}>
-        <IconButton>
+        <IconButton
+          onClick={() => {
+            props.removeCart(props.index, props.data._id);
+          }}
+        >
           <CloseOutlinedIcon />
         </IconButton>
       </Box>
