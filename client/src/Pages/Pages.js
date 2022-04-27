@@ -35,7 +35,7 @@ function Pages(props) {
             />
             <Route
               eaxct
-              path="/checkout"
+              path="/checkout/:ID"
               element={<Checkout handler={props.modeHandler} />}
             />
             <Route

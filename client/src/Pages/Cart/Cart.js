@@ -14,6 +14,9 @@ import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import CartSkelton from "../Utils/CartSkelton";
+import { useNavigate } from "react-router-dom";
+import { addOrder } from "../../Store/order";
+import { useDispatch } from "react-redux";
 
 function Cart(props) {
   const { userID, token } = useSelector((state) => state.loging);
@@ -21,7 +24,41 @@ function Cart(props) {
   const [isLoaded, setLoaded] = useState(false);
   const [total, setTotal] = useState(0);
 
-  const quantityHandler = (operation, price) => {
+  const dispatch = useDispatch();
+
+  const [cartObj, setCartObj] = useState({});
+  const navigate = useNavigate();
+
+  // const checkOutHandler = () => {
+  //   dispatch(addOrder({ order: cartObj }));
+  //   navigate(`/checkout`, { replace: true });
+  // };
+
+  const checkOutHandler = () => {
+    axios
+      .post(
+        `http://localhost:5000/api/order`,
+        {
+          products: cartObj,
+          user_id: userID,
+          total,
+        },
+        {
+          headers: { Authorization: "Agriuservalidation " + token },
+        }
+      )
+      .then((res) => {
+        navigate(`/checkout/${res.data._id}`, { replace: true });
+      })
+      .catch((er) => {});
+  };
+
+  const quantityHandler = (operation, price, id, amount) => {
+    setCartObj((pre) => {
+      let obj = { ...pre, [id]: amount };
+      return obj;
+    });
+
     if (operation === "inc") {
       setTotal((pre) => {
         let val;
@@ -154,8 +191,9 @@ function Cart(props) {
             </Grid>
             <Grid item>
               <Button
+                onClick={checkOutHandler}
                 disabled={!calTotal()}
-                href="/checkout"
+                // href="/checkout"
                 sx={{
                   textTransform: "none",
                   "&:hover": { bgcolor: "#333", color: "#fff" },

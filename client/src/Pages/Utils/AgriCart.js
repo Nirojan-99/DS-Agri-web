@@ -16,11 +16,11 @@ export default function AgriCart(props) {
   const [val, setVal] = useState(0);
   const incVal = () => {
     setVal((pre) => ++pre);
-    props.quantityHandler("inc", +props.data.price);
+    props.quantityHandler("inc", +props.data.price, props.data._id, val+1);
   };
   const decVal = () => {
     if (val >= 1) {
-      props.quantityHandler("dec", +props.data.price);
+      props.quantityHandler("dec", +props.data.price, props.data._id, val-1);
     }
     setVal((pre) => {
       if (pre > 1) {
