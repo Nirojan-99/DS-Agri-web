@@ -15,10 +15,12 @@ import { useState } from "react";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function NewProduct(props) {
   const [previewUrl, setPreviewUrl] = useState("");
+
+  const { id } = useParams();
 
   const [image, setImage] = useState(null);
   const [ID, setID] = useState();
@@ -51,7 +53,6 @@ function NewProduct(props) {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("ddd");
     const data = new FormData();
     data.append("title", title);
     data.append("price", price);
@@ -77,7 +78,10 @@ function NewProduct(props) {
       <Header mode={props.mode} handler={props.handler} />
       <Box component={Paper} elevation={0} square minHeight={"82vh"} py={3}>
         <Container maxWidth="md">
-          <Typography variant="h3" sx={{ mb: 3, color: "#62BB46" ,fontFamily:"open sans"}}>
+          <Typography
+            variant="h3"
+            sx={{ mb: 3, color: "#62BB46", fontFamily: "open sans" }}
+          >
             New Product
           </Typography>
           <Grid

@@ -1,23 +1,32 @@
-const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
   {
-    // _id: {
-    //   type: ObjectId,
-    //   unique: true,
-    // },
     user_id: {
       type: String,
       required: true,
     },
-    address: {
-      type: Object,
+    total: {
+      type: Number,
       required: true,
     },
+    payment: {
+      type: Boolean,
+      default: false,
+    },
+    address: {
+      type: Object,
+      default: {
+        address: "",
+        city: "",
+        province: "",
+        postalcode: "",
+        country: "",
+      },
+    },
     products: {
-      type: Array,
-      default: [],
+      type: Object,
+      default: {},
     },
     status: {
       type: Boolean,
@@ -25,7 +34,7 @@ const orderSchema = new mongoose.Schema(
     },
     date_time: {
       type: String,
-      required: true,
+      default: Date.now(),
     },
   },
   {

@@ -3,10 +3,10 @@ const cors = require("cors");
 const BodyParser = require("body-parser");
 const app = express();
 
-const auth = require("./Middleware/auth");
-const authAdmin = require("./Middleware/authAdmin");
 const User = require("./Routes/User");
 const Product = require("./Routes/Product");
+const Order = require("./Routes/Order");
+const Payment = require("./Routes/Payment");
 
 const db = require("./db");
 
@@ -29,6 +29,8 @@ app.use("/Uploads", express.static("Uploads"));
 
 app.use("/user", User);
 app.use("/api", Product);
+app.use("/api", Order);
+app.use("/api", Payment);
 
 db.initDb((err, db) => {
   if (err) {

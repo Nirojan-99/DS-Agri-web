@@ -4,18 +4,25 @@ import Paper from "@mui/material/Paper";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import AddressForm from "./AddressForm";
 import PaymentForm from "./PaymentForm";
 import Review from "./Review";
 import Header from "../../Components/Header";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import OTP from "./OTP";
 
-const steps = ["Shipping address", "Payment details", "Review your order"];
+const steps = [
+  "Shipping address",
+  "Payment details",
+  "OTP verification",
+  "Review your order",
+];
 
 export default function Checkout(props) {
   const [activeStep, setActiveStep] = useState(0);
+  const { ID } = useParams();
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -28,10 +35,18 @@ export default function Checkout(props) {
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return <AddressForm handleNext={handleNext} />;
+        return <AddressForm id={ID} handleNext={handleNext} />;
       case 1:
-        return <PaymentForm handleNext={handleNext} handleBack={handleBack} />;
+        return (
+          <PaymentForm
+            id={ID}
+            handleNext={handleNext}
+            handleBack={handleBack}
+          />
+        );
       case 2:
+        return <OTP id={ID} handleNext={handleNext} handleBack={handleBack} />;
+      case 3:
         return <Review handleNext={handleNext} handleBack={handleBack} />;
       default:
         throw new Error("Unknown step");
@@ -51,7 +66,7 @@ export default function Checkout(props) {
               component="h1"
               variant="h3"
               align="center"
-              sx={{ color: "#62BB46" }}
+              sx={{ color: "#62BB46", fontFamily: "open sans" }}
             >
               Checkout
             </Typography>
@@ -61,7 +76,7 @@ export default function Checkout(props) {
             >
               {steps.map((label) => (
                 <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
+                  <StepLabel></StepLabel>
                 </Step>
               ))}
             </Stepper>
