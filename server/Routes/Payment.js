@@ -3,6 +3,10 @@ const router = Router();
 const Payment = require("../Controller/PaymentCtrl");
 const auth = require("../Middleware/auth");
 
-router.route("/payment").post(auth).get(auth,Payment.GetPayment).put(auth);
+router
+  .route("/payment")
+  .post(auth, Payment.AddPayment)
+  .get(auth, Payment.GetPayment)
+  .put(auth, Payment.CheckOTP);
 
 module.exports = router;

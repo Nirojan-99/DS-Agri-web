@@ -42,7 +42,7 @@ exports.GetOrder = (req, res) => {
   Orders.findById({ _id })
     .then((data) => {
       if (data.address.address) {
-        return res.status(200).json(data.address);
+        return res.status(200).json(data);
       } else {
         return res.status(404).json({});
       }

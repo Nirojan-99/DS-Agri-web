@@ -7,18 +7,13 @@ import StepLabel from "@mui/material/StepLabel";
 import Typography from "@mui/material/Typography";
 import AddressForm from "./AddressForm";
 import PaymentForm from "./PaymentForm";
-import Review from "./Review";
 import Header from "../../Components/Header";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import OTP from "./OTP";
+import { Button } from "@mui/material";
 
-const steps = [
-  "Shipping address",
-  "Payment details",
-  "OTP verification",
-  "Review your order",
-];
+const steps = ["Shipping address", "Payment details", "OTP verification"];
 
 export default function Checkout(props) {
   const [activeStep, setActiveStep] = useState(0);
@@ -46,8 +41,6 @@ export default function Checkout(props) {
         );
       case 2:
         return <OTP id={ID} handleNext={handleNext} handleBack={handleBack} />;
-      case 3:
-        return <Review handleNext={handleNext} handleBack={handleBack} />;
       default:
         throw new Error("Unknown step");
     }
@@ -76,7 +69,7 @@ export default function Checkout(props) {
             >
               {steps.map((label) => (
                 <Step key={label}>
-                  <StepLabel></StepLabel>
+                  <StepLabel>{label}</StepLabel>
                 </Step>
               ))}
             </Stepper>
@@ -87,10 +80,14 @@ export default function Checkout(props) {
                     Thank you for your order.
                   </Typography>
                   <Typography variant="subtitle1">
-                    {`Your order number is #2001539. We have emailed your order
+                    {`Your order number is #${ID}. We have emailed your order
                     confirmation, and will send you an update when your order
                     has shipped.`}
                   </Typography>
+                  <Box sx={{ display: "flex" }}>
+                    <Box sx={{ flexGrow: 1 }} />
+                    <Button variant="outlined" href="/">Keep Shoping</Button>
+                  </Box>
                 </>
               ) : (
                 <>

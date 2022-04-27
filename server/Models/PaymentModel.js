@@ -12,6 +12,10 @@ const paymentSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    OTP: {
+      type: Number,
+      default: Math.floor(1000 + Math.random() * 9000),
+    },
     amount: {
       type: Number,
       required: true,
@@ -43,10 +47,6 @@ const paymentSchema = new mongoose.Schema(
     name_on_card: {
       type: String,
       default: "",
-    },
-    dateTime: {
-      type: String,
-      required: true,
     },
   },
   {
