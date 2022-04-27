@@ -151,7 +151,7 @@ export default function AgriCard(props) {
             <>
               <Button
                 disabled={userID !== props.data.user_id}
-                href="/product/edit/id"
+                href={`/product/edit/${props.data._id}`}
                 component={Button}
                 variant="contained"
                 size="small"

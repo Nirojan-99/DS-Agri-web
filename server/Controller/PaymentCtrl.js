@@ -1,5 +1,6 @@
 const Payments = require("../Models/PaymentModel");
 const Users = require("../models/userModel");
+const Payment = require("../Models/PaymentModel");
 
 exports.GetPayment = (req, res) => {
   const { order_id } = req.query;
@@ -60,6 +61,11 @@ exports.CheckOTP = (req, res) => {
       if (+OTP === data.OTP) {
         Users.findByIdAndUpdate({ _id: userID }, { $set: { cart: [] } }).then(
           () => {
+            Payment.findByIdAndUpdate(
+              { _id: order_id },
+              { $set: { Payment: true } }
+            );
+            // :TODO increase sold count
             return res.status(200).json({ ok: true });
           }
         );

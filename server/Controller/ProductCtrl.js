@@ -97,3 +97,65 @@ exports.DeleteProduct = (req, res) => {
       return res.status(404).json({});
     });
 };
+
+exports.GetProduct = (req, res) => {
+  const { _id } = req.query;
+  Products.findById({ _id })
+    .then((data) => {
+      return res.status(200).json(data);
+    })
+    .catch((er) => {
+      return res.status(404).json({});
+    });
+};
+
+exports.UpdateProduct = (req, res) => {
+  const { price, title, description, category, id, user_id, _id } = req.body;
+  const date = Date.now();
+  let oldImage;
+
+  if (req.files) {
+    Products.findById({ _id }, { images: 1 }).then((data) => {
+      oldImage = data.images;
+      const oldPath = oldImage.split("http://localhost:5000/")[1];
+      let fileToUpload = req.files.image;
+      const fileName = id + date + fileToUpload.name;
+
+      fileToUpload.mv("Uploads/" + fileName, (error) => {
+        if (error) {
+          console.log(error + "niro");
+          return res.status(404).json({});
+        } else {
+          const link = "http://localhost:5000/Uploads/" + fileName;
+          Products.findByIdAndUpdate(
+            { _id },
+            { $set: { price, title, description, category, id, images: link } }
+          )
+            .then((data) => {
+              fs.unlink(oldPath, (er) => {
+                if (er) {
+                  console.log(er);
+                } else {
+                  return res.status(200).json({});
+                }
+              });
+            })
+            .catch((er) => {
+              return res.status(404).json({});
+            });
+        }
+      });
+    });
+  } else {
+    Products.findByIdAndUpdate(
+      { _id },
+      { $set: { price, title, description, category, id } }
+    )
+      .then((data) => {
+        return res.status(200).json({});
+      })
+      .catch((er) => {
+        return res.status(404).json({});
+      });
+  }
+};
