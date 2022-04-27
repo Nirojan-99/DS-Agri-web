@@ -38,11 +38,11 @@ export default function AddressForm(props) {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
-        setAddess(res.data.address);
-        setCity(res.data.city);
-        setProvince(res.data.province);
-        setPostalCode(res.data.postalcode);
-        setCountry(res.data.country);
+        setAddess(res.data.address.address);
+        setCity(res.data.address.city);
+        setProvince(res.data.address.province);
+        setPostalCode(res.data.address.postalcode);
+        setCountry(res.data.address.country);
         setFilled(true);
       })
       .catch((er) => {

@@ -23,9 +23,35 @@ export default function PaymentForm(props) {
   const [mobile, setMobile] = useState();
   const [cvv, setCvv] = useState();
 
-  const handleSubmit = () => {};
+  const [amount, setAmount] = useState(0);
 
-  const { token } = useSelector((state) => state.loging);
+  const handleSubmit = () => {
+    axios
+      .post(
+        `http://localhost:5000/api/payment`,
+        {
+          user_id: userID,
+          order_id: props.id,
+          amount: amount,
+          method: method,
+          mobile_number: mobile,
+          card_number: cardNum,
+          expiry_year: ExYear,
+          expiry_month: ExMonth,
+          cvv,
+          name_on_card: nameOn,
+        },
+        {
+          headers: { Authorization: "Agriuservalidation " + token },
+        }
+      )
+      .then((res) => {
+        props.handleNext();
+      })
+      .catch((er) => {});
+  };
+
+  const { token, userID } = useSelector((state) => state.loging);
 
   const [isFilled, setFilled] = useState(false);
   useEffect(() => {
@@ -34,8 +60,17 @@ export default function PaymentForm(props) {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
-        console.log(res.data);
-        setFilled("true");
+        if (res.data.exist) {
+          setFilled("true");
+        }
+      })
+      .catch((er) => {});
+    axios
+      .get(`http://localhost:5000/api/order?_id=${props.id}`, {
+        headers: { Authorization: "Agriuservalidation " + token },
+      })
+      .then((res) => {
+        setAmount(res.data.total);
       })
       .catch((er) => {});
   }, []);
@@ -49,7 +84,13 @@ export default function PaymentForm(props) {
       <Typography variant="h6" gutterBottom sx={{ mb: 2, color: "#62BB46" }}>
         Payment method
       </Typography>
-      <RadioGroup value={method} onChange={methodHandler} row sx={{ mb: 2 }}>
+      <RadioGroup
+        disabled={isFilled}
+        value={method}
+        onChange={methodHandler}
+        row
+        sx={{ mb: 2 }}
+      >
         <FormControlLabel
           value="card"
           control={<Radio />}
@@ -75,6 +116,7 @@ export default function PaymentForm(props) {
               fullWidth
               autoComplete="cc-name"
               variant="outlined"
+              disabled={isFilled}
             />
           </Grid>
           <Grid item xs={12} md={12}>
@@ -90,6 +132,7 @@ export default function PaymentForm(props) {
               autoComplete="cc-number"
               variant="outlined"
               type="number"
+              disabled={isFilled}
             />
           </Grid>
           <Grid item xs={6} sm={4}>
@@ -104,6 +147,7 @@ export default function PaymentForm(props) {
               fullWidth
               autoComplete="cc-exp"
               variant="outlined"
+              disabled={isFilled}
             />
           </Grid>
           <Grid item xs={6} sm={4}>
@@ -118,6 +162,7 @@ export default function PaymentForm(props) {
               fullWidth
               autoComplete="cc-exp"
               variant="outlined"
+              disabled={isFilled}
             />
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -132,6 +177,7 @@ export default function PaymentForm(props) {
               fullWidth
               autoComplete="cc-csc"
               variant="outlined"
+              disabled={isFilled}
             />
           </Grid>
         </Grid>
@@ -144,6 +190,7 @@ export default function PaymentForm(props) {
               onChange={(event) => {
                 setMobile(event.target.value);
               }}
+              disabled={isFilled}
               id="mobileNo"
               label="mobile Number"
               fullWidth

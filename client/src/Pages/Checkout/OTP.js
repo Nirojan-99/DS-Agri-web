@@ -9,32 +9,26 @@ import axios from "axios";
 export default function OTP(props) {
   const { userID, token } = useSelector((state) => state.loging);
 
-  const [isFilled, setFilled] = useState(false);
+  const [OTP, setOTP] = useState();
 
   useEffect(() => {}, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // axios
-    //   .put(
-    //     `http://localhost:5000/api/order`,
-    //     {
-    //       address,
-    //       city,
-    //       province,
-    //       postalcode,
-    //       country,
-    //       _id: props.id,
-    //     },
-    //     {
-    //       headers: { Authorization: "Agriuservalidation " + token },
-    //     }
-    //   )
-    //   .then((res) => {
-    //     // navigate(`/checkout/${res.data._id}`, { replace: true });
-    //     props.handleNext();
-    //   })
-    //   .catch((er) => {});
+    axios
+      .put(
+        `http://localhost:5000/api/payment`,
+        { OTP, order_id: props.id, userID },
+        {
+          headers: { Authorization: "Agriuservalidation " + token },
+        }
+      )
+      .then((res) => {
+        if (res.data.ok) {
+          props.handleNext();
+        }
+      })
+      .catch((er) => {});
   };
   return (
     <>
@@ -54,22 +48,28 @@ export default function OTP(props) {
             required
             inputProps={{ sx: { color: "#62BB46" } }}
             autoFocus
-            id="firstName"
-            placeholder="First name"
+            value={OTP}
+            onChange={(event) => {
+              setOTP(event.target.value);
+            }}
+            id="otp"
+            placeholder="OTP"
             fullWidth
+            type="password"
             variant="outlined"
+            sx={{ textAlign: "center", letterSpacing: 3 }}
           />
         </Grid>
 
         <Grid item xs={12}>
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <Button onClick={props.handleBack} sx={{ mt: 3, ml: 1 }}>
+            {/* <Button onClick={props.handleBack} sx={{ mt: 3, ml: 1 }}>
               Back
-            </Button>
+            </Button> */}
             <Button
               type="submit"
               variant="contained"
-              onClick={isFilled ? props.handleNext : handleSubmit}
+              onClick={handleSubmit}
               sx={{
                 mt: 3,
                 ml: 1,
