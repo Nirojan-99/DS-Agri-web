@@ -10,28 +10,45 @@ import Header from "../../../Components/Header";
 import AgricultureIcon from "@mui/icons-material/Agriculture";
 import { useDispatch } from "react-redux";
 import { login } from "../../../Store/auth";
+import Alert from "../../../Components/Alert";
 
 import axios from "axios";
 import AgriSnackbar from "../../Utils/AgriSnackbar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import validator from "validator";
 
 export default function SignInSide(props) {
+  //data
   const [snack, setSnack] = useState(false);
+  const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  //error display
   const handleClose = () => {
     setSnack(false);
   };
 
+  //login submit
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+
+    if (!email.trim() || !email.includes("@")) {
+      setError("Invalid Email");
+      return;
+    }
+    if (!password.trim()) {
+      setError("Password Required");
+      return;
+    }
+
     axios
       .post("http://localhost:5000/user/login", {
-        email: data.get("email"),
-        password: data.get("password"),
+        email: email,
+        password: password,
       })
       .then((res) => {
         dispatch(
@@ -48,8 +65,19 @@ export default function SignInSide(props) {
       });
   };
 
+  //close alert msg
+  const handleCloseAlert = () => {
+    setError("");
+  };
+
   return (
     <>
+      <Alert
+        open={error}
+        handleClose={handleCloseAlert}
+        title="Alert"
+        msg={error}
+      />
       <AgriSnackbar open={snack} msg={"Login Failure"} handler={handleClose} />
       <Header mode={props.mode} handler={props.handler} />
       <Grid container sx={{ height: "83vh" }}>
@@ -92,6 +120,10 @@ export default function SignInSide(props) {
                 margin="normal"
                 required
                 fullWidth
+                value={email}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                }}
                 id="email"
                 label="Email ID"
                 name="email"
@@ -102,6 +134,10 @@ export default function SignInSide(props) {
                 margin="normal"
                 required
                 fullWidth
+                value={password}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                }}
                 name="password"
                 label="Password"
                 type="password"

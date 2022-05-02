@@ -5,16 +5,29 @@ import { Button, Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Alert from "../../Components/Alert";
 
 export default function OTP(props) {
   const { userID, token } = useSelector((state) => state.loging);
 
   const [OTP, setOTP] = useState();
+  const [error, setError] = useState("");
 
   useEffect(() => {}, []);
 
+  // close alert
+  const handleClose = () => {
+    setError("");
+  };
+
+  //submit otp
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (!OTP.trim() || OTP.length !== 4 || isNaN(OTP)) {
+      setError("Invalid OTP");
+      return;
+    }
     axios
       .put(
         `http://localhost:5000/api/payment`,
@@ -32,8 +45,14 @@ export default function OTP(props) {
   };
   return (
     <>
+      <Alert
+        handleClose={handleClose}
+        title="Alert!"
+        msg={error}
+        open={error}
+      />
       <Typography variant="h6" gutterBottom sx={{ color: "#62BB46", mb: 2 }}>
-        OTP verification
+        OTP verifications
       </Typography>
       <Grid container spacing={3} justifyContent="center">
         <Grid

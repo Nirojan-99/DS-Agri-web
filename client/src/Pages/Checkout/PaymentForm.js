@@ -12,20 +12,59 @@ import {
 import { useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import validator from "validator";
+import Alert from "../../Components/Alert";
 
 export default function PaymentForm(props) {
+  //data
   const [method, setMethod] = useState("card");
-
   const [nameOn, setNameOn] = useState();
   const [cardNum, setCardNum] = useState();
   const [ExMonth, setExMonth] = useState();
   const [ExYear, setExYear] = useState();
   const [mobile, setMobile] = useState();
   const [cvv, setCvv] = useState();
-
   const [amount, setAmount] = useState(0);
+  const [isFilled, setFilled] = useState(false);
 
+  //error indicator
+  const [error, setError] = useState("");
+
+  // user data
+  const { token, userID } = useSelector((state) => state.loging);
+
+  //submit payment
   const handleSubmit = () => {
+    //input validation
+    if (method === "card") {
+      if (!validator.isCreditCard(cardNum.trim())) {
+        setError("Invalid card number");
+        return;
+      }
+      if (!ExMonth.trim() || isNaN(ExMonth) || +ExMonth > 12 || +ExMonth < 1) {
+        setError("Invalid Expiry Month");
+        return;
+      }
+      if (!ExYear.trim() || isNaN(ExYear) || ExYear < 2022 || ExYear > 2050) {
+        setError("Invalid Expiry Year");
+        return;
+      }
+      if (!cvv.trim() || isNaN(cvv) || cvv.length !== 3) {
+        setError("Invalid CVV number");
+        return;
+      }
+      if (!nameOn.trim()) {
+        setError("Invalid Name on card");
+        return;
+      }
+    }
+
+    if (method === "mobile") {
+      if (isNaN(mobile) || mobile.length > 10 || mobile.length < 9) {
+        setError("Invalid Mobile number");
+      }
+    }
+
     axios
       .post(
         `http://localhost:5000/api/payment`,
@@ -51,9 +90,7 @@ export default function PaymentForm(props) {
       .catch((er) => {});
   };
 
-  const { token, userID } = useSelector((state) => state.loging);
-
-  const [isFilled, setFilled] = useState(false);
+  //useEffect call
   useEffect(() => {
     axios
       .get(`http://localhost:5000/api/payment?order_id=${props.id}`, {
@@ -75,12 +112,26 @@ export default function PaymentForm(props) {
       .catch((er) => {});
   }, []);
 
+  //payment method handler
   const methodHandler = (event) => {
     setMethod(event.target.value);
   };
 
+  //handleClose
+  const handleClose = () => {
+    setError("");
+  };
+
   return (
     <>
+      {error && (
+        <Alert
+          open={true}
+          msg={error}
+          title={"Alert!"}
+          handleClose={handleClose}
+        />
+      )}
       <Typography variant="h6" gutterBottom sx={{ mb: 2, color: "#62BB46" }}>
         Payment method
       </Typography>
@@ -202,11 +253,11 @@ export default function PaymentForm(props) {
         </Grid>
       )}
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        {!isFilled && (
+        {/* {!isFilled && (
           <Button onClick={props.handleBack} sx={{ mt: 3, ml: 1 }}>
             Back
           </Button>
-        )}
+        )} */}
 
         <Button
           variant="contained"

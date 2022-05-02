@@ -7,8 +7,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function AddressForm(props) {
+  //user data
   const { userID, token } = useSelector((state) => state.loging);
 
+  // form data
   const [fName, setFName] = useState();
   const [LName, setLName] = useState();
   const [address, setAddess] = useState();
@@ -17,8 +19,11 @@ export default function AddressForm(props) {
   const [postalcode, setPostalCode] = useState();
   const [country, setCountry] = useState();
 
+  //data
   const [isFilled, setFilled] = useState(false);
+  const [error, setError] = useState("");
 
+  //useEffect call
   useEffect(() => {
     axios
       .get(`http://localhost:5000/user?ID=${userID}`, {
@@ -50,8 +55,34 @@ export default function AddressForm(props) {
       });
   }, []);
 
+  // submit form
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!fName.trim() || !LName.trim()) {
+      setError("Invalid  Name");
+      return;
+    }
+    if (!address.trim()) {
+      setError("Address required");
+      return;
+    }
+    if (!city.trim()) {
+      setError("City Required");
+      return;
+    }
+    if (!province.trim()) {
+      setError("provimce Required");
+      return;
+    }
+    if (!postalcode.trim() || isNaN(postalcode)) {
+      setError("Invalid postalcode");
+      return;
+    }
+    if (!country.trim()) {
+      setError("Country Required");
+      return;
+    }
+
     axios
       .put(
         `http://localhost:5000/api/order`,
@@ -68,11 +99,11 @@ export default function AddressForm(props) {
         }
       )
       .then((res) => {
-        // navigate(`/checkout/${res.data._id}`, { replace: true });
         props.handleNext();
       })
       .catch((er) => {});
   };
+  
   return (
     <>
       <Typography variant="h6" gutterBottom sx={{ color: "#62BB46", mb: 2 }}>

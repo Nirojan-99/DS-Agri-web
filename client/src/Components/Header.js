@@ -33,7 +33,7 @@ function Header(props) {
   const { token, type, userID } = useSelector((state) => state.loging);
   const [mode, setMode] = useState(Tmode);
   const [auth, setAuth] = useState(token);
-  const [cart, setcart] = useState(1);
+  const [cart, setcart] = useState(0);
 
   useEffect(() => {
     axios
