@@ -19,22 +19,20 @@ import { addOrder } from "../../Store/order";
 import { useDispatch } from "react-redux";
 
 function Cart(props) {
+  //data
   const { userID, token } = useSelector((state) => state.loging);
   const [cart, setCart] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
   const [total, setTotal] = useState(0);
-
-  const dispatch = useDispatch();
-
   const [cartObj, setCartObj] = useState({});
+
+  //hook
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // const checkOutHandler = () => {
-  //   dispatch(addOrder({ order: cartObj }));
-  //   navigate(`/checkout`, { replace: true });
-  // };
-
+  //checkout
   const checkOutHandler = () => {
+    console.log(cartObj);
     axios
       .post(
         `http://localhost:5000/api/order`,
@@ -53,6 +51,7 @@ function Cart(props) {
       .catch((er) => {});
   };
 
+  //quantity Handler
   const quantityHandler = (operation, price, id, amount) => {
     setCartObj((pre) => {
       let obj = { ...pre, [id]: amount };
@@ -70,6 +69,7 @@ function Cart(props) {
     }
   };
 
+  //total amount calculator
   const calTotal = () => {
     let total = 0;
     cart.forEach((row) => {
@@ -78,13 +78,24 @@ function Cart(props) {
     return total;
   };
 
+  //remove cart element
   const removeCart = (index, id) => {
-    console.log(index);
     axios
       .delete(`http://localhost:5000/user/cart?id=${userID}&pid=${id}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
+        setTotal((pre) => {
+          let data = +pre * 100;
+          let minus = +cartObj[id];
+          data -= minus * (+cart[index].price * 100);
+          return data / 100;
+        });
+        setCartObj((pre) => {
+          console.log(id);
+          const { [id]: dummy, ...objectWithoutDeleted } = pre;
+          return objectWithoutDeleted;
+        });
         setCart((pre) => {
           const array = [...pre];
           array.splice(index, 1);
@@ -94,6 +105,7 @@ function Cart(props) {
       .catch((er) => {});
   };
 
+  //useEffect call
   useEffect(() => {
     axios
       .get(`http://localhost:5000/user/cart?_id=${userID}`, {
@@ -113,6 +125,20 @@ function Cart(props) {
             if (res.data) {
               setCart(res.data.data);
               setLoaded(true);
+              setCartObj((pre) => {
+                let obj = [];
+                for (let i = 0; i < res.data.data.length; i++) {
+                  obj = { ...obj, [res.data.data[i]._id]: 1 };
+                }
+                return obj;
+              });
+              setTotal((pre) => {
+                let data = 0;
+                for (let i = 0; i < res.data.data.length; i++) {
+                  data += +res.data.data[i].price * 100;
+                }
+                return data / 100;
+              });
             }
           })
           .catch((er) => {
@@ -121,6 +147,7 @@ function Cart(props) {
       })
       .catch((er) => {});
   }, []);
+
   return (
     <>
       <Header mode={props.mode} handler={props.handler} />

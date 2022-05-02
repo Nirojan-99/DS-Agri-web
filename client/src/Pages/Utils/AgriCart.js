@@ -10,23 +10,27 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { useState } from "react";
-import axios from "axios";
 
 export default function AgriCart(props) {
-  const [val, setVal] = useState(0);
+  //data
+  const [val, setVal] = useState(1);
+
+  //count increment
   const incVal = () => {
     setVal((pre) => ++pre);
-    props.quantityHandler("inc", +props.data.price, props.data._id, val+1);
+    props.quantityHandler("inc", +props.data.price, props.data._id, val + 1);
   };
+
+  //count decrement
   const decVal = () => {
-    if (val >= 1) {
-      props.quantityHandler("dec", +props.data.price, props.data._id, val-1);
+    if (val >= 2) {
+      props.quantityHandler("dec", +props.data.price, props.data._id, val - 1);
     }
     setVal((pre) => {
-      if (pre > 1) {
+      if (pre > 2) {
         return --pre;
       } else {
-        return 0;
+        return 1;
       }
     });
   };
