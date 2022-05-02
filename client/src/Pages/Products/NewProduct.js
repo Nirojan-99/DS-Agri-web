@@ -16,9 +16,30 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 function NewProduct(props) {
   const [previewUrl, setPreviewUrl] = useState("");
+
+  useEffect(() => {
+    if (id) {
+      axios
+        .get(`http://localhost:5000/api/product/get?_id=${id}`, {
+          headers: { Authorization: "Agriuservalidation " + token },
+        })
+        .then((res) => {
+          if (res.data) {
+            setPreviewUrl(res.data.images);
+            setID(res.data.id);
+            setTitle(res.data.title);
+            setPrice(res.data.price);
+            setDescription(res.data.description);
+            setCategory(res.data.category);
+          }
+        })
+        .catch((er) => {});
+    }
+  }, []);
 
   const { id } = useParams();
 
@@ -51,6 +72,7 @@ function NewProduct(props) {
     let imageFile = event.target.files[0];
     handleFile(imageFile);
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData();
@@ -61,17 +83,31 @@ function NewProduct(props) {
     data.append("id", ID);
     data.append("user_id", userID);
     data.append("image", image);
+    data.append("_id", id ? id : "");
 
-    axios
-      .post(`http://localhost:5000/api/product`, data, {
-        headers: { Authorization: "Agriuservalidation " + token },
-      })
-      .then((res) => {
-        navigate("/");
-      })
-      .catch((er) => {
-        console.log(er);
-      });
+    if (id) {
+      axios
+        .put(`http://localhost:5000/api/product`, data, {
+          headers: { Authorization: "Agriuservalidation " + token },
+        })
+        .then((res) => {
+          navigate("/");
+        })
+        .catch((er) => {
+          console.log(er);
+        });
+    } else {
+      axios
+        .post(`http://localhost:5000/api/product`, data, {
+          headers: { Authorization: "Agriuservalidation " + token },
+        })
+        .then((res) => {
+          navigate("/");
+        })
+        .catch((er) => {
+          console.log(er);
+        });
+    }
   };
   return (
     <>
@@ -82,7 +118,7 @@ function NewProduct(props) {
             variant="h3"
             sx={{ mb: 3, color: "#62BB46", fontFamily: "open sans" }}
           >
-            New Product
+            {id ? "Update Product" : "New Product"}
           </Typography>
           <Grid
             component={Paper}
@@ -159,7 +195,7 @@ function NewProduct(props) {
                         setID(event.target.value);
                       }}
                       id="id"
-                      label="Product ID"
+                      placeholder="Product ID"
                       autoFocus
                     />
                   </Grid>
@@ -175,7 +211,7 @@ function NewProduct(props) {
                         setTitle(event.target.value);
                       }}
                       id="name"
-                      label="Product Name"
+                      placeholder="Product Name"
                       autoFocus
                     />
                   </Grid>
@@ -189,7 +225,7 @@ function NewProduct(props) {
                         setPrice(event.target.value);
                       }}
                       id="price"
-                      label="Price"
+                      placeholder="Price"
                       name="price"
                       autoComplete="price"
                       type="number"
@@ -205,7 +241,7 @@ function NewProduct(props) {
                         setCategory(event.target.value);
                       }}
                       id="category"
-                      label="Category"
+                      placeholder="Category"
                       name="category"
                       autoComplete="category"
                     />
@@ -222,7 +258,7 @@ function NewProduct(props) {
                         setDescription(event.target.value);
                       }}
                       id="description"
-                      label="description"
+                      placeholder="description"
                       name="description"
                       autoComplete="description"
                       multiline
@@ -238,7 +274,7 @@ function NewProduct(props) {
                     "&:hover": { bgcolor: "#333", color: "#fff" },
                   }}
                 >
-                  Add
+                  {id ? "Update" : "Add"}
                 </Button>
               </Box>
             </Grid>
