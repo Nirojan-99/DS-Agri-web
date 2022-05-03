@@ -37,19 +37,19 @@ function CustomerOrders() {
         py={2}
         mt={2}
         component={Paper}
-        sx={{ display: "flex" }}
+        sx={{ display: "flex" ,justifyContent:"space-between"}}
       >
-        <Typography>
+        <Typography variant="h4">
           <span style={{ color: "#62BB46" }}>Order ID :</span>
           {props.data._id}
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
-        <Typography>
+        <Typography variant="h4">
           <span style={{ color: "#62BB46" }}>Total : </span>
           {props.data.total}
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
-        <Typography>
+        <Typography variant="h4">
           <span style={{ color: "#62BB46" }}>Status : </span>
           {props.data.status ? "Completed" : "Pending"}
         </Typography>
@@ -82,7 +82,7 @@ function CustomerOrders() {
                   key={index}
                   nimation="pulse"
                   variant="rectangular"
-                  sx={{ borderRadius: 1, mb: 1 }}
+                  sx={{ borderRadius: 1, mb: 2 }}
                   width={"100%"}
                   height={50}
                 />
