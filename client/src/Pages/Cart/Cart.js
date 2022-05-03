@@ -170,7 +170,7 @@ function Cart(props) {
               letterSpacing={1}
               sx={{ color: "#62BB46", my: 2 }}
             >
-              Cart
+              Your Cart
             </Grid>
             <Grid
               item
@@ -179,7 +179,7 @@ function Cart(props) {
               variant="h4"
               fontFamily={"roboto"}
               letterSpacing={1}
-              sx={{ color: "#4d9537", my: 2, textAlign: "right" }}
+              sx={{ color: "#62BB46", my: 2, textAlign: "right" }}
             >
               {`Total : $${total}`}
             </Grid>
@@ -206,21 +206,25 @@ function Cart(props) {
                 <CartSkelton />
               </>
             )}
+            {isLoaded && cart.length === 0 && (
+              <Box mt={3}>
+                <Typography textAlign={"center"} sx={{color:"#4d9537"}}>Cart is Empty</Typography>
+              </Box>
+            )}
           </Box>
         </Container>
         <Divider />
         <Container maxWidth="md" sx={{ py: { xs: 1, sm: 3 } }}>
           <Grid container justifyContent={"space-between"} alignItems="center">
             <Grid item>
-              <Typography fontFamily={"open sans"} fontWeight="bold">
+              {/* <Typography fontFamily={"open sans"} fontWeight="bold">
                 Total : {`$${total}`}
-              </Typography>
+              </Typography> */}
             </Grid>
             <Grid item>
               <Button
                 onClick={checkOutHandler}
                 disabled={!calTotal()}
-                // href="/checkout"
                 sx={{
                   textTransform: "none",
                   "&:hover": { bgcolor: "#333", color: "#fff" },

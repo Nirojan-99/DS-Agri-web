@@ -1,4 +1,5 @@
 const Orders = require("../Models/OrderModel");
+const Products = require("../Models/ProductModel");
 const fs = require("fs");
 
 exports.AddOrder = (req, res) => {
@@ -15,7 +16,6 @@ exports.AddOrder = (req, res) => {
 };
 
 exports.UpdateOrder = (req, res) => {
-  console.log("xx");
   const { address, city, province, postalcode, country, _id, payment } =
     req.body;
   let filter = {};
@@ -26,7 +26,6 @@ exports.UpdateOrder = (req, res) => {
   if (payment) {
     filter.payment = true;
   }
-  console.log(filter);
 
   Orders.updateOne({ _id }, { $set: filter })
     .then((data) => {
@@ -38,16 +37,67 @@ exports.UpdateOrder = (req, res) => {
 };
 
 exports.GetOrder = (req, res) => {
-  const { _id } = req.query;
-  Orders.findById({ _id })
-    .then((data) => {
-      if (data.address.address) {
-        return res.status(200).json(data);
-      } else {
+  const { _id, userID } = req.query;
+  if (userID) {
+    Orders.find({ user_id: userID })
+      .then((data) => {
+        if (data) {
+          return res.status(200).json(data);
+        } else {
+          return res.status(404).json({});
+        }
+      })
+      .catch((er) => {
         return res.status(404).json({});
+      });
+  } else {
+    Orders.findById({ _id })
+      .then((data) => {
+        if (data.address.address) {
+          return res.status(200).json(data);
+        } else {
+          return res.status(404).json({});
+        }
+      })
+      .catch((er) => {
+        return res.status(404).json({});
+      });
+  }
+};
+
+exports.GetOrders = async (req, res) => {
+  const { id } = req.params;
+  let product_id = [];
+  let data1 = {};
+
+  Products.find({ user_id: id })
+    .then((data) => {
+      if (data) {
+        data.forEach((row) => {
+          product_id.push(row._id);
+        });
+
+        product_id.forEach((row) => {
+          data1[row] = [];
+        });
+
+        Orders.find({ status: false }, { products: 1, address: 1 }).then(
+          (data) => {
+            data.forEach((val) => {
+              product_id.forEach((row) => {
+                if (val.products[row]) {
+                  data1[row].push({
+                    address: val.address,
+                    count: val.products[row],
+                  });
+                }
+              });
+            });
+
+            res.status(200).json(data1);
+          }
+        );
       }
     })
-    .catch((er) => {
-      return res.status(404).json({});
-    });
+    .catch((er) => {});
 };
