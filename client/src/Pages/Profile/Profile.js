@@ -9,6 +9,7 @@ import Account from "./Components/Account";
 import Products from "./Components/Products";
 import { useSelector } from "react-redux";
 import Orders from "./Components/Orders";
+import CustomerOrders from "./Components/CustomerOrders";
 
 function Profile(props) {
   const [value, setValue] = useState("1");
@@ -47,7 +48,7 @@ function Profile(props) {
             </TabPanel>
             <TabPanel value="3" sx={{ m: 0, p: 0, mt: 2 }}></TabPanel>
             <TabPanel value="4" sx={{ m: 0, p: 0, mt: 2 }}>
-              <Orders />
+              {type === "farmer" ? <Orders /> : <CustomerOrders />}
             </TabPanel>
           </Container>
         </TabContext>

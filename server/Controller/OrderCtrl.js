@@ -37,18 +37,32 @@ exports.UpdateOrder = (req, res) => {
 };
 
 exports.GetOrder = (req, res) => {
-  const { _id } = req.query;
-  Orders.findById({ _id })
-    .then((data) => {
-      if (data.address.address) {
-        return res.status(200).json(data);
-      } else {
+  const { _id, userID } = req.query;
+  if (userID) {
+    Orders.find({ user_id: userID })
+      .then((data) => {
+        if (data) {
+          return res.status(200).json(data);
+        } else {
+          return res.status(404).json({});
+        }
+      })
+      .catch((er) => {
         return res.status(404).json({});
-      }
-    })
-    .catch((er) => {
-      return res.status(404).json({});
-    });
+      });
+  } else {
+    Orders.findById({ _id })
+      .then((data) => {
+        if (data.address.address) {
+          return res.status(200).json(data);
+        } else {
+          return res.status(404).json({});
+        }
+      })
+      .catch((er) => {
+        return res.status(404).json({});
+      });
+  }
 };
 
 exports.GetOrders = async (req, res) => {
