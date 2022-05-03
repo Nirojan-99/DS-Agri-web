@@ -3,10 +3,10 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
-    // _id: {
-    //   type: ObjectId,
-    //   unique: true,
-    // },
+    OTP: {
+      type: String,
+      default:"",
+    },
     firstName: {
       type: String,
       required: true,

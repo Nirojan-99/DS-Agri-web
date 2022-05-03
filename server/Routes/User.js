@@ -12,6 +12,10 @@ router.post("/register", User.Register);
 
 router.put("/role", auth, User.ChangeRole);
 
+router.post("/password", User.SendOtp);
+router.post("/password/:_id", User.ResetPassword);
+router.get("/password/:_id", User.CheckResetValidity);
+
 router
   .route("/favorites")
   .get(auth, User.GetFavorites)
@@ -20,7 +24,7 @@ router
 router
   .route("/cart")
   .put(auth, User.AddCart)
-  .delete(auth,User.RemoveCartEle)
+  .delete(auth, User.RemoveCartEle)
   .get(auth, User.getCart);
 
 router
