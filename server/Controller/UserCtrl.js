@@ -233,3 +233,57 @@ exports.RemoveCartEle = (req, res) => {
       return res.status(404).json({});
     });
 };
+
+exports.SendOtp = (req, res) => {
+  const { email, OTP } = req.body;
+  if (OTP) {
+    Users.findOne({ email, OTP })
+      .then((data) => {
+        if (data) {
+          res.status(200).json({ match: true, _id: data._id });
+        } else {
+          res.status(404).json({ match: false });
+        }
+      })
+      .catch((er) => {
+        res.status(404).json({ match: false });
+      });
+  } else {
+    const OTP = Math.floor(1000 + Math.random() * 9000);
+    Users.updateOne({ email }, { OTP: OTP }, { upsert: true })
+      .then((data) => {
+        res.status(200).json({ sent: true });
+      })
+      .catch((er) => {
+        res.status(404).json({ sent: false });
+      });
+  }
+};
+
+exports.ResetPassword = (req, res) => {
+  const { _id } = req.params;
+  const { password } = req.body;
+
+  Users.findByIdAndUpdate({ _id }, { password: password, OTP: "" })
+    .then((data) => {
+      res.status(200).json({ updated: true });
+    })
+    .catch((er) => {
+      res.status(404).json({ updated: false });
+    });
+};
+
+exports.CheckResetValidity = (req, res) => {
+  const { _id } = req.params;
+  Users.findById({ _id })
+    .then((data) => {
+      if (data.OTP) {
+        res.status(200).json({ found: true });
+      } else {
+        res.status(404).json({ found: false });
+      }
+    })
+    .catch((er) => {
+      res.status(404).json({ found: false });
+    });
+};
