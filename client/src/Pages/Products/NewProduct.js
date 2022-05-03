@@ -17,10 +17,14 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
+import Alert from "../../Components/Alert";
 
 function NewProduct(props) {
+  //data
   const [previewUrl, setPreviewUrl] = useState("");
+  const [error, setError] = useState("");
 
+  //useEffect call on edit
   useEffect(() => {
     if (id) {
       axios
@@ -41,8 +45,11 @@ function NewProduct(props) {
     }
   }, []);
 
+  //hooks
   const { id } = useParams();
+  const navigate = useNavigate();
 
+  //form data
   const [image, setImage] = useState(null);
   const [ID, setID] = useState();
   const [title, setTitle] = useState();
@@ -50,10 +57,10 @@ function NewProduct(props) {
   const [description, setDescription] = useState();
   const [category, setCategory] = useState();
 
+  //user data
   const { token, userID } = useSelector((state) => state.loging);
 
-  const navigate = useNavigate();
-
+  //file handle
   const handleFile = (file) => {
     setImage(file);
     setPreviewUrl(URL.createObjectURL(file));
@@ -62,20 +69,40 @@ function NewProduct(props) {
   const handleDragOver = (event) => {
     event.preventDefault();
   };
+
   const handleOnDrop = (event) => {
     event.preventDefault();
     event.stopPropagation();
     let imageFile = event.dataTransfer.files[0];
     handleFile(imageFile);
   };
+
   const handleOnChange = (event) => {
     let imageFile = event.target.files[0];
     handleFile(imageFile);
   };
 
+  //submit handler
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (
+      !ID.trim() ||
+      !title.trim() ||
+      !price.trim() ||
+      !description.trim() ||
+      !category.trim()
+    ) {
+      setError("All Fields are required");
+      return;
+    }
+    if (isNaN(price)) {
+      setError("Invalid Price");
+      return;
+    }
+
     const data = new FormData();
+
     data.append("title", title);
     data.append("price", price);
     data.append("description", description);
@@ -109,8 +136,20 @@ function NewProduct(props) {
         });
     }
   };
+
+  //close Alert
+  const handleClose = () => {
+    setError("");
+  };
+
   return (
     <>
+      <Alert
+        open={error}
+        handleClose={handleClose}
+        title="Alert!"
+        msg={error}
+      />
       <Header mode={props.mode} handler={props.handler} />
       <Box component={Paper} elevation={0} square minHeight={"82vh"} py={3}>
         <Container maxWidth="md">
@@ -212,7 +251,6 @@ function NewProduct(props) {
                       }}
                       id="name"
                       placeholder="Product Name"
-                      autoFocus
                     />
                   </Grid>
                   <Grid item xs={12} sm={12}>

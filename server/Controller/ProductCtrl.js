@@ -123,7 +123,6 @@ exports.UpdateProduct = (req, res) => {
 
       fileToUpload.mv("Uploads/" + fileName, (error) => {
         if (error) {
-          console.log(error + "niro");
           return res.status(404).json({});
         } else {
           const link = "http://localhost:5000/Uploads/" + fileName;

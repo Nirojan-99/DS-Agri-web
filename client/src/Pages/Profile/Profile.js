@@ -8,6 +8,7 @@ import { useState } from "react";
 import Account from "./Components/Account";
 import Products from "./Components/Products";
 import { useSelector } from "react-redux";
+import Orders from "./Components/Orders";
 
 function Profile(props) {
   const [value, setValue] = useState("1");
@@ -34,7 +35,7 @@ function Profile(props) {
               <TabList onChange={handleChange}>
                 <Tab label="Account" value="1" />
                 <Tab label="Orders" value="4" />
-                <Tab label="Payment" value="3" />
+                {type === "client" && <Tab label="Payment" value="3" />}
                 {type === "farmer" && <Tab label="Products" value="2" />}
               </TabList>
             </Box>
@@ -45,7 +46,9 @@ function Profile(props) {
               <Products />
             </TabPanel>
             <TabPanel value="3" sx={{ m: 0, p: 0, mt: 2 }}></TabPanel>
-            <TabPanel value="4" sx={{ m: 0, p: 0, mt: 2 }}></TabPanel>
+            <TabPanel value="4" sx={{ m: 0, p: 0, mt: 2 }}>
+              <Orders />
+            </TabPanel>
           </Container>
         </TabContext>
       </Box>

@@ -22,11 +22,13 @@ import AgriSnackbar from "../../Utils/AgriSnackbar";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 import { login } from "../../../Store/auth";
+import Alert from "../../../Components/Alert";
 
 function Account() {
   const [open, setOpen] = useState(false);
   const [Sopen, setSOpen] = useState(false);
   const [msg, setMsg] = useState("");
+  //handlers
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleSClose = () => setSOpen(false);
@@ -34,22 +36,27 @@ function Account() {
   const [btnDisable, setDisable] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  //hook
   const dispatch = useDispatch();
 
+  //form data
   const [firstname, setFName] = useState("");
   const [lastName, setlName] = useState("");
   const [number, setNumber] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
-  const [role, setRole] = useState("");
-  const [dp, setDp] = useState("");
-
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [ReNewPassword, setReNewPassword] = useState("");
 
+  const [role, setRole] = useState("");
+  const [dp, setDp] = useState("");
+  const [error, seterror] = useState("");
+
+  //user data
   const { token, userID } = useSelector((state) => state.loging);
 
+  //change role
   const sendRequest = (role) => {
     setLoading(true);
     axios
@@ -72,6 +79,7 @@ function Account() {
       });
   };
 
+  //useEffect call
   useEffect(() => {
     axios
       .get(`http://localhost:5000/user?ID=${userID}`, {
@@ -91,12 +99,34 @@ function Account() {
       });
   }, []);
 
+  //update details
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (number.length !== 10 && number.length !== 9) {
+    if (
+      !number ||
+      number.length > 10 ||
+      number.length < 9 ||
+      isNaN(number)
+    ) {
+      seterror("Invalid Mobile Number");
       return;
     }
+    if (
+      !firstname.trim() ||
+      !lastName.trim() ||
+      !email.trim() ||
+      !address.trim()
+    ) {
+      seterror("All Fields are Required");
+      return;
+    }
+    if (!email.includes("@")) {
+      seterror("Invalid Email ID");
+      return;
+    }
+
     setDisable(true);
+
     axios
       .put(
         "http://localhost:5000/user",
@@ -122,6 +152,7 @@ function Account() {
       });
   };
 
+  //change password
   const handleSubmitPassword = (event) => {
     event.preventDefault();
     if (newPassword !== ReNewPassword) {
@@ -153,8 +184,19 @@ function Account() {
       });
   };
 
+  //close Alert
+  const handleCloseAlert = () => {
+    seterror("");
+  };
+
   return (
     <>
+      <Alert
+        open={error}
+        handleClose={handleCloseAlert}
+        msg={error}
+        title="Alert!"
+      />
       <AgriSnackbar open={Sopen} handler={handleSClose} msg={msg} />
       <ImageModal
         userID={userID}
@@ -246,6 +288,7 @@ function Account() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  type={"email"}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -260,7 +303,7 @@ function Account() {
                   id="mobile-number"
                   label="mobile number"
                   name="mobile-number"
-                  type="tel"
+                  type="number"
                   autoComplete="mobile-number"
                 />
               </Grid>

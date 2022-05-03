@@ -7,7 +7,9 @@ const authAdmin = require("../Middleware/authAdmin");
 router
   .route("/order")
   .post(auth, Order.AddOrder)
-  .get(auth,Order.GetOrder)
+  .get(auth, Order.GetOrder)
   .put(auth, Order.UpdateOrder);
+
+router.get("/order/:id", Order.GetOrders);
 
 module.exports = router;

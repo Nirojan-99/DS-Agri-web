@@ -1,39 +1,80 @@
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Header from "../../../Components/Header";
-import { Paper } from "@mui/material";
+import {
+  Paper,
+  Typography,
+  Box,
+  Grid,
+  Link,
+  TextField,
+  Button,
+  Avatar,
+  Container,
+} from "@mui/material";
 import AgricultureIcon from "@mui/icons-material/Agriculture";
+
 import axios from "axios";
-import AgriSnakbar from "../../Utils/AgriSnackbar";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { login } from "../../../Store/auth";
 import { useNavigate } from "react-router-dom";
 
+import Header from "../../../Components/Header";
+import AgriSnakbar from "../../Utils/AgriSnackbar";
+import { login } from "../../../Store/auth";
+import Alert from "../../../Components/Alert";
+
 export default function SignUp(props) {
+  //data
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState("");
+
+  //input darta
+  const [FName, setFName] = useState("");
+  const [LName, setLName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [mobile, setMobile] = useState("");
+
+  //hooks
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  //close snackbar
   const closeHandler = () => {
     setOpen(false);
   };
+
+  //submit form
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    //validation
+    if (!FName.trim() || !LName.trim()) {
+      setError("Name Required");
+      return;
+    }
+    if (!email.trim() || !email.includes("@")) {
+      setError("Invalid Email ID");
+      return;
+    }
+    if (!password.trim()) {
+      setError("Password Required");
+      return;
+    }
+    if (
+      !mobile.trim() ||
+      isNaN(mobile) ||
+      mobile.length > 10 ||
+      mobile.length < 9
+    ) {
+      setError("Invalid Mobile Number");
+      return;
+    }
+
     axios
       .post("http://localhost:5000/user/register", {
-        firstName: data.get("firstName"),
-        lastName: data.get("lastName"),
-        email: data.get("email"),
-        password: data.get("password"),
-        mobile_number: data.get("mobile-number"),
+        firstName: FName,
+        lastName: LName,
+        email: email,
+        password: password,
+        mobile_number: mobile,
       })
       .then((res) => {
         dispatch(
@@ -50,8 +91,19 @@ export default function SignUp(props) {
       });
   };
 
+  //close alert
+  const handleClose = () => {
+    setError("");
+  };
+
   return (
     <>
+      <Alert
+        handleClose={handleClose}
+        title="Alert!"
+        open={error}
+        msg={error}
+      />
       <AgriSnakbar
         msg={"Unable to create Account"}
         open={open}
@@ -89,6 +141,10 @@ export default function SignUp(props) {
                       autoComplete="given-name"
                       name="firstName"
                       required
+                      value={FName}
+                      onChange={(event) => {
+                        setFName(event.target.value);
+                      }}
                       fullWidth
                       id="firstName"
                       label="First Name"
@@ -98,6 +154,10 @@ export default function SignUp(props) {
                   <Grid item xs={12} sm={6}>
                     <TextField
                       required
+                      value={LName}
+                      onChange={(event) => {
+                        setLName(event.target.value);
+                      }}
                       fullWidth
                       id="lastName"
                       label="Last Name"
@@ -108,6 +168,10 @@ export default function SignUp(props) {
                   <Grid item xs={12}>
                     <TextField
                       required
+                      value={email}
+                      onChange={(event) => {
+                        setEmail(event.target.value);
+                      }}
                       fullWidth
                       id="email"
                       label="Email Address"
@@ -118,6 +182,10 @@ export default function SignUp(props) {
                   <Grid item xs={12}>
                     <TextField
                       required
+                      value={mobile}
+                      onChange={(event) => {
+                        setMobile(event.target.value);
+                      }}
                       fullWidth
                       id="mobile-number"
                       label="mobile number"
@@ -129,6 +197,10 @@ export default function SignUp(props) {
                   <Grid item xs={12}>
                     <TextField
                       required
+                      value={password}
+                      onChange={(event) => {
+                        setPassword(event.target.value);
+                      }}
                       fullWidth
                       name="password"
                       label="Password"

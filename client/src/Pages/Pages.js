@@ -10,6 +10,7 @@ import NewProduct from "./Products/NewProduct";
 import Profile from "./Profile/Profile";
 import { useSelector } from "react-redux";
 import PageNotFound from "./404/PageNotFound";
+import ForgotPassword from "./ForgetPassword/ForgetPassword";
 
 function Pages(props) {
   const token = useSelector((state) => state.loging.token);
@@ -78,7 +79,11 @@ function Pages(props) {
         )}
         {!token && (
           <>
-            {" "}
+            <Route
+              eaxct
+              path="/forget-password"
+              element={<ForgotPassword handler={props.modeHandler} />}
+            />
             <Route
               eaxct
               path="/signup"
