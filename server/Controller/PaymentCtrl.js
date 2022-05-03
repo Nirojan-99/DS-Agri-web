@@ -3,18 +3,35 @@ const Users = require("../models/userModel");
 const Payment = require("../Models/PaymentModel");
 
 exports.GetPayment = (req, res) => {
-  const { order_id } = req.query;
-  Payments.findOne({ order_id: order_id })
-    .then((data) => {
-      if (data) {
-        res.status(200).json({ exist: "yes" });
-      } else {
+  const { order_id, userID } = req.query;
+  if (userID) {
+    Payments.findOne(
+      { user_id: userID },
+      { expiry_year: 1, expiry_month: 1, card_number: 1 }
+    )
+      .then((data) => {
+        if (data) {
+          res.status(200).json(data);
+        } else {
+          res.status(404).json({});
+        }
+      })
+      .catch((er) => {
         res.status(404).json({});
-      }
-    })
-    .catch((er) => {
-      res.status(404).json({});
-    });
+      });
+  } else {
+    Payments.findOne({ order_id: order_id })
+      .then((data) => {
+        if (data) {
+          res.status(200).json({ exist: "yes" });
+        } else {
+          res.status(404).json({});
+        }
+      })
+      .catch((er) => {
+        res.status(404).json({});
+      });
+  }
 };
 
 exports.AddPayment = (req, res) => {
@@ -75,5 +92,16 @@ exports.CheckOTP = (req, res) => {
     })
     .catch((er) => {
       return res.status(404).json({});
+    });
+};
+
+exports.DeletePayment = (req, res) => {
+  const { _id } = req.query;
+  Payments.deleteOne({ _id })
+    .then((data) => {
+      res.status(200).json({ deleted: true });
+    })
+    .catch((er) => {
+      res.status(404).json({ deleted: false });
     });
 };

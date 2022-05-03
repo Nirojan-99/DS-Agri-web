@@ -13,51 +13,54 @@ import PageNotFound from "./404/PageNotFound";
 import ForgotPassword from "./ForgetPassword/ForgetPassword";
 
 function Pages(props) {
-  const token = useSelector((state) => state.loging.token);
+  const { token, type } = useSelector((state) => state.loging);
   return (
     <>
       <Routes>
         {token && (
           <>
+            {type === "farmer" && (
+              <>
+                <Route
+                  eaxct
+                  path="/product/add"
+                  element={<NewProduct handler={props.modeHandler} />}
+                />
+                <Route
+                  eaxct
+                  path="/product/edit/:id"
+                  element={<NewProduct handler={props.modeHandler} />}
+                />
+              </>
+            )}
             <Route
               eaxct
               path="/dashboard"
               element={<Dashboard handler={props.modeHandler} />}
             />
-            <Route
-              eaxct
-              path="/product/add"
-              element={<NewProduct handler={props.modeHandler} />}
-            />
-            <Route
-              eaxct
-              path="/product/edit/:id"
-              element={<NewProduct handler={props.modeHandler} />}
-            />
-            <Route
-              eaxct
-              path="/checkout/:ID"
-              element={<Checkout handler={props.modeHandler} />}
-            />
-            <Route
-              eaxct
-              path="/favorites"
-              element={<Favorites handler={props.modeHandler} />}
-            />
+            {type === "client" && (
+              <>
+                <Route
+                  eaxct
+                  path="/checkout/:ID"
+                  element={<Checkout handler={props.modeHandler} />}
+                />
+                <Route
+                  eaxct
+                  path="/favorites"
+                  element={<Favorites handler={props.modeHandler} />}
+                />
+                <Route
+                  eaxct
+                  path="/cart"
+                  element={<Cart handler={props.modeHandler} />}
+                />
+              </>
+            )}
             <Route
               eaxct
               path="/profile"
               element={<Profile handler={props.modeHandler} />}
-            />
-            <Route
-              eaxct
-              path="/cart"
-              element={<Cart handler={props.modeHandler} />}
-            />
-            <Route
-              eaxct
-              path="/signup"
-              element={<SignUp handler={props.modeHandler} />}
             />
             <Route
               eaxct
@@ -72,6 +75,11 @@ function Pages(props) {
             <Route
               exact
               path="/"
+              element={<Navigate replace to="/dashboard" />}
+            />
+            <Route
+              exact
+              path="/signup"
               element={<Navigate replace to="/dashboard" />}
             />
             <Route exact path="*" element={<Navigate replace to="/404" />} />

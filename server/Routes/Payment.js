@@ -7,6 +7,7 @@ router
   .route("/payment")
   .post(auth, Payment.AddPayment)
   .get(auth, Payment.GetPayment)
-  .put(auth, Payment.CheckOTP);
+  .put(auth, Payment.CheckOTP)
+  .delete(auth, Payment.DeletePayment);
 
 module.exports = router;
