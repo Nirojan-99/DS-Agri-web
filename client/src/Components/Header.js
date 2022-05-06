@@ -30,7 +30,7 @@ function Header(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const Tmode = useSelector((state) => state.mode.mode);
   const dispatch = useDispatch();
-  const { token, type, userID } = useSelector((state) => state.loging);
+  const { token, role, userID } = useSelector((state) => state.loging);
   const [mode, setMode] = useState(Tmode);
   const [auth, setAuth] = useState(token);
   const [cart, setcart] = useState(0);
@@ -120,7 +120,7 @@ function Header(props) {
             {/*user profile*/}
             {auth && (
               <div>
-                {type === "client" && (
+                {role === "client" && (
                   <Tooltip title={"cart"}>
                     <IconButton href="/cart" size="large" color="inherit">
                       <Badge badgeContent={cart} color="error">
@@ -129,7 +129,7 @@ function Header(props) {
                     </IconButton>
                   </Tooltip>
                 )}
-                {type === "client" && (
+                {role === "client" && (
                   <Tooltip title={"Favorites"}>
                     <IconButton href="/favorites" size="large" color="inherit">
                       <FavoriteIcon fontSize="inherit" />

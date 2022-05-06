@@ -18,7 +18,7 @@ import axios from "axios";
 import AgriSnackbar from "../Utils/AgriSnackbar";
 
 export default function AgriCard(props) {
-  const { token, type, userID } = useSelector((state) => state.loging);
+  const { token, role, userID } = useSelector((state) => state.loging);
   const [fav, setFav] = useState(props.fav);
   const [open, setOpen] = useState(false);
 
@@ -116,7 +116,7 @@ export default function AgriCard(props) {
           </Typography>
         </CardContent>
         <CardActions>
-          {type === "client" ? (
+          {role === "client" ? (
             <>
               <IconButton
                 sx={{ color: red[800], mr: 2 }}

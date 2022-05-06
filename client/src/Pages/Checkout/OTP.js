@@ -24,7 +24,7 @@ export default function OTP(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!OTP.trim() || OTP.length !== 4 || isNaN(OTP)) {
+    if (!OTP.trim() || OTP.length !== 6 || isNaN(OTP)) {
       setError("Invalid OTP");
       return;
     }

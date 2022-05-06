@@ -70,7 +70,7 @@ function Account() {
       .then((res) => {
         setLoading(false);
         setRole(role);
-        dispatch(login({ type: role, id: userID, token }));
+        dispatch(login({ role: role, userID: userID, token }));
       })
       .catch((er) => {
         setLoading(false);
