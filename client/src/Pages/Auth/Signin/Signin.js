@@ -53,8 +53,8 @@ export default function SignInSide(props) {
       .then((res) => {
         dispatch(
           login({
-            type: res.data.type,
-            id: res.data._id,
+            role: res.data.type,
+            userID: res.data._id,
             token: res.data.token,
           })
         );

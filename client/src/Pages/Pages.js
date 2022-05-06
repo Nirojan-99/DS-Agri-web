@@ -14,13 +14,13 @@ import ForgotPassword from "./ForgetPassword/ForgetPassword";
 import ResetPassword from "./ForgetPassword/ResetPassword";
 
 function Pages(props) {
-  const { token, type } = useSelector((state) => state.loging);
+  const { token, role } = useSelector((state) => state.loging);
   return (
     <>
       <Routes>
         {token && (
           <>
-            {type === "farmer" && (
+            {role === "farmer" && (
               <>
                 <Route
                   eaxct
@@ -39,7 +39,7 @@ function Pages(props) {
               path="/dashboard"
               element={<Dashboard handler={props.modeHandler} />}
             />
-            {type === "client" && (
+            {role === "client" && (
               <>
                 <Route
                   eaxct
