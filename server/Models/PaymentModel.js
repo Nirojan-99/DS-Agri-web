@@ -1,4 +1,3 @@
-const { Int32, ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 
 const paymentSchema = new mongoose.Schema(
@@ -14,7 +13,7 @@ const paymentSchema = new mongoose.Schema(
     },
     OTP: {
       type: Number,
-      default: Math.floor(100000 + Math.random() * 900000),
+      required: true,
     },
     amount: {
       type: Number,

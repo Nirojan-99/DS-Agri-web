@@ -2,6 +2,7 @@ const Users = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
+const { mailSender } = require("../Utils/mailSender");
 
 exports.Login = (req, res) => {
   const { email, password } = req.body;
@@ -250,6 +251,13 @@ exports.SendOtp = (req, res) => {
       });
   } else {
     const OTP = Math.floor(1000 + Math.random() * 9000);
+    //send otp to mail
+    const to = email;
+    const subject = "Reset Your Password";
+    const text = `Please enter OTP : <b>${OTP}</b> to complete your password reset request.<br/>Thank you`;
+
+    const val = mailSender(to, subject, text);
+
     Users.updateOne({ email }, { OTP: OTP }, { upsert: true })
       .then((data) => {
         res.status(200).json({ sent: true });

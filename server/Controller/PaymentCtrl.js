@@ -1,6 +1,7 @@
 const Payments = require("../Models/PaymentModel");
 const Users = require("../models/userModel");
 const Payment = require("../Models/PaymentModel");
+const { mailSender } = require("../Utils/mailSender");
 
 exports.GetPayment = (req, res) => {
   const { order_id, userID } = req.query;
@@ -35,6 +36,8 @@ exports.GetPayment = (req, res) => {
 };
 
 exports.AddPayment = (req, res) => {
+  const OTP = Math.floor(100000 + Math.random() * 900000);
+
   const {
     user_id,
     order_id,
@@ -59,16 +62,28 @@ exports.AddPayment = (req, res) => {
     expiry_month,
     cvv,
     name_on_card,
+    OTP,
   });
 
-  newPayment
-    .save()
+  Users.findById({ _id: user_id }, { email: 1 })
     .then((data) => {
-      return res.status(200).json({});
+      //mailing data
+      const to = data.email;
+      const subject = "ABC bank - online transaction";
+      const text = `Please enter OTP : <b>${OTP}</b> to complete your online payment request.<br/>Thank you.`;
+
+      newPayment
+        .save()
+        .then((data) => {
+          //send otp
+          const val = mailSender(to, subject, text);
+          return res.status(200).json({});
+        })
+        .catch((er) => {
+          return res.status(404).json({});
+        });
     })
-    .catch((er) => {
-      return res.status(404).json({});
-    });
+    .catch((er) => {});
 };
 
 exports.CheckOTP = (req, res) => {
@@ -77,13 +92,21 @@ exports.CheckOTP = (req, res) => {
     .then((data) => {
       if (+OTP === data.OTP) {
         Users.findByIdAndUpdate({ _id: userID }, { $set: { cart: [] } }).then(
-          () => {
+          (userdata) => {
+            //send confirmation mail
+            const to = userdata.email;
+            const subject = "AgriGo";
+            const text = `Your order number #${order_id} is confirmed.<br/>We will send you an update when your order has shipped.`;
+
+            const val = mailSender(to, subject, text);
+            
             Payment.findByIdAndUpdate(
               { _id: order_id },
               { $set: { Payment: true } }
-            );
-            // :TODO increase sold count
-            return res.status(200).json({ ok: true });
+            ).then((data) => {
+              // :TODO increase sold count
+              return res.status(200).json({ ok: true });
+            });
           }
         );
       } else {
