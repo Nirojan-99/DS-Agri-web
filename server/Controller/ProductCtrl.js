@@ -99,7 +99,7 @@ exports.DeleteProduct = (req, res) => {
 };
 
 exports.GetProduct = (req, res) => {
-  const { _id } = req.query;
+  const { _id } = req.params;
   Products.findById({ _id })
     .then((data) => {
       return res.status(200).json(data);

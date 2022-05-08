@@ -37,7 +37,7 @@ function Header(props) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/user/cart?_id=${userID}`, {
+      .get(`http://localhost:5000/users/carts?_id=${userID}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {

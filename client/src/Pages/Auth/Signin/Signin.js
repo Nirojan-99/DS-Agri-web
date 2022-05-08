@@ -46,7 +46,7 @@ export default function SignInSide(props) {
     }
 
     axios
-      .post("http://localhost:5000/user/login", {
+      .post("http://localhost:5000/users/login", {
         email: email,
         password: password,
       })

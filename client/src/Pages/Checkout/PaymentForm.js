@@ -67,7 +67,7 @@ export default function PaymentForm(props) {
 
     axios
       .post(
-        `http://localhost:5000/api/payment`,
+        `http://localhost:5000/api/payments`,
         {
           user_id: userID,
           order_id: props.id,
@@ -93,7 +93,7 @@ export default function PaymentForm(props) {
   //useEffect call
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/payment?order_id=${props.id}`, {
+      .get(`http://localhost:5000/api/payments?order_id=${props.id}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
@@ -103,7 +103,7 @@ export default function PaymentForm(props) {
       })
       .catch((er) => {});
     axios
-      .get(`http://localhost:5000/api/order?_id=${props.id}`, {
+      .get(`http://localhost:5000/api/orders?_id=${props.id}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {

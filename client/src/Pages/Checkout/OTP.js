@@ -30,7 +30,7 @@ export default function OTP(props) {
     }
     axios
       .put(
-        `http://localhost:5000/api/payment`,
+        `http://localhost:5000/api/payments`,
         { OTP, order_id: props.id, userID },
         {
           headers: { Authorization: "Agriuservalidation " + token },

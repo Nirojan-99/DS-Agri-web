@@ -28,7 +28,7 @@ function NewProduct(props) {
   useEffect(() => {
     if (id) {
       axios
-        .get(`http://localhost:5000/api/product/get?_id=${id}`, {
+        .get(`http://localhost:5000/api/products/${id}`, {
           headers: { Authorization: "Agriuservalidation " + token },
         })
         .then((res) => {
@@ -120,7 +120,7 @@ function NewProduct(props) {
 
     if (id) {
       axios
-        .put(`http://localhost:5000/api/product`, data, {
+        .put(`http://localhost:5000/api/products`, data, {
           headers: { Authorization: "Agriuservalidation " + token },
         })
         .then((res) => {
@@ -131,7 +131,7 @@ function NewProduct(props) {
         });
     } else {
       axios
-        .post(`http://localhost:5000/api/product`, data, {
+        .post(`http://localhost:5000/api/products`, data, {
           headers: { Authorization: "Agriuservalidation " + token },
         })
         .then((res) => {

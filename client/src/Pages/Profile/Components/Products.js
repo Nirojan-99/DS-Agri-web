@@ -33,7 +33,7 @@ function Products() {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:5000/api/product?pagination=${page}&owner=${userID}`,
+        `http://localhost:5000/api/products?pagination=${page}&owner=${userID}`,
         {
           headers: { Authorization: "Agriuservalidation " + token },
         }
@@ -58,7 +58,7 @@ function Products() {
   const handleYes = () => {
     setOpen(false);
     axios
-      .delete(`http://localhost:5000/api/product?_id=${id}`, {
+      .delete(`http://localhost:5000/api/products?_id=${id}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {

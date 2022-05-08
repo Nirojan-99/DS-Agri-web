@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 
 app.use("/Uploads", express.static("Uploads"));
 
-app.use("/user", User);
+app.use("/users", User);
 app.use("/api", Product);
 app.use("/api", Order);
 app.use("/api", Payment);

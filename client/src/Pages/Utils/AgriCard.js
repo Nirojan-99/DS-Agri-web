@@ -25,7 +25,7 @@ export default function AgriCard(props) {
   const addTocart = () => {
     axios
       .put(
-        `http://localhost:5000/user/cart`,
+        `http://localhost:5000/users/carts`,
         {
           pid: props.data._id,
           _id: userID,
@@ -44,7 +44,7 @@ export default function AgriCard(props) {
   const handlefavorite = (val) => {
     axios
       .put(
-        `http://localhost:5000/user/favorites`,
+        `http://localhost:5000/users/favorites`,
         {
           _id: userID,
           pid: props.data._id,

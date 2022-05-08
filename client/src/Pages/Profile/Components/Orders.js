@@ -17,7 +17,7 @@ function Orders() {
   // useEffect call
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/order/${userID}`, {
+      .get(`http://localhost:5000/api/orders/${userID}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {

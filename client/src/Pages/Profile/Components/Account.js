@@ -61,7 +61,7 @@ function Account() {
     setLoading(true);
     axios
       .put(
-        "http://localhost:5000/user/role",
+        "http://localhost:5000/users/role",
         { _id: userID, role },
         {
           headers: { Authorization: "Agriuservalidation " + token },
@@ -82,7 +82,7 @@ function Account() {
   //useEffect call
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/user?ID=${userID}`, {
+      .get(`http://localhost:5000/users?ID=${userID}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
@@ -129,7 +129,7 @@ function Account() {
 
     axios
       .put(
-        "http://localhost:5000/user",
+        "http://localhost:5000/users",
         {
           firstName: firstname,
           lastName,
@@ -163,7 +163,7 @@ function Account() {
     setDisable(true);
     axios
       .put(
-        "http://localhost:5000/user",
+        "http://localhost:5000/users",
         { password, newPassword, _id: userID },
         {
           headers: { Authorization: "Agriuservalidation " + token },

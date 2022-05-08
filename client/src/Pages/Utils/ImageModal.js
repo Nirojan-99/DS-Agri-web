@@ -47,7 +47,7 @@ function ImageModal(props) {
     data.append("id", props.userID);
 
     axios
-      .post(`http://localhost:5000/user/dp/${props.userID}`, data, {
+      .post(`http://localhost:5000/users/dp/${props.userID}`, data, {
         headers: { Authorization: "Agriuservalidation " + props.token },
       })
       .then((res) => {
@@ -70,7 +70,7 @@ function ImageModal(props) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/user/dp/${props.userID}`, {
+      .get(`http://localhost:5000/users/dp/${props.userID}`, {
         headers: { Authorization: "Agriuservalidation " + props.token },
       })
       .then((res) => {

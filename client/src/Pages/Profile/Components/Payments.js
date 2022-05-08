@@ -14,7 +14,7 @@ function Payments() {
   //useEffect call
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/payment?userID=${userID}`, {
+      .get(`http://localhost:5000/api/payments?userID=${userID}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
@@ -29,7 +29,7 @@ function Payments() {
   //remover handler
   const removehandler = () => {
     axios
-      .delete(`http://localhost:5000/api/payment?_id=${payment._id}`, {
+      .delete(`http://localhost:5000/api/payments?_id=${payment._id}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {

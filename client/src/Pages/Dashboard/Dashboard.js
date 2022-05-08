@@ -43,7 +43,7 @@ function Dashboard(props) {
     setEmpty(false);
     axios
       .get(
-        `http://localhost:5000/api/product?pagination=${page}&title=${search}`,
+        `http://localhost:5000/api/products?pagination=${page}&title=${search}`,
         {
           headers: { Authorization: "Agriuservalidation " + token },
         }
@@ -78,7 +78,7 @@ function Dashboard(props) {
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/product?pagination=${page}`, {
+      .get(`http://localhost:5000/api/products?pagination=${page}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
@@ -94,7 +94,7 @@ function Dashboard(props) {
         setEmpty(true);
       });
     axios
-      .get(`http://localhost:5000/user/favorites?_id=${userID}`, {
+      .get(`http://localhost:5000/users/favorites?_id=${userID}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
@@ -112,7 +112,7 @@ function Dashboard(props) {
     setOpen(false);
     console.log("ddd");
     axios
-      .delete(`http://localhost:5000/api/product?_id=${id}`, {
+      .delete(`http://localhost:5000/api/products?_id=${id}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {

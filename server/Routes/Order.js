@@ -5,11 +5,11 @@ const auth = require("../Middleware/auth");
 const authAdmin = require("../Middleware/authAdmin");
 
 router
-  .route("/order")
+  .route("/orders")
   .post(auth, Order.AddOrder)
   .get(auth, Order.GetOrder)
   .put(auth, Order.UpdateOrder);
 
-router.get("/order/:id", Order.GetOrders);
+router.get("/orders/:id", Order.GetOrders);
 
 module.exports = router;

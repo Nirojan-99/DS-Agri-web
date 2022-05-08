@@ -36,7 +36,7 @@ function Favorites(props) {
   useEffect(() => {
     //get fav id
     axios
-      .get(`http://localhost:5000/user/favorites?_id=${userID}`, {
+      .get(`http://localhost:5000/users/favorites?_id=${userID}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
@@ -44,7 +44,7 @@ function Favorites(props) {
           setFavorites(res.data);
           axios
             .get(
-              `http://localhost:5000/api/product?pagination=${page}&favList=${
+              `http://localhost:5000/api/products?pagination=${page}&favList=${
                 res.data.length != 0 ? res.data : ["1", "2"]
               }`,
               {

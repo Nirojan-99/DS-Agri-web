@@ -34,7 +34,7 @@ function Cart(props) {
     console.log(cartObj);
     axios
       .post(
-        `http://localhost:5000/api/order`,
+        `http://localhost:5000/api/orders`,
         {
           products: cartObj,
           user_id: userID,
@@ -80,7 +80,7 @@ function Cart(props) {
   //remove cart element
   const removeCart = (index, id) => {
     axios
-      .delete(`http://localhost:5000/user/cart?id=${userID}&pid=${id}`, {
+      .delete(`http://localhost:5000/users/carts?id=${userID}&pid=${id}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
@@ -107,13 +107,13 @@ function Cart(props) {
   //useEffect call
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/user/cart?_id=${userID}`, {
+      .get(`http://localhost:5000/users/carts?_id=${userID}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
         axios
           .get(
-            `http://localhost:5000/api/product?pagination=${1}&favList=${
+            `http://localhost:5000/api/products?pagination=${1}&favList=${
               res.data.length != 0 ? res.data : ["1", "2"]
             }`,
             {

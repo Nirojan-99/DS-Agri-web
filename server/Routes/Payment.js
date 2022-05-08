@@ -4,7 +4,7 @@ const Payment = require("../Controller/PaymentCtrl");
 const auth = require("../Middleware/auth");
 
 router
-  .route("/payment")
+  .route("/payments")
   .post(auth, Payment.AddPayment)
   .get(auth, Payment.GetPayment)
   .put(auth, Payment.CheckOTP)

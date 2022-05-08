@@ -8,7 +8,7 @@ router.use(fileUpload());
 
 router.post("/login", User.Login);
 
-router.post("/register", User.Register);
+// router.post("/register", User.Register);
 
 router.put("/role", auth, User.ChangeRole);
 
@@ -22,7 +22,7 @@ router
   .put(auth, User.SetFavorite);
 
 router
-  .route("/cart")
+  .route("/carts")
   .put(auth, User.AddCart)
   .delete(auth, User.RemoveCartEle)
   .get(auth, User.getCart);
@@ -33,8 +33,10 @@ router
   .delete(auth, User.DeleteDp)
   .post(auth, User.UploadDp);
 
-router.get("/", auth, User.GetUser);
-
-router.put("/", auth, User.UpdateUser);
+router
+  .route("/")
+  .get(auth, User.GetUser)
+  .put(auth, User.UpdateUser)
+  .post(User.Register);
 
 module.exports = router;
