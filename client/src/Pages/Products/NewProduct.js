@@ -32,6 +32,10 @@ function NewProduct(props) {
           headers: { Authorization: "Agriuservalidation " + token },
         })
         .then((res) => {
+          if (res.data.user_id !== userID) {
+            navigate("/", { replace: true });
+            return;
+          }
           if (res.data) {
             setPreviewUrl(res.data.images);
             setID(res.data.id);
@@ -41,7 +45,9 @@ function NewProduct(props) {
             setCategory(res.data.category);
           }
         })
-        .catch((er) => {});
+        .catch((er) => {
+          navigate("/", { replace: true });
+        });
     }
   }, []);
 
