@@ -15,7 +15,6 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import CartSkelton from "../Utils/CartSkelton";
 import { useNavigate } from "react-router-dom";
-import { addOrder } from "../../Store/order";
 import { useDispatch } from "react-redux";
 
 function Cart(props) {
