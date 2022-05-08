@@ -16,11 +16,13 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import axios from "axios";
 import AgriSnackbar from "../Utils/AgriSnackbar";
+import { useNavigate } from "react-router-dom";
 
 export default function AgriCard(props) {
   const { token, role, userID } = useSelector((state) => state.loging);
   const [fav, setFav] = useState(props.fav);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   const addTocart = () => {
     axios
@@ -70,7 +72,20 @@ export default function AgriCard(props) {
           setOpen(false);
         }}
       />
-      <Card sx={{ minWidth: 270, border: "2px solid #62BB46" }}>
+      <Card
+        sx={{
+          minWidth: 270,
+          border: "2px solid #62BB46",
+          cursor: "pointer",
+          "&:hover": {
+            boxShadow: "0 0 5px 2px #62BB46",
+            transitionDuration: ".5s",
+          },
+        }}
+        onClick={() => {
+          navigate(`/product/view/${props.data._id}`);
+        }}
+      >
         <CardMedia
           component="img"
           height="160"
@@ -89,14 +104,14 @@ export default function AgriCard(props) {
                 {props.data.title}
               </Typography>
             </Grid>
-            <Grid
+            {/* <Grid
               component={Typography}
               variant="subtitle1"
               item
               sx={{ color: grey[400] }}
             >
               {`${props.data.sold} sold out`}
-            </Grid>
+            </Grid> */}
           </Grid>
 
           <Typography
@@ -112,7 +127,7 @@ export default function AgriCard(props) {
             color="text.secondary"
             textAlign={"justify"}
           >
-            {props.data.description}
+            {props.data.description.substring(0, 200) + "..."}
           </Typography>
         </CardContent>
         <CardActions>

@@ -29,7 +29,7 @@ function AgriOrdersFarmer(props) {
             Product ID : {`${props.id}`}
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <Button href={`/product/edit/${props.id}`} variant="outlined">
+          <Button href={`/product/view/${props.id}`} variant="outlined">
             View Product
           </Button>
         </Box>

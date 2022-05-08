@@ -11,32 +11,32 @@ function AgriSkelton() {
         sx={{ mt: { xs: 1, sm: 2 }, textAlign: "center" }}
       >
         <Skeleton
-          nimation="pulse"
+          animation="pulse"
           variant="rectangular"
           sx={{ borderRadius: 1 }}
           width={"100%"}
           height={200}
         />
         <Skeleton
-          nimation="pulse"
+          animation="pulse"
           variant="text"
           sx={{ borderRadius: 1 }}
           width={"100%"}
         />
         <Skeleton
-          nimation="pulse"
+          animation="pulse"
           variant="text"
           sx={{ borderRadius: 1 }}
           width={"100%"}
         />
         <Skeleton
-          nimation="pulse"
+          animation="pulse"
           variant="text"
           sx={{ borderRadius: 1 }}
           width={"100%"}
         />
         <Skeleton
-          nimation="pulse"
+          animation="pulse"
           variant="rectangular"
           sx={{ borderRadius: 1 }}
           width={"100%"}

@@ -204,7 +204,7 @@ function Dashboard(props) {
             container
             direction={"row"}
             justifyContent="center"
-            alignItems={"center"}
+            alignItems={"stretch"}
             spacing={4}
             minHeight="50vh"
           >
