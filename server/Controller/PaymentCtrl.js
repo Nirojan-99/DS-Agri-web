@@ -12,25 +12,25 @@ exports.GetPayment = (req, res) => {
     )
       .then((data) => {
         if (data) {
-          res.status(200).json(data);
+          return res.status(200).json(data);
         } else {
-          res.status(404).json({});
+          return res.status(404).json({fetched:false});
         }
       })
       .catch((er) => {
-        res.status(404).json({});
+        return res.status(404).json({fetched:false});
       });
   } else {
     Payments.findOne({ order_id: order_id })
       .then((data) => {
         if (data) {
-          res.status(200).json({ exist: "yes" });
+          return res.status(200).json({ exist: "yes" });
         } else {
-          res.status(404).json({});
+          return res.status(404).json({fetched:false});
         }
       })
       .catch((er) => {
-        res.status(404).json({});
+        return res.status(404).json({fetched:false});
       });
   }
 };
@@ -77,10 +77,10 @@ exports.AddPayment = (req, res) => {
         .then((data) => {
           //send otp
           const val = mailSender(to, subject, text);
-          return res.status(200).json({});
+          return res.status(200).json({added:true});
         })
         .catch((er) => {
-          return res.status(404).json({});
+          return res.status(404).json({added:false});
         });
     })
     .catch((er) => {});
@@ -110,11 +110,11 @@ exports.CheckOTP = (req, res) => {
           }
         );
       } else {
-        return res.status(404).json({});
+        return res.status(404).json({ok:false});
       }
     })
     .catch((er) => {
-      return res.status(404).json({});
+      return res.status(404).json({ok:false});
     });
 };
 
@@ -122,9 +122,9 @@ exports.DeletePayment = (req, res) => {
   const { _id } = req.query;
   Payments.deleteOne({ _id })
     .then((data) => {
-      res.status(200).json({ deleted: true });
+      return res.status(200).json({ deleted: true });
     })
     .catch((er) => {
-      res.status(404).json({ deleted: false });
+      return res.status(404).json({ deleted: false });
     });
 };

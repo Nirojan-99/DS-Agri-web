@@ -8,13 +8,14 @@ router.use(fileUpload());
 
 router.post("/login", User.Login);
 
-router.post("/register", User.Register);
-
 router.put("/role", auth, User.ChangeRole);
 
 router.post("/password", User.SendOtp);
-router.post("/password/:_id", User.ResetPassword);
-router.get("/password/:_id", User.CheckResetValidity);
+
+router
+  .route("/password/:_id")
+  .post(User.ResetPassword)
+  .get(User.CheckResetValidity);
 
 router
   .route("/favorites")
@@ -22,7 +23,7 @@ router
   .put(auth, User.SetFavorite);
 
 router
-  .route("/cart")
+  .route("/carts")
   .put(auth, User.AddCart)
   .delete(auth, User.RemoveCartEle)
   .get(auth, User.getCart);
@@ -33,8 +34,10 @@ router
   .delete(auth, User.DeleteDp)
   .post(auth, User.UploadDp);
 
-router.get("/", auth, User.GetUser);
-
-router.put("/", auth, User.UpdateUser);
+router
+  .route("/")
+  .get(auth, User.GetUser)
+  .put(auth, User.UpdateUser)
+  .post(User.Register);
 
 module.exports = router;

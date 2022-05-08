@@ -16,7 +16,6 @@ import axios from "axios";
 import AgriSnackbar from "../../Utils/AgriSnackbar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import validator from "validator";
 
 export default function SignInSide(props) {
   //data
@@ -24,6 +23,8 @@ export default function SignInSide(props) {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  //hooks
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -46,7 +47,7 @@ export default function SignInSide(props) {
     }
 
     axios
-      .post("http://localhost:5000/user/login", {
+      .post("http://localhost:5000/users/login", {
         email: email,
         password: password,
       })

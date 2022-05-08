@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import PageNotFound from "./404/PageNotFound";
 import ForgotPassword from "./ForgetPassword/ForgetPassword";
 import ResetPassword from "./ForgetPassword/ResetPassword";
+import ProductView from "./ProductView/ProductView";
 
 function Pages(props) {
   const { token, role } = useSelector((state) => state.loging);
@@ -34,6 +35,11 @@ function Pages(props) {
                 />
               </>
             )}
+            <Route
+              eaxct
+              path="product/view/:id"
+              element={<ProductView handler={props.modeHandler} />}
+            />
             <Route
               eaxct
               path="/dashboard"

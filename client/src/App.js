@@ -54,10 +54,6 @@ function App() {
             info: {
               main: "#1597BB",
             },
-            // text: {
-            //   primary: "#333",
-            //   secondary: grey[400],
-            // },
           }
         : {
             primary: {

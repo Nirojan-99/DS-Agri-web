@@ -15,16 +15,21 @@ import axios from "axios";
 import AgriSkelton from "../Utils/AgriSkelton";
 
 function Favorites(props) {
+  //state data
   const [products, setProducts] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
-  const { token, userID } = useSelector((state) => state.loging);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(1);
-  const [favorites, setFavorites] = useState([]);
 
+  //user data
+  const { token, userID } = useSelector((state) => state.loging);
+
+  //pagination
   const handleChange = (event, value) => {
     setPage(value);
   };
+
+  //remove favorite handler
   const removeFav = (index) => {
     setProducts((pre) => {
       const array = [...pre];
@@ -36,15 +41,15 @@ function Favorites(props) {
   useEffect(() => {
     //get fav id
     axios
-      .get(`http://localhost:5000/user/favorites?_id=${userID}`, {
+      .get(`http://localhost:5000/users/favorites?_id=${userID}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
         if (res.data) {
-          setFavorites(res.data);
+          //get products for fav id
           axios
             .get(
-              `http://localhost:5000/api/product?pagination=${page}&favList=${
+              `http://localhost:5000/api/products?pagination=${page}&favList=${
                 res.data.length != 0 ? res.data : ["1", "2"]
               }`,
               {
@@ -65,8 +70,8 @@ function Favorites(props) {
         }
       })
       .catch(() => {});
-    // get prod
   }, [page]);
+
   return (
     <>
       <Header mode={props.mode} handler={props.handler} />

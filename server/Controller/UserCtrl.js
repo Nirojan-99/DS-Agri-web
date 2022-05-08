@@ -54,7 +54,7 @@ exports.GetUser = (req, res) => {
       return res.status(200).json({ ...data._doc, password: "" });
     })
     .catch((er) => {
-      return res.status(404);
+      return res.status(404).json({ fetched: false });
     });
 };
 
@@ -76,7 +76,7 @@ exports.UpdateUser = (req, res) => {
           res.status(200).json({});
         });
       } else {
-        return res.status(404).json({});
+        return res.status(404).json({ updated: false });
       }
     });
   } else {
@@ -85,10 +85,10 @@ exports.UpdateUser = (req, res) => {
       { firstName, lastName, address, mobile_number }
     )
       .then((data) => {
-        return res.status(200).json({});
+        return res.status(200).json({ updated: true });
       })
       .catch((er) => {
-        return res.status(404).json({});
+        return res.status(404).json({ updated: false });
       });
   }
 };
@@ -99,10 +99,10 @@ exports.ChangeRole = (req, res) => {
   // delete products when change to client
   Users.findByIdAndUpdate({ _id }, { role })
     .then((data) => {
-      return res.status(200).json({});
+      return res.status(200).json({ updated: true });
     })
     .catch((er) => {
-      return res.status(404).json({});
+      return res.status(404).json({ updated: false });
     });
 };
 
@@ -114,6 +114,7 @@ exports.GetDP = (req, res) => {
     })
     .catch((er) => {
       console.log(er);
+      return res.status(404).json({ fetched: false });
     });
 };
 
@@ -127,10 +128,10 @@ exports.DeleteDp = (req, res) => {
           console.log(er);
         }
       });
-      return res.status(200).json({});
+      return res.status(200).json({ deleted: true });
     })
     .catch((er) => {
-      return res.status(404).json({});
+      return res.status(404).json({ deletedLtrue });
     });
 };
 
@@ -144,15 +145,15 @@ exports.UploadDp = (req, res) => {
     fileToUpload.mv("Uploads/" + fileName, (error) => {
       if (error) {
         console.log(error);
-        return res.status(404).json({});
+        return res.status(404).json({ updated: false });
       } else {
         const link = "http://localhost:5000/Uploads/" + fileName;
         Users.findByIdAndUpdate({ _id }, { images: link })
           .then((data) => {
-            return res.status(200).json({});
+            return res.status(200).json({ updated: true });
           })
           .catch((er) => {
-            return res.status(404).json({});
+            return res.status(404).json({ updated: false });
           });
       }
     });
@@ -165,7 +166,7 @@ exports.GetFavorites = (req, res) => {
       return res.status(200).json(data.favorites);
     })
     .catch((er) => {
-      return res.status(404).json({});
+      return res.status(404).json({ fetched: false });
     });
 };
 
@@ -174,18 +175,18 @@ exports.SetFavorite = (req, res) => {
   if (val) {
     Users.findByIdAndUpdate({ _id }, { $addToSet: { favorites: pid } })
       .then((data) => {
-        return res.status(200).json({});
+        return res.status(200).json({ added: true });
       })
       .catch((er) => {
-        return res.status(404).json({});
+        return res.status(404).json({ added: false });
       });
   } else {
     Users.findByIdAndUpdate({ _id }, { $pull: { favorites: pid } })
       .then((data) => {
-        return res.status(200).json({});
+        return res.status(200).json({ added: true });
       })
       .catch((er) => {
-        return res.status(404).json({});
+        return res.status(404).json({ added: false });
       });
   }
 };
@@ -196,18 +197,18 @@ exports.AddCart = (req, res) => {
   if (set) {
     Users.updateOne({ _id }, { $addToSet: { cart: pid } })
       .then((data) => {
-        return res.status(200).json({});
+        return res.status(200).json({ added: true });
       })
       .catch((er) => {
-        return res.status(404).json({});
+        return res.status(404).json({ added: false });
       });
   } else {
     Users.findByIdAndUpdate({ _id }, { $pull: { cart: pid } })
       .then((data) => {
-        return res.status(200).json({});
+        return res.status(200).json({ added: true });
       })
       .catch((er) => {
-        return res.status(404).json({});
+        return res.status(404).json({ added: false });
       });
   }
 };
@@ -220,7 +221,7 @@ exports.getCart = (req, res) => {
       return res.status(200).json(data.cart);
     })
     .catch((er) => {
-      return res.status(404).json({});
+      return res.status(404).json({ fetched: false });
     });
 };
 
@@ -228,10 +229,10 @@ exports.RemoveCartEle = (req, res) => {
   const { id, pid } = req.query;
   Users.findByIdAndUpdate({ _id: id }, { $pull: { cart: pid } })
     .then((data) => {
-      return res.status(200).json({});
+      return res.status(200).json({ removed: true });
     })
     .catch((er) => {
-      return res.status(404).json({});
+      return res.status(404).json({ removed: true });
     });
 };
 

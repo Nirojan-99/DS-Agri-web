@@ -3,17 +3,19 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Button, Box } from "@mui/material";
 import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Alert from "../../Components/Alert";
 
 export default function OTP(props) {
+  //user data
   const { userID, token } = useSelector((state) => state.loging);
 
+  //form data
   const [OTP, setOTP] = useState();
-  const [error, setError] = useState("");
 
-  useEffect(() => {}, []);
+  //eror indicator
+  const [error, setError] = useState("");
 
   // close alert
   const handleClose = () => {
@@ -30,7 +32,7 @@ export default function OTP(props) {
     }
     axios
       .put(
-        `http://localhost:5000/api/payment`,
+        `http://localhost:5000/api/payments`,
         { OTP, order_id: props.id, userID },
         {
           headers: { Authorization: "Agriuservalidation " + token },
@@ -82,9 +84,6 @@ export default function OTP(props) {
 
         <Grid item xs={12}>
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            {/* <Button onClick={props.handleBack} sx={{ mt: 3, ml: 1 }}>
-              Back
-            </Button> */}
             <Button
               type="submit"
               variant="contained"

@@ -10,7 +10,6 @@ import {
   Paper,
   TextField,
   Tooltip,
-  Typography,
 } from "@mui/material";
 import CollectionsOutlinedIcon from "@mui/icons-material/CollectionsOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -20,7 +19,6 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import AgriSnackbar from "../../Utils/AgriSnackbar";
 import LoadingButton from "@mui/lab/LoadingButton";
-import SaveIcon from "@mui/icons-material/Save";
 import { login } from "../../../Store/auth";
 import Alert from "../../../Components/Alert";
 
@@ -61,7 +59,7 @@ function Account() {
     setLoading(true);
     axios
       .put(
-        "http://localhost:5000/user/role",
+        "http://localhost:5000/users/role",
         { _id: userID, role },
         {
           headers: { Authorization: "Agriuservalidation " + token },
@@ -82,7 +80,7 @@ function Account() {
   //useEffect call
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/user?ID=${userID}`, {
+      .get(`http://localhost:5000/users?ID=${userID}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
@@ -129,7 +127,7 @@ function Account() {
 
     axios
       .put(
-        "http://localhost:5000/user",
+        "http://localhost:5000/users",
         {
           firstName: firstname,
           lastName,
@@ -163,7 +161,7 @@ function Account() {
     setDisable(true);
     axios
       .put(
-        "http://localhost:5000/user",
+        "http://localhost:5000/users",
         { password, newPassword, _id: userID },
         {
           headers: { Authorization: "Agriuservalidation " + token },

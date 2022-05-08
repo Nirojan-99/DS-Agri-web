@@ -7,10 +7,10 @@ const fileUpload = require("express-fileupload");
 
 router.use(fileUpload());
 
-router.get("/product/get", auth, Product.GetProduct);
+router.get("/products/:_id", auth, Product.GetProduct);
 
 router
-  .route("/product")
+  .route("/products")
   .post(auth, authAdmin, Product.NewProduct)
   .get(auth, Product.GetProducts)
   .delete(auth, authAdmin, Product.DeleteProduct)

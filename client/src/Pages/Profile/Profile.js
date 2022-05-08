@@ -13,12 +13,15 @@ import CustomerOrders from "./Components/CustomerOrders";
 import Payments from "./Components/Payments";
 
 function Profile(props) {
+  //initial vaue for tab bar
   const [value, setValue] = useState("1");
 
+  //tab bar handler
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  //user data
   const { role } = useSelector((state) => state.loging);
 
   return (

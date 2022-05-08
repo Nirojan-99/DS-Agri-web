@@ -11,21 +11,27 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { grey, red } from "@mui/material/colors";
+import { red } from "@mui/material/colors";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import axios from "axios";
 import AgriSnackbar from "../Utils/AgriSnackbar";
+import { useNavigate } from "react-router-dom";
 
 export default function AgriCard(props) {
+  //user data
   const { token, role, userID } = useSelector((state) => state.loging);
+  //favorite indicator
   const [fav, setFav] = useState(props.fav);
+  //popup indicator
   const [open, setOpen] = useState(false);
-
+  //hooks
+  const navigate = useNavigate();
+  //add to cart handler
   const addTocart = () => {
     axios
       .put(
-        `http://localhost:5000/user/cart`,
+        `http://localhost:5000/users/carts`,
         {
           pid: props.data._id,
           _id: userID,
@@ -40,11 +46,11 @@ export default function AgriCard(props) {
       })
       .catch((er) => {});
   };
-
+  //handle favorite click
   const handlefavorite = (val) => {
     axios
       .put(
-        `http://localhost:5000/user/favorites`,
+        `http://localhost:5000/users/favorites`,
         {
           _id: userID,
           pid: props.data._id,
@@ -70,12 +76,26 @@ export default function AgriCard(props) {
           setOpen(false);
         }}
       />
-      <Card sx={{ minWidth: 270, border: "2px solid #62BB46" }}>
+      <Card
+        sx={{
+          minWidth: 270,
+          border: "2px solid #62BB46",
+
+          "&:hover": {
+            boxShadow: "0 0 5px 2px #62BB46",
+            transitionDuration: ".5s",
+          },
+        }}
+      >
         <CardMedia
           component="img"
           height="160"
           image={props.data.images}
           alt="green iguana"
+          onClick={() => {
+            navigate(`/product/view/${props.data._id}`);
+          }}
+          sx={{ cursor: "pointer" }}
         />
         <CardContent>
           <Grid container justifyContent={"space-between"} alignItems="center">
@@ -88,14 +108,6 @@ export default function AgriCard(props) {
               >
                 {props.data.title}
               </Typography>
-            </Grid>
-            <Grid
-              component={Typography}
-              variant="subtitle1"
-              item
-              sx={{ color: grey[400] }}
-            >
-              {`${props.data.sold} sold out`}
             </Grid>
           </Grid>
 
@@ -112,7 +124,7 @@ export default function AgriCard(props) {
             color="text.secondary"
             textAlign={"justify"}
           >
-            {props.data.description}
+            {props.data.description.substring(0, 200) + "..."}
           </Typography>
         </CardContent>
         <CardActions>

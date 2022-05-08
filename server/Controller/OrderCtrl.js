@@ -1,6 +1,5 @@
 const Orders = require("../Models/OrderModel");
 const Products = require("../Models/ProductModel");
-const fs = require("fs");
 
 exports.AddOrder = (req, res) => {
   const { products, user_id, total } = req.body;
@@ -11,7 +10,7 @@ exports.AddOrder = (req, res) => {
       return res.status(200).json({ _id: data._id });
     })
     .catch((er) => {
-      return req.stat(404).json({});
+      return req.stat(404).json({ added: false });
     });
 };
 
@@ -29,10 +28,10 @@ exports.UpdateOrder = (req, res) => {
 
   Orders.updateOne({ _id }, { $set: filter })
     .then((data) => {
-      res.status(200).json({});
+      res.status(200).json({ updated: true });
     })
     .catch((er) => {
-      res.status(404).json({});
+      res.status(404).json({ updated: false });
     });
 };
 
@@ -44,11 +43,11 @@ exports.GetOrder = (req, res) => {
         if (data) {
           return res.status(200).json(data);
         } else {
-          return res.status(404).json({});
+          return res.status(404).json({ fetched: false });
         }
       })
       .catch((er) => {
-        return res.status(404).json({});
+        return res.status(404).json({ fetched: false });
       });
   } else {
     Orders.findById({ _id })
@@ -56,11 +55,11 @@ exports.GetOrder = (req, res) => {
         if (data.address.address) {
           return res.status(200).json(data);
         } else {
-          return res.status(404).json({});
+          return res.status(404).json({ fetched: false });
         }
       })
       .catch((er) => {
-        return res.status(404).json({});
+        return res.status(404).json({ fetched: false });
       });
   }
 };
@@ -94,10 +93,18 @@ exports.GetOrders = async (req, res) => {
               });
             });
 
-            res.status(200).json(data1);
+            return res.status(200).json(data1);
           }
         );
+      } else {
+        return res.status(404).json({ fetched: false });
       }
     })
-    .catch((er) => {});
+    .catch((er) => {
+      return res.status(404).json({ fetched: false });
+    });
+};
+
+exports.DeleteOrder = (req, res) => {
+  //TODO
 };

@@ -26,7 +26,7 @@ export default function AddressForm(props) {
   //useEffect call
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/user?ID=${userID}`, {
+      .get(`http://localhost:5000/users?ID=${userID}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
@@ -39,7 +39,7 @@ export default function AddressForm(props) {
 
     //get order data
     axios
-      .get(`http://localhost:5000/api/order?_id=${props.id}`, {
+      .get(`http://localhost:5000/api/orders?_id=${props.id}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
@@ -85,7 +85,7 @@ export default function AddressForm(props) {
 
     axios
       .put(
-        `http://localhost:5000/api/order`,
+        `http://localhost:5000/api/orders`,
         {
           address,
           city,
@@ -103,7 +103,7 @@ export default function AddressForm(props) {
       })
       .catch((er) => {});
   };
-  
+
   return (
     <>
       <Typography variant="h6" gutterBottom sx={{ color: "#62BB46", mb: 2 }}>

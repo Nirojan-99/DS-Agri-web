@@ -2,7 +2,6 @@ import {
   Avatar,
   Box,
   Button,
-  Grid,
   Paper,
   TextField,
   Typography,
@@ -28,7 +27,7 @@ function ResetPassword(props) {
   //useeffect call
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/user/password/${id}`)
+      .get(`http://localhost:5000/users/password/${id}`)
       .then((res) => {
         if (!res.data.found) {
           navigate("login", { replace: true });
@@ -51,7 +50,7 @@ function ResetPassword(props) {
     }
 
     axios
-      .post(`http://localhost:5000/user/password/${id}`, {
+      .post(`http://localhost:5000/users/password/${id}`, {
         password: newPassword,
       })
       .then((res) => {

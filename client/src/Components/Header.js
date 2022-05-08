@@ -18,7 +18,6 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { dark, light } from "../Store/theme";
-
 import logo from "../Assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -27,25 +26,33 @@ import axios from "axios";
 import { useEffect } from "react";
 
 function Header(props) {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const Tmode = useSelector((state) => state.mode.mode);
-  const dispatch = useDispatch();
+  // user data
   const { token, role, userID } = useSelector((state) => state.loging);
-  const [mode, setMode] = useState(Tmode);
   const [auth, setAuth] = useState(token);
+
+  //theme handler
+  const Tmode = useSelector((state) => state.mode.mode);
+  const [mode, setMode] = useState(Tmode);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  //hooks
+  const dispatch = useDispatch();
+  let history = useNavigate();
+
+  //cart count
   const [cart, setcart] = useState(0);
 
+  //useEffect call
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/user/cart?_id=${userID}`, {
+      .get(`http://localhost:5000/users/carts?_id=${userID}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {
         setcart(res.data.length);
       });
   }, []);
-
-  let history = useNavigate();
 
   const handleClose = () => {
     setAnchorEl(null);

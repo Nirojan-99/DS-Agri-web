@@ -2,7 +2,6 @@ import {
   Avatar,
   Box,
   Button,
-  Grid,
   Paper,
   TextField,
   Typography,
@@ -30,7 +29,7 @@ function ForgotPassword(props) {
     }
 
     axios
-      .post(`http://localhost:5000/user/password`, { email })
+      .post(`http://localhost:5000/users/password`, { email })
       .then((res) => {
         setSent(true);
       })
@@ -41,7 +40,7 @@ function ForgotPassword(props) {
   const otpHandler = (event) => {
     event.preventDefault();
     axios
-      .post(`http://localhost:5000/user/password`, { email, OTP })
+      .post(`http://localhost:5000/users/password`, { email, OTP })
       .then((res) => {
         setTimeout(() => {
           navigate("/forget-password/" + res.data._id, { replace: true });

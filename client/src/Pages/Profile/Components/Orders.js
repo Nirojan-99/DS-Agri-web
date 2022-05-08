@@ -3,8 +3,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import AgriOrdersFarmer from "../../Utils/AgriOrdersFarmer";
 import { useSelector } from "react-redux";
-import CartSkelton from "../../Utils/CartSkelton";
-import AgriSkelton from "../../Utils/AgriSkelton";
 
 function Orders() {
   //user data
@@ -17,7 +15,7 @@ function Orders() {
   // useEffect call
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/order/${userID}`, {
+      .get(`http://localhost:5000/api/orders/${userID}`, {
         headers: { Authorization: "Agriuservalidation " + token },
       })
       .then((res) => {

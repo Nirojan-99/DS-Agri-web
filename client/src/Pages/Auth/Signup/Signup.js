@@ -69,7 +69,7 @@ export default function SignUp(props) {
     }
 
     axios
-      .post("http://localhost:5000/user/register", {
+      .post("http://localhost:5000/users", {
         firstName: FName,
         lastName: LName,
         email: email,

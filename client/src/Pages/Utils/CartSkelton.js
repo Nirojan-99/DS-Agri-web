@@ -5,7 +5,7 @@ function CartSkelton() {
     <>
       <Box mb={2} mt={1}>
         <Skeleton
-          nimation="pulse"
+          animation="pulse"
           variant="rectangular"
           sx={{ borderRadius: 1 }}
           width={"100%"}
