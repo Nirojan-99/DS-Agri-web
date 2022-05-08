@@ -3,8 +3,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import AgriOrdersFarmer from "../../Utils/AgriOrdersFarmer";
 import { useSelector } from "react-redux";
-import CartSkelton from "../../Utils/CartSkelton";
-import AgriSkelton from "../../Utils/AgriSkelton";
 
 function Orders() {
   //user data

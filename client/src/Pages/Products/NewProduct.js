@@ -72,10 +72,12 @@ function NewProduct(props) {
     setPreviewUrl(URL.createObjectURL(file));
   };
 
+  //image drag and drop handler
   const handleDragOver = (event) => {
     event.preventDefault();
   };
 
+  //image drag and drop handler
   const handleOnDrop = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -83,6 +85,7 @@ function NewProduct(props) {
     handleFile(imageFile);
   };
 
+  //image drag and drop handler
   const handleOnChange = (event) => {
     let imageFile = event.target.files[0];
     handleFile(imageFile);

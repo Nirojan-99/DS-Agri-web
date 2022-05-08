@@ -253,12 +253,6 @@ export default function PaymentForm(props) {
         </Grid>
       )}
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        {/* {!isFilled && (
-          <Button onClick={props.handleBack} sx={{ mt: 3, ml: 1 }}>
-            Back
-          </Button>
-        )} */}
-
         <Button
           variant="contained"
           onClick={isFilled ? props.handleNext : handleSubmit}

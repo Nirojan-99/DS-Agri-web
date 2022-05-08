@@ -8,13 +8,14 @@ router.use(fileUpload());
 
 router.post("/login", User.Login);
 
-// router.post("/register", User.Register);
-
 router.put("/role", auth, User.ChangeRole);
 
 router.post("/password", User.SendOtp);
-router.post("/password/:_id", User.ResetPassword);
-router.get("/password/:_id", User.CheckResetValidity);
+
+router
+  .route("/password/:_id")
+  .post(User.ResetPassword)
+  .get(User.CheckResetValidity);
 
 router
   .route("/favorites")

@@ -6,6 +6,7 @@ import UploadIcon from "@mui/icons-material/Upload";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+//css
 const style = {
   textAlign: "center",
   position: "absolute",
@@ -19,28 +20,31 @@ const style = {
 };
 
 function ImageModal(props) {
+  //data
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
-
+  //handler
   const handleFile = (file) => {
     setImage(file);
     setPreviewUrl(URL.createObjectURL(file));
   };
-
+  //drag and drop handlers
   const handleDragOver = (event) => {
     event.preventDefault();
   };
+
   const handleOnDrop = (event) => {
     event.preventDefault();
     event.stopPropagation();
     let imageFile = event.dataTransfer.files[0];
     handleFile(imageFile);
   };
+
   const handleOnChange = (event) => {
     let imageFile = event.target.files[0];
     handleFile(imageFile);
   };
-
+  //upload dp
   const uploadImage = () => {
     const data = new FormData();
     data.append("image", image);
@@ -51,11 +55,11 @@ function ImageModal(props) {
         headers: { Authorization: "Agriuservalidation " + props.token },
       })
       .then((res) => {
-        window.location.reload()
+        window.location.reload();
       })
       .catch((er) => {});
   };
-
+  //delete dp
   const removeImage = () => {
     axios
       .delete(`http://localhost:5000/user/dp/${props.userID}`, {
@@ -63,11 +67,11 @@ function ImageModal(props) {
       })
       .then((res) => {
         setPreviewUrl("");
-        window.location.reload()
+        window.location.reload();
       })
       .catch((er) => {});
   };
-
+  //useEffect hook
   useEffect(() => {
     axios
       .get(`http://localhost:5000/users/dp/${props.userID}`, {
@@ -80,6 +84,7 @@ function ImageModal(props) {
         console.log(er);
       });
   }, []);
+  
   return (
     <>
       <Modal open={props.open} onClose={props.handleClose}>

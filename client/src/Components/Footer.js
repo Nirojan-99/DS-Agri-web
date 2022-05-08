@@ -1,12 +1,4 @@
-import {
-  Toolbar,
-  Paper,
-  Typography,
-  Box,
-  Button,
-  Divider,
-  Grid,
-} from "@mui/material";
+import { Paper, Typography, Button, Divider, Grid } from "@mui/material";
 import MessageIcon from "@mui/icons-material/Message";
 
 function Footer() {
@@ -22,18 +14,17 @@ function Footer() {
         justifyContent={"center"}
         alignItems="center"
       >
-        <Grid item xs={12} sm={9} >
-          <Typography variant="subtitle2" textAlign={{xs:"center",sm:"left"}}>
-            © 2022, made with ❤️ by Silicon Team for a better research . All
+        <Grid item xs={12} sm={9}>
+          <Typography
+            variant="subtitle2"
+            textAlign={{ xs: "center", sm: "left" }}
+          >
+            © 2022, made with ❤️ by Silicon Team for a better shopping . All
             copyrights reserved
           </Typography>
         </Grid>
-        <Grid item xs={12} sm={3} textAlign={{xs:"center",sm:"right"}}>
-          <Button
-            endIcon={<MessageIcon />}
-            variant="text"
-            href="/contact-us"
-          >
+        <Grid item xs={12} sm={3} textAlign={{ xs: "center", sm: "right" }}>
+          <Button endIcon={<MessageIcon />} variant="text" href="/contact-us">
             Contact Us
           </Button>
         </Grid>

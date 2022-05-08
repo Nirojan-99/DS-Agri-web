@@ -1,9 +1,8 @@
 const jwt = require("jsonwebtoken");
 const Users = require("../models/userModel");
-const db = require("../db");
-const mongoose = require("mongoose");
 
 module.exports = async (req, res, next) => {
+  //check header
   const authHeader = req.get("Authorization");
 
   if (!authHeader) {
@@ -20,6 +19,7 @@ module.exports = async (req, res, next) => {
   let decodedToken;
 
   try {
+    //check token
     decodedToken = jwt.verify(token, "Agriuservalidation");
   } catch (err) {
     res.status(400).json({ auth: "fail" });

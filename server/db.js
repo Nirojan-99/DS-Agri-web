@@ -1,7 +1,5 @@
-const mongodb = require("mongodb");
 const mongoose = require("mongoose");
 
-// const MongoClient = mongodb.MongoClient;
 const mongoDbUrl =
   "mongodb+srv://nirojan:sliit2020@cluster0.8piet.mongodb.net/DS-Agri?retryWrites=true&w=majority";
 

@@ -6,7 +6,6 @@ import {
   IconButton,
   Pagination,
   Paper,
-  Skeleton,
   TextField,
   Typography,
 } from "@mui/material";
@@ -19,24 +18,27 @@ import { useSelector } from "react-redux";
 import AgriSkelton from "../Utils/AgriSkelton";
 import Ack from "../../Components/Ack";
 
-const handleSubmit = (event) => {
-  event.preventDefault();
-  const data = new FormData(event.currentTarget);
-};
-
 function Dashboard(props) {
-  const { token, userID } = useSelector((state) => state.loging);
-  const [page, setPage] = useState(1);
-  const [count, setCount] = useState(1);
+  //product data
   const [products, setProducts] = useState([]);
+  const [count, setCount] = useState(1);
+  const [page, setPage] = useState(1);
   const [favorites, setFavorites] = useState([]);
   const [isLoaded, setLoaded] = useState(false);
   const [search, setSearch] = useState();
   const [isEmpty, setEmpty] = useState(false);
+
+  //popup
   const [open, setOpen] = useState(false);
+
+  //user data
+  const { token, userID } = useSelector((state) => state.loging);
+
+  //product delete
   const [id, setID] = useState();
   const [index, setIndex] = useState();
 
+  //search product
   const searchHandler = () => {
     setPage(1);
     setLoaded(false);
@@ -63,6 +65,7 @@ function Dashboard(props) {
       });
   };
 
+  //find favorite products
   const findfav = (array, id) => {
     let val = false;
     array.forEach((data) => {
@@ -73,9 +76,12 @@ function Dashboard(props) {
     return val;
   };
 
+  //page change[pagination]
   const handleChange = (event, value) => {
     setPage(value);
   };
+
+  //useEffect call
   useEffect(() => {
     axios
       .get(`http://localhost:5000/api/products?pagination=${page}`, {
@@ -85,14 +91,15 @@ function Dashboard(props) {
         if (res.data) {
           setProducts(res.data.data);
           setLoaded(true);
-          const pcount = Math.ceil(+res.data.cdata / 6);
-          setCount(pcount);
+          const p_count = Math.ceil(+res.data.cdata / 6);
+          setCount(p_count);
         }
       })
       .catch((er) => {
         setLoaded(true);
         setEmpty(true);
       });
+
     axios
       .get(`http://localhost:5000/users/favorites?_id=${userID}`, {
         headers: { Authorization: "Agriuservalidation " + token },
@@ -105,9 +112,12 @@ function Dashboard(props) {
       .catch(() => {});
   }, [page]);
 
+  //popup handler
   const handleClose = () => {
     setOpen(false);
   };
+
+  //delete product
   const handleYes = () => {
     setOpen(false);
     console.log("ddd");
@@ -124,11 +134,14 @@ function Dashboard(props) {
       })
       .catch((er) => {});
   };
+
+  //handle click delete btn
   const clickDelete = (id, index) => {
     setOpen(true);
     setID(id);
     setIndex(index);
   };
+
   return (
     <>
       <Header mode={props.mode} handler={props.handler} />
@@ -141,7 +154,7 @@ function Dashboard(props) {
       />
       <Box py={2} component={Paper} elevation={0} square minHeight={"83vh"}>
         <Container maxWidth="md">
-          <Box component="form" noValidate onSubmit={handleSubmit}>
+          <Box component="form" noValidate>
             <Grid
               container
               justifyContent="end"

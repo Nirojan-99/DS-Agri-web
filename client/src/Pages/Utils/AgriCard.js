@@ -11,7 +11,7 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { grey, red } from "@mui/material/colors";
+import { red } from "@mui/material/colors";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import axios from "axios";
@@ -19,11 +19,15 @@ import AgriSnackbar from "../Utils/AgriSnackbar";
 import { useNavigate } from "react-router-dom";
 
 export default function AgriCard(props) {
+  //user data
   const { token, role, userID } = useSelector((state) => state.loging);
+  //favorite indicator
   const [fav, setFav] = useState(props.fav);
+  //popup indicator
   const [open, setOpen] = useState(false);
+  //hooks
   const navigate = useNavigate();
-
+  //add to cart handler
   const addTocart = () => {
     axios
       .put(
@@ -42,7 +46,7 @@ export default function AgriCard(props) {
       })
       .catch((er) => {});
   };
-
+  //handle favorite click
   const handlefavorite = (val) => {
     axios
       .put(
@@ -76,14 +80,11 @@ export default function AgriCard(props) {
         sx={{
           minWidth: 270,
           border: "2px solid #62BB46",
-          cursor: "pointer",
+
           "&:hover": {
             boxShadow: "0 0 5px 2px #62BB46",
             transitionDuration: ".5s",
           },
-        }}
-        onClick={() => {
-          navigate(`/product/view/${props.data._id}`);
         }}
       >
         <CardMedia
@@ -91,6 +92,10 @@ export default function AgriCard(props) {
           height="160"
           image={props.data.images}
           alt="green iguana"
+          onClick={() => {
+            navigate(`/product/view/${props.data._id}`);
+          }}
+          sx={{ cursor: "pointer" }}
         />
         <CardContent>
           <Grid container justifyContent={"space-between"} alignItems="center">
@@ -104,14 +109,6 @@ export default function AgriCard(props) {
                 {props.data.title}
               </Typography>
             </Grid>
-            {/* <Grid
-              component={Typography}
-              variant="subtitle1"
-              item
-              sx={{ color: grey[400] }}
-            >
-              {`${props.data.sold} sold out`}
-            </Grid> */}
           </Grid>
 
           <Typography

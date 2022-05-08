@@ -3,7 +3,6 @@ import {
   Button,
   Container,
   Divider,
-  Grid,
   Pagination,
   Paper,
   Typography,
@@ -16,13 +15,25 @@ import axios from "axios";
 import AgriSkelton from "../../Utils/AgriSkelton";
 
 function Products() {
+  //user data
   const { token, userID } = useSelector((state) => state.loging);
+
+  //pagination data
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(1);
+
+  //product data
   const [products, setProducts] = useState([]);
-  const [isLoaded, setLoaded] = useState(false);
   const [isEmpty, setEmpty] = useState(false);
+
+  //loading hendler
+
+  const [isLoaded, setLoaded] = useState(false);
+
+  //ack popup
   const [open, setOpen] = useState(false);
+
+  //delete handler
   const [id, setID] = useState();
   const [index, setIndex] = useState();
 
@@ -30,6 +41,7 @@ function Products() {
     setPage(value);
   };
 
+  //useEffect hook
   useEffect(() => {
     axios
       .get(
@@ -55,6 +67,8 @@ function Products() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  //delete handler
   const handleYes = () => {
     setOpen(false);
     axios
@@ -70,6 +84,8 @@ function Products() {
       })
       .catch((er) => {});
   };
+  
+  //delete btn click handler
   const clickDelete = (id, index) => {
     setOpen(true);
     setID(id);

@@ -80,13 +80,16 @@ export default function Checkout(props) {
                     Thank you for your order.
                   </Typography>
                   <Typography variant="subtitle1">
-                    Your order number is <span style={{color:"green"}}>#{ID}</span>. We have emailed your order
-                    confirmation, and will send you an update when your order
-                    has shipped.
+                    Your order number is{" "}
+                    <span style={{ color: "green" }}>#{ID}</span>. We have
+                    emailed your order confirmation, and will send you an update
+                    when your order has shipped.
                   </Typography>
                   <Box sx={{ display: "flex" }}>
                     <Box sx={{ flexGrow: 1 }} />
-                    <Button variant="outlined" href="/">Keep Shoping</Button>
+                    <Button variant="outlined" href="/">
+                      Keep Shoping
+                    </Button>
                   </Box>
                 </>
               ) : (
