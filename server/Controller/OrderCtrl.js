@@ -1,6 +1,7 @@
 const Orders = require("../Models/OrderModel");
 const Products = require("../Models/ProductModel");
 
+//add new order data
 exports.AddOrder = (req, res) => {
   const { products, user_id, total } = req.body;
   const newOrder = new Orders({ products, user_id, total });
@@ -14,6 +15,7 @@ exports.AddOrder = (req, res) => {
     });
 };
 
+//update order data
 exports.UpdateOrder = (req, res) => {
   const { address, city, province, postalcode, country, _id, payment } =
     req.body;
@@ -35,6 +37,7 @@ exports.UpdateOrder = (req, res) => {
     });
 };
 
+//get order data
 exports.GetOrder = (req, res) => {
   const { _id, userID } = req.query;
   if (userID) {
@@ -64,6 +67,7 @@ exports.GetOrder = (req, res) => {
   }
 };
 
+// get order datas of user
 exports.GetOrders = async (req, res) => {
   const { id } = req.params;
   let product_id = [];

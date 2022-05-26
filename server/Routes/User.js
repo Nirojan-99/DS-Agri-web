@@ -26,7 +26,8 @@ router
   .route("/carts")
   .put(auth, User.AddCart)
   .delete(auth, User.RemoveCartEle)
-  .get(auth, User.getCart);
+  .get(auth, User.getCart)
+  .patch(auth, User.DeleteCart);
 
 router
   .route("/dp/:id")

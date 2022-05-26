@@ -1,6 +1,7 @@
 const Products = require("../Models/ProductModel");
 const fs = require("fs");
 
+//add new product
 exports.NewProduct = (req, res) => {
   const { price, title, description, category, id, user_id } = req.body;
   const date = Date.now();
@@ -12,7 +13,7 @@ exports.NewProduct = (req, res) => {
     fileToUpload.mv("Uploads/" + fileName, (error) => {
       if (error) {
         console.log(error);
-        return res.status(404).json({added:false});
+        return res.status(404).json({ added: false });
       } else {
         const link = "http://localhost:5000/Uploads/" + fileName;
 
@@ -29,16 +30,17 @@ exports.NewProduct = (req, res) => {
         newProduct
           .save()
           .then((data) => {
-            return res.status(200).json({added:true});
+            return res.status(200).json({ added: true });
           })
           .catch(() => {
-            return res.status(404).json({added:false});
+            return res.status(404).json({ added: false });
           });
       }
     });
   }
 };
 
+//get products data according to the query
 exports.GetProducts = (req, res) => {
   const pagination = req.query.pagination;
   const title = req.query.title;
@@ -60,15 +62,16 @@ exports.GetProducts = (req, res) => {
   }
   Products.find({ ...findFiler }, {}, { skip, limit })
     .then((data) => {
-      Products.countDocuments({}).then((cdata) => {
+      Products.countDocuments({...findFiler}).then((cdata) => {
         return res.status(200).json({ data, cdata });
       });
     })
     .catch((er) => {
-      res.status(404).json({fetched:false});
+      res.status(404).json({ fetched: false });
     });
 };
 
+//delete product
 exports.DeleteProduct = (req, res) => {
   const user_id = req.userID;
   const _id = req.query._id;
@@ -82,22 +85,23 @@ exports.DeleteProduct = (req, res) => {
           }
         });
         Products.deleteOne({ _id }).then((data) => {
-          return res.status(200).json({deleted:true});
+          return res.status(200).json({ deleted: true });
         });
       } else {
-        return res.status(404).json({deleted:false});
+        return res.status(404).json({ deleted: false });
       }
     })
     .catch((er) => {
       console.log(er);
-      return res.status(404).json({deleted:false});
+      return res.status(404).json({ deleted: false });
     })
     .catch((er) => {
       console.log(er);
-      return res.status(404).json({deleted:false});
+      return res.status(404).json({ deleted: false });
     });
 };
 
+//get single product data
 exports.GetProduct = (req, res) => {
   const { _id } = req.params;
   Products.findById({ _id })
@@ -105,10 +109,11 @@ exports.GetProduct = (req, res) => {
       return res.status(200).json(data);
     })
     .catch((er) => {
-      return res.status(404).json({fetched:false});
+      return res.status(404).json({ fetched: false });
     });
 };
 
+//update single product data
 exports.UpdateProduct = (req, res) => {
   const { price, title, description, category, id, user_id, _id } = req.body;
   const date = Date.now();
@@ -123,7 +128,7 @@ exports.UpdateProduct = (req, res) => {
 
       fileToUpload.mv("Uploads/" + fileName, (error) => {
         if (error) {
-          return res.status(404).json({updated:false});
+          return res.status(404).json({ updated: false });
         } else {
           const link = "http://localhost:5000/Uploads/" + fileName;
           Products.findByIdAndUpdate(
@@ -135,12 +140,12 @@ exports.UpdateProduct = (req, res) => {
                 if (er) {
                   console.log(er);
                 } else {
-                  return res.status(200).json({updated:true});
+                  return res.status(200).json({ updated: true });
                 }
               });
             })
             .catch((er) => {
-              return res.status(404).json({updated:false});
+              return res.status(404).json({ updated: false });
             });
         }
       });
@@ -151,10 +156,10 @@ exports.UpdateProduct = (req, res) => {
       { $set: { price, title, description, category, id } }
     )
       .then((data) => {
-        return res.status(200).json({updated:true});
+        return res.status(200).json({ updated: true });
       })
       .catch((er) => {
-        return res.status(404).json({updated:false});
+        return res.status(404).json({ updated: false });
       });
   }
 };

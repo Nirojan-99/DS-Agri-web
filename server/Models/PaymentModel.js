@@ -13,7 +13,7 @@ const paymentSchema = new mongoose.Schema(
     },
     OTP: {
       type: Number,
-      required: true,
+      default: 0,
     },
     amount: {
       type: Number,

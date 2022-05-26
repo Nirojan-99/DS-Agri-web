@@ -54,9 +54,7 @@ function Payments() {
             mt={3}
             p={1.2}
           >
-            <Typography variant="h4">{`xxxx xxxx xxxx ${payment.card_number
-              .toString()
-              .substring(12, 17)}`}</Typography>
+            <Typography variant="h4">{`xxxx xxxx xxxx ${payment.card_number}`}</Typography>
             <Typography variant="h4" sx={{ ml: 3 }}>
               {`${payment.expiry_year}/${payment.expiry_month}`}
             </Typography>
@@ -65,7 +63,9 @@ function Payments() {
           </Box>
         )}
         {isLoaded && !payment._id && (
-          <Typography sx={{textAlign:"center",my:3}}>No Data available</Typography>
+          <Typography sx={{ textAlign: "center", my: 3 }}>
+            No Data available
+          </Typography>
         )}
       </Box>
     </>
