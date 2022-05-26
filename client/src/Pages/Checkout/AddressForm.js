@@ -99,7 +99,9 @@ export default function AddressForm(props) {
         }
       )
       .then((res) => {
-        props.handleNext();
+        if (res.data) {
+          props.handleNext();
+        }
       })
       .catch((er) => {});
   };

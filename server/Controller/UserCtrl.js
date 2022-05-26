@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const { mailSender } = require("../Utils/mailSender");
 
+//login controller
 exports.Login = (req, res) => {
   const { email, password } = req.body;
   Users.findOne({ email, password }).then((data) => {
@@ -20,6 +21,7 @@ exports.Login = (req, res) => {
   });
 };
 
+//register as a client
 exports.Register = async (req, res) => {
   const { firstName, lastName, email, password, mobile_number } = req.body;
   const data = await Users.findOne({ email });
@@ -47,6 +49,7 @@ exports.Register = async (req, res) => {
   });
 };
 
+//get single user data
 exports.GetUser = (req, res) => {
   const _id = req.query.ID;
   Users.findById(_id)
@@ -58,6 +61,7 @@ exports.GetUser = (req, res) => {
     });
 };
 
+//update single user
 exports.UpdateUser = (req, res) => {
   const {
     firstName,
@@ -93,6 +97,7 @@ exports.UpdateUser = (req, res) => {
   }
 };
 
+//change user role
 exports.ChangeRole = (req, res) => {
   const role = req.body.role;
   const _id = req.body._id;
@@ -106,6 +111,7 @@ exports.ChangeRole = (req, res) => {
     });
 };
 
+//get dp of user
 exports.GetDP = (req, res) => {
   const _id = req.params.id;
   Users.findById(_id)
@@ -118,6 +124,7 @@ exports.GetDP = (req, res) => {
     });
 };
 
+//delete dp of user
 exports.DeleteDp = (req, res) => {
   const _id = req.params.id;
   Users.findByIdAndUpdate({ _id }, { images: "" })
@@ -135,6 +142,7 @@ exports.DeleteDp = (req, res) => {
     });
 };
 
+//upload dp
 exports.UploadDp = (req, res) => {
   const _id = req.body.id;
   const date = Date.now();
@@ -160,6 +168,7 @@ exports.UploadDp = (req, res) => {
   }
 };
 
+//get favorite products id
 exports.GetFavorites = (req, res) => {
   Users.findOne({ _id: req.query._id }, { favorites: 1 })
     .then((data) => {
@@ -170,6 +179,7 @@ exports.GetFavorites = (req, res) => {
     });
 };
 
+//set favorites
 exports.SetFavorite = (req, res) => {
   const { _id, pid, val } = req.body;
   if (val) {
@@ -191,6 +201,7 @@ exports.SetFavorite = (req, res) => {
   }
 };
 
+//add things to cart
 exports.AddCart = (req, res) => {
   const { pid, _id, set } = req.body;
 
@@ -213,6 +224,7 @@ exports.AddCart = (req, res) => {
   }
 };
 
+//get cart data
 exports.getCart = (req, res) => {
   const { _id } = req.query;
 
@@ -225,6 +237,7 @@ exports.getCart = (req, res) => {
     });
 };
 
+//remover item from cart
 exports.RemoveCartEle = (req, res) => {
   const { id, pid } = req.query;
   Users.findByIdAndUpdate({ _id: id }, { $pull: { cart: pid } })
@@ -236,6 +249,7 @@ exports.RemoveCartEle = (req, res) => {
     });
 };
 
+//send otp to reset password
 exports.SendOtp = (req, res) => {
   const { email, OTP } = req.body;
   if (OTP) {
@@ -269,6 +283,7 @@ exports.SendOtp = (req, res) => {
   }
 };
 
+//reset password
 exports.ResetPassword = (req, res) => {
   const { _id } = req.params;
   const { password } = req.body;
@@ -282,6 +297,7 @@ exports.ResetPassword = (req, res) => {
     });
 };
 
+//check validity to reset password
 exports.CheckResetValidity = (req, res) => {
   const { _id } = req.params;
   Users.findById({ _id })
@@ -294,5 +310,18 @@ exports.CheckResetValidity = (req, res) => {
     })
     .catch((er) => {
       res.status(404).json({ found: false });
+    });
+};
+
+//delete cart
+exports.DeleteCart = (req, res) => {
+  const { _id } = req.query;
+
+  Users.findByIdAndUpdate({ _id }, { $set: { cart: [] } })
+    .then((data) => {
+      return res.status(200).json({ deleted: true });
+    })
+    .catch((er) => {
+      return res.status(404).json({ deleted: false });
     });
 };
